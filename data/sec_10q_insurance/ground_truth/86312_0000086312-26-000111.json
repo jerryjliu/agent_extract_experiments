@@ -1,0 +1,29 @@
+{
+  "cik": "86312",
+  "accession": "0000086312-26-000111",
+  "ticker": "TRV",
+  "name": "Travelers",
+  "form": "10-Q",
+  "period": "2026-03-31",
+  "values": {
+    "issuer_name": "Travelers Companies,\u00a0Inc.",
+    "period_end_date": "2026-03-31",
+    "total_revenues": 11924000000,
+    "net_investment_income": 1008000000,
+    "net_income": 1711000000,
+    "net_income_per_share_basic": 7.89,
+    "net_income_per_share_diluted": 7.78,
+    "total_assets": 142309000000,
+    "total_investments": 102978000000,
+    "total_liabilities": 110323000000,
+    "stockholders_equity": 31986000000,
+    "insurance_reserves": 66912000000,
+    "deferred_policy_acquisition_costs": 3587000000,
+    "cash_from_operations": 2198000000,
+    "cash_from_investing": -335000000,
+    "cash_from_financing": -2085000000,
+    "common_shares_outstanding": 212600000
+  },
+  "populated_count": 17,
+  "total_fields": 17
+}

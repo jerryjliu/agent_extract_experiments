@@ -1,0 +1,29 @@
+{
+  "cik": "20286",
+  "accession": "0000020286-26-000026",
+  "ticker": "CINF",
+  "name": "Cincinnati Financial",
+  "form": "10-Q",
+  "period": "2026-03-31",
+  "values": {
+    "issuer_name": "CINCINNATI FINANCIAL CORPORATION",
+    "period_end_date": "2026-03-31",
+    "total_revenues": 2863000000,
+    "net_investment_income": 318000000,
+    "net_income": 274000000,
+    "net_income_per_share_basic": 1.77,
+    "net_income_per_share_diluted": 1.75,
+    "total_assets": 41211000000,
+    "total_investments": 32001000000,
+    "total_liabilities": 25497000000,
+    "stockholders_equity": 15714000000,
+    "insurance_reserves": 11959000000,
+    "deferred_policy_acquisition_costs": 1384000000,
+    "cash_from_operations": 656000000,
+    "cash_from_investing": -493000000,
+    "cash_from_financing": -384000000,
+    "common_shares_outstanding": 154686742
+  },
+  "populated_count": 17,
+  "total_fields": 17
+}

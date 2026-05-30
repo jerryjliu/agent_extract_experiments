@@ -1,0 +1,29 @@
+{
+  "cik": "1137774",
+  "accession": "0001137774-26-000095",
+  "ticker": "PRU",
+  "name": "Prudential Financial",
+  "form": "10-Q",
+  "period": "2026-03-31",
+  "values": {
+    "issuer_name": "PRUDENTIAL FINANCIAL INC",
+    "period_end_date": "2026-03-31",
+    "total_revenues": 15526000000,
+    "net_investment_income": 5665000000,
+    "net_income": 597000000,
+    "net_income_per_share_basic": 1.69,
+    "net_income_per_share_diluted": 1.68,
+    "total_assets": 765396000000,
+    "total_investments": 474124000000,
+    "total_liabilities": 730469000000,
+    "stockholders_equity": 31975000000,
+    "insurance_reserves": null,
+    "deferred_policy_acquisition_costs": 21730000000,
+    "cash_from_operations": 1008000000,
+    "cash_from_investing": -10176000000,
+    "cash_from_financing": 5440000000,
+    "common_shares_outstanding": 347000000
+  },
+  "populated_count": 16,
+  "total_fields": 17
+}

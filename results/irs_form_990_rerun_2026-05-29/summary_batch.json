@@ -1,0 +1,34 @@
+{
+  "with_skill": {
+    "accuracy": 0.9415584415584416,
+    "n_correct": 145,
+    "n_wrong": 9,
+    "n_missing": 0,
+    "n_na": 11,
+    "n_format_error": 0,
+    "n_runs": 11,
+    "n_runs_with_output": 11,
+    "total_cost_usd": 0.581,
+    "total_duration_ms": 68670,
+    "session_duration_ms": 68670,
+    "session_num_turns": 2,
+    "session_duration_api_ms": 68027,
+    "session_stop_reason": "end_turn"
+  },
+  "no_skill": {
+    "accuracy": 0.948051948051948,
+    "n_correct": 146,
+    "n_wrong": 8,
+    "n_missing": 0,
+    "n_na": 11,
+    "n_format_error": 0,
+    "n_runs": 11,
+    "n_runs_with_output": 11,
+    "total_cost_usd": 4.6239,
+    "total_duration_ms": 487600,
+    "session_duration_ms": 487600,
+    "session_num_turns": 91,
+    "session_duration_api_ms": 478690,
+    "session_stop_reason": "end_turn"
+  }
+}

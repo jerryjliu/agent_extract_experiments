@@ -1,0 +1,409 @@
+doc_key,name,condition,field,extracted,truth,status,abs_error,rel_error
+80661_0000080661-26-000177,Progressive,with_skill,issuer_name,THE PROGRESSIVE CORPORATION,PROGRESSIVE CORP/OH/,na,,
+80661_0000080661-26-000177,Progressive,with_skill,period_end_date,2026-03-31,2026-03-31,correct,,
+80661_0000080661-26-000177,Progressive,with_skill,total_revenues,22188.0,22188000000,wrong,22187977812.0,0.999999
+80661_0000080661-26-000177,Progressive,with_skill,net_investment_income,0.0,909000000,wrong,909000000.0,1.0
+80661_0000080661-26-000177,Progressive,with_skill,net_income,2818.0,2818000000,wrong,2817997182.0,0.999999
+80661_0000080661-26-000177,Progressive,with_skill,net_income_per_share_basic,4.81,4.81,correct,0.0,0.0
+80661_0000080661-26-000177,Progressive,with_skill,net_income_per_share_diluted,4.8,4.8,correct,0.0,0.0
+80661_0000080661-26-000177,Progressive,with_skill,total_assets,122209.0,122209000000,wrong,122208877791.0,0.999999
+80661_0000080661-26-000177,Progressive,with_skill,total_investments,94131.0,94131000000,wrong,94130905869.0,0.999999
+80661_0000080661-26-000177,Progressive,with_skill,total_liabilities,90170.0,90170000000,wrong,90169909830.0,0.999999
+80661_0000080661-26-000177,Progressive,with_skill,stockholders_equity,32039.0,32039000000,wrong,32038967961.0,0.999999
+80661_0000080661-26-000177,Progressive,with_skill,insurance_reserves,40629.0,44377000000,wrong,44376959371.0,0.9999990844581652
+80661_0000080661-26-000177,Progressive,with_skill,deferred_policy_acquisition_costs,2131.0,2131000000,wrong,2130997869.0,0.999999
+80661_0000080661-26-000177,Progressive,with_skill,cash_from_operations,4367.0,4367000000,wrong,4366995633.0,0.999999
+80661_0000080661-26-000177,Progressive,with_skill,cash_from_investing,2637.0,2637000000,wrong,2636997363.0,0.999999
+80661_0000080661-26-000177,Progressive,with_skill,cash_from_financing,-6963.0,-6963000000,wrong,6962993037.0,0.999999
+80661_0000080661-26-000177,Progressive,with_skill,common_shares_outstanding,584336464.0,584336464,correct,0.0,0.0
+80661_0000080661-26-000177,Progressive,no_skill,issuer_name,The Progressive Corporation,PROGRESSIVE CORP/OH/,na,,
+80661_0000080661-26-000177,Progressive,no_skill,period_end_date,2026-03-31,2026-03-31,correct,,
+80661_0000080661-26-000177,Progressive,no_skill,total_revenues,22188000000.0,22188000000,correct,0.0,0.0
+80661_0000080661-26-000177,Progressive,no_skill,net_investment_income,917000000.0,909000000,wrong,8000000.0,0.0088008800880088
+80661_0000080661-26-000177,Progressive,no_skill,net_income,2818000000.0,2818000000,correct,0.0,0.0
+80661_0000080661-26-000177,Progressive,no_skill,net_income_per_share_basic,4.81,4.81,correct,0.0,0.0
+80661_0000080661-26-000177,Progressive,no_skill,net_income_per_share_diluted,4.8,4.8,correct,0.0,0.0
+80661_0000080661-26-000177,Progressive,no_skill,total_assets,122209000000.0,122209000000,correct,0.0,0.0
+80661_0000080661-26-000177,Progressive,no_skill,total_investments,94131000000.0,94131000000,correct,0.0,0.0
+80661_0000080661-26-000177,Progressive,no_skill,total_liabilities,90170000000.0,90170000000,correct,0.0,0.0
+80661_0000080661-26-000177,Progressive,no_skill,stockholders_equity,32039000000.0,32039000000,correct,0.0,0.0
+80661_0000080661-26-000177,Progressive,no_skill,insurance_reserves,44377000000.0,44377000000,correct,0.0,0.0
+80661_0000080661-26-000177,Progressive,no_skill,deferred_policy_acquisition_costs,2131000000.0,2131000000,correct,0.0,0.0
+80661_0000080661-26-000177,Progressive,no_skill,cash_from_operations,4367000000.0,4367000000,correct,0.0,0.0
+80661_0000080661-26-000177,Progressive,no_skill,cash_from_investing,2637000000.0,2637000000,correct,0.0,0.0
+80661_0000080661-26-000177,Progressive,no_skill,cash_from_financing,-6963000000.0,-6963000000,correct,0.0,0.0
+80661_0000080661-26-000177,Progressive,no_skill,common_shares_outstanding,584336464.0,584336464,correct,0.0,0.0
+1099219_0001099219-26-000035,MetLife,with_skill,issuer_name,"MetLife, Inc.","MetLife, Inc.",na,,
+1099219_0001099219-26-000035,MetLife,with_skill,period_end_date,2026-03-31,2026-03-31,correct,,
+1099219_0001099219-26-000035,MetLife,with_skill,total_revenues,19074000000.0,19074000000,correct,0.0,0.0
+1099219_0001099219-26-000035,MetLife,with_skill,net_investment_income,5355000000.0,5355000000,correct,0.0,0.0
+1099219_0001099219-26-000035,MetLife,with_skill,net_income,1185000000.0,1185000000,correct,0.0,0.0
+1099219_0001099219-26-000035,MetLife,with_skill,net_income_per_share_basic,1.75,1.75,correct,0.0,0.0
+1099219_0001099219-26-000035,MetLife,with_skill,net_income_per_share_diluted,1.74,1.74,correct,0.0,0.0
+1099219_0001099219-26-000035,MetLife,with_skill,total_assets,0.0,743211000000,wrong,743211000000.0,1.0
+1099219_0001099219-26-000035,MetLife,with_skill,total_investments,484044000000.0,473112000000,wrong,10932000000.0,0.023106579414599503
+1099219_0001099219-26-000035,MetLife,with_skill,total_liabilities,715410000000.0,715410000000,correct,0.0,0.0
+1099219_0001099219-26-000035,MetLife,with_skill,stockholders_equity,27324000000.0,27324000000,correct,0.0,0.0
+1099219_0001099219-26-000035,MetLife,with_skill,insurance_reserves,206628.0,17640000000,wrong,17639793372.0,0.9999882863945578
+1099219_0001099219-26-000035,MetLife,with_skill,deferred_policy_acquisition_costs,21269000000.0,19951000000,wrong,1318000000.0,0.06606185153626384
+1099219_0001099219-26-000035,MetLife,with_skill,cash_from_operations,2687000000.0,2687000000,correct,0.0,0.0
+1099219_0001099219-26-000035,MetLife,with_skill,cash_from_investing,-5455000000.0,-5455000000,correct,0.0,0.0
+1099219_0001099219-26-000035,MetLife,with_skill,cash_from_financing,3559.0,3559000000,wrong,3558996441.0,0.999999
+1099219_0001099219-26-000035,MetLife,with_skill,common_shares_outstanding,643436779.0,646024938,correct,2588159.0,0.004006283423071201
+1099219_0001099219-26-000035,MetLife,no_skill,issuer_name,"MetLife, Inc.","MetLife, Inc.",na,,
+1099219_0001099219-26-000035,MetLife,no_skill,period_end_date,2026-03-31,2026-03-31,correct,,
+1099219_0001099219-26-000035,MetLife,no_skill,total_revenues,19074000000.0,19074000000,correct,0.0,0.0
+1099219_0001099219-26-000035,MetLife,no_skill,net_investment_income,5355000000.0,5355000000,correct,0.0,0.0
+1099219_0001099219-26-000035,MetLife,no_skill,net_income,1185000000.0,1185000000,correct,0.0,0.0
+1099219_0001099219-26-000035,MetLife,no_skill,net_income_per_share_basic,1.75,1.75,correct,0.0,0.0
+1099219_0001099219-26-000035,MetLife,no_skill,net_income_per_share_diluted,1.74,1.74,correct,0.0,0.0
+1099219_0001099219-26-000035,MetLife,no_skill,total_assets,743211000000.0,743211000000,correct,0.0,0.0
+1099219_0001099219-26-000035,MetLife,no_skill,total_investments,473112000000.0,473112000000,correct,0.0,0.0
+1099219_0001099219-26-000035,MetLife,no_skill,total_liabilities,715410000000.0,715410000000,correct,0.0,0.0
+1099219_0001099219-26-000035,MetLife,no_skill,stockholders_equity,27324000000.0,27324000000,correct,0.0,0.0
+1099219_0001099219-26-000035,MetLife,no_skill,insurance_reserves,206628000000.0,17640000000,wrong,188988000000.0,10.71360544217687
+1099219_0001099219-26-000035,MetLife,no_skill,deferred_policy_acquisition_costs,21269000000.0,19951000000,wrong,1318000000.0,0.06606185153626384
+1099219_0001099219-26-000035,MetLife,no_skill,cash_from_operations,2687000000.0,2687000000,correct,0.0,0.0
+1099219_0001099219-26-000035,MetLife,no_skill,cash_from_investing,-5455000000.0,-5455000000,correct,0.0,0.0
+1099219_0001099219-26-000035,MetLife,no_skill,cash_from_financing,3559000000.0,3559000000,correct,0.0,0.0
+1099219_0001099219-26-000035,MetLife,no_skill,common_shares_outstanding,643436779.0,646024938,correct,2588159.0,0.004006283423071201
+899051_0000899051-26-000075,Allstate,with_skill,issuer_name,The Allstate Corporation,ALLSTATE CORP,na,,
+899051_0000899051-26-000075,Allstate,with_skill,period_end_date,2026-03-31,2026-03-31,correct,,
+899051_0000899051-26-000075,Allstate,with_skill,total_revenues,16941000000.0,16941000000,correct,0.0,0.0
+899051_0000899051-26-000075,Allstate,with_skill,net_investment_income,938000000.0,938000000,correct,0.0,0.0
+899051_0000899051-26-000075,Allstate,with_skill,net_income,2457000000.0,2457000000,correct,0.0,0.0
+899051_0000899051-26-000075,Allstate,with_skill,net_income_per_share_basic,9.36,9.36,correct,0.0,0.0
+899051_0000899051-26-000075,Allstate,with_skill,net_income_per_share_diluted,9.25,9.25,correct,0.0,0.0
+899051_0000899051-26-000075,Allstate,with_skill,total_assets,123972000000.0,123972000000,correct,0.0,0.0
+899051_0000899051-26-000075,Allstate,with_skill,total_investments,85160000000.0,85160000000,correct,0.0,0.0
+899051_0000899051-26-000075,Allstate,with_skill,total_liabilities,92385000000.0,92385000000,correct,0.0,0.0
+899051_0000899051-26-000075,Allstate,with_skill,stockholders_equity,31607000000.0,31607000000,correct,0.0,0.0
+899051_0000899051-26-000075,Allstate,with_skill,insurance_reserves,33372000000.0,41320000000,wrong,7948000000.0,0.19235237173281705
+899051_0000899051-26-000075,Allstate,with_skill,deferred_policy_acquisition_costs,6070000000.0,,na,,
+899051_0000899051-26-000075,Allstate,with_skill,cash_from_operations,3562000000.0,3562000000,correct,0.0,0.0
+899051_0000899051-26-000075,Allstate,with_skill,cash_from_investing,-2627000000.0,-2627000000,correct,0.0,0.0
+899051_0000899051-26-000075,Allstate,with_skill,cash_from_financing,-916000000.0,-916000000,correct,0.0,0.0
+899051_0000899051-26-000075,Allstate,with_skill,common_shares_outstanding,257420930.0,258000000,correct,579070.0,0.002244457364341085
+899051_0000899051-26-000075,Allstate,no_skill,issuer_name,The Allstate Corporation,ALLSTATE CORP,na,,
+899051_0000899051-26-000075,Allstate,no_skill,period_end_date,2026-03-31,2026-03-31,correct,,
+899051_0000899051-26-000075,Allstate,no_skill,total_revenues,16941000000.0,16941000000,correct,0.0,0.0
+899051_0000899051-26-000075,Allstate,no_skill,net_investment_income,938000000.0,938000000,correct,0.0,0.0
+899051_0000899051-26-000075,Allstate,no_skill,net_income,2457000000.0,2457000000,correct,0.0,0.0
+899051_0000899051-26-000075,Allstate,no_skill,net_income_per_share_basic,9.36,9.36,correct,0.0,0.0
+899051_0000899051-26-000075,Allstate,no_skill,net_income_per_share_diluted,9.25,9.25,correct,0.0,0.0
+899051_0000899051-26-000075,Allstate,no_skill,total_assets,123972000000.0,123972000000,correct,0.0,0.0
+899051_0000899051-26-000075,Allstate,no_skill,total_investments,85160000000.0,85160000000,correct,0.0,0.0
+899051_0000899051-26-000075,Allstate,no_skill,total_liabilities,92385000000.0,92385000000,correct,0.0,0.0
+899051_0000899051-26-000075,Allstate,no_skill,stockholders_equity,31607000000.0,31607000000,correct,0.0,0.0
+899051_0000899051-26-000075,Allstate,no_skill,insurance_reserves,41320000000.0,41320000000,correct,0.0,0.0
+899051_0000899051-26-000075,Allstate,no_skill,deferred_policy_acquisition_costs,6070000000.0,,na,,
+899051_0000899051-26-000075,Allstate,no_skill,cash_from_operations,3562000000.0,3562000000,correct,0.0,0.0
+899051_0000899051-26-000075,Allstate,no_skill,cash_from_investing,-2627000000.0,-2627000000,correct,0.0,0.0
+899051_0000899051-26-000075,Allstate,no_skill,cash_from_financing,-916000000.0,-916000000,correct,0.0,0.0
+899051_0000899051-26-000075,Allstate,no_skill,common_shares_outstanding,257420930.0,258000000,correct,579070.0,0.002244457364341085
+86312_0000086312-26-000111,Travelers,with_skill,issuer_name,"The Travelers Companies, Inc.","Travelers Companies, Inc.",na,,
+86312_0000086312-26-000111,Travelers,with_skill,period_end_date,2026-03-31,2026-03-31,correct,,
+86312_0000086312-26-000111,Travelers,with_skill,total_revenues,11924.0,11924000000,wrong,11923988076.0,0.999999
+86312_0000086312-26-000111,Travelers,with_skill,net_investment_income,1008.0,1008000000,wrong,1007998992.0,0.999999
+86312_0000086312-26-000111,Travelers,with_skill,net_income,1711.0,1711000000,wrong,1710998289.0,0.999999
+86312_0000086312-26-000111,Travelers,with_skill,net_income_per_share_basic,7.89,7.89,correct,0.0,0.0
+86312_0000086312-26-000111,Travelers,with_skill,net_income_per_share_diluted,7.78,7.78,correct,0.0,0.0
+86312_0000086312-26-000111,Travelers,with_skill,total_assets,142309.0,142309000000,wrong,142308857691.0,0.999999
+86312_0000086312-26-000111,Travelers,with_skill,total_investments,102978.0,102978000000,wrong,102977897022.0,0.999999
+86312_0000086312-26-000111,Travelers,with_skill,total_liabilities,110323.0,110323000000,wrong,110322889677.0,0.999999
+86312_0000086312-26-000111,Travelers,with_skill,stockholders_equity,31986000000.0,31986000000,correct,0.0,0.0
+86312_0000086312-26-000111,Travelers,with_skill,insurance_reserves,66912000000.0,66912000000,correct,0.0,0.0
+86312_0000086312-26-000111,Travelers,with_skill,deferred_policy_acquisition_costs,3587.0,3587000000,wrong,3586996413.0,0.999999
+86312_0000086312-26-000111,Travelers,with_skill,cash_from_operations,2198000000.0,2198000000,correct,0.0,0.0
+86312_0000086312-26-000111,Travelers,with_skill,cash_from_investing,-335000000.0,-335000000,correct,0.0,0.0
+86312_0000086312-26-000111,Travelers,with_skill,cash_from_financing,-2085.0,-2085000000,wrong,2084997915.0,0.999999
+86312_0000086312-26-000111,Travelers,with_skill,common_shares_outstanding,212644693.0,212600000,correct,44693.0,0.00021022107243650047
+86312_0000086312-26-000111,Travelers,no_skill,issuer_name,"The Travelers Companies, Inc.","Travelers Companies, Inc.",na,,
+86312_0000086312-26-000111,Travelers,no_skill,period_end_date,2026-03-31,2026-03-31,correct,,
+86312_0000086312-26-000111,Travelers,no_skill,total_revenues,11924000000.0,11924000000,correct,0.0,0.0
+86312_0000086312-26-000111,Travelers,no_skill,net_investment_income,1008000000.0,1008000000,correct,0.0,0.0
+86312_0000086312-26-000111,Travelers,no_skill,net_income,1711000000.0,1711000000,correct,0.0,0.0
+86312_0000086312-26-000111,Travelers,no_skill,net_income_per_share_basic,7.89,7.89,correct,0.0,0.0
+86312_0000086312-26-000111,Travelers,no_skill,net_income_per_share_diluted,7.78,7.78,correct,0.0,0.0
+86312_0000086312-26-000111,Travelers,no_skill,total_assets,142309000000.0,142309000000,correct,0.0,0.0
+86312_0000086312-26-000111,Travelers,no_skill,total_investments,102978000000.0,102978000000,correct,0.0,0.0
+86312_0000086312-26-000111,Travelers,no_skill,total_liabilities,110323000000.0,110323000000,correct,0.0,0.0
+86312_0000086312-26-000111,Travelers,no_skill,stockholders_equity,31986000000.0,31986000000,correct,0.0,0.0
+86312_0000086312-26-000111,Travelers,no_skill,insurance_reserves,66912000000.0,66912000000,correct,0.0,0.0
+86312_0000086312-26-000111,Travelers,no_skill,deferred_policy_acquisition_costs,3587000000.0,3587000000,correct,0.0,0.0
+86312_0000086312-26-000111,Travelers,no_skill,cash_from_operations,2198000000.0,2198000000,correct,0.0,0.0
+86312_0000086312-26-000111,Travelers,no_skill,cash_from_investing,-335000000.0,-335000000,correct,0.0,0.0
+86312_0000086312-26-000111,Travelers,no_skill,cash_from_financing,-2085000000.0,-2085000000,correct,0.0,0.0
+86312_0000086312-26-000111,Travelers,no_skill,common_shares_outstanding,212644693.0,212600000,correct,44693.0,0.00021022107243650047
+5272_0000005272-26-000052,American International Group,with_skill,issuer_name,"American International Group, Inc.","American International Group, Inc.",na,,
+5272_0000005272-26-000052,American International Group,with_skill,period_end_date,2026-03-31,2026-03-31,correct,,
+5272_0000005272-26-000052,American International Group,with_skill,total_revenues,6650000000.0,6650000000,correct,0.0,0.0
+5272_0000005272-26-000052,American International Group,with_skill,net_investment_income,712000000.0,712000000,correct,0.0,0.0
+5272_0000005272-26-000052,American International Group,with_skill,net_income,763000000.0,763000000,correct,0.0,0.0
+5272_0000005272-26-000052,American International Group,with_skill,net_income_per_share_basic,1.42,1.42,correct,0.0,0.0
+5272_0000005272-26-000052,American International Group,with_skill,net_income_per_share_diluted,1.41,1.41,correct,0.0,0.0
+5272_0000005272-26-000052,American International Group,with_skill,total_assets,161543000000.0,161543000000,correct,0.0,0.0
+5272_0000005272-26-000052,American International Group,with_skill,total_investments,90845000000.0,90845000000,correct,0.0,0.0
+5272_0000005272-26-000052,American International Group,with_skill,total_liabilities,121114000000.0,121114000000,correct,0.0,0.0
+5272_0000005272-26-000052,American International Group,with_skill,stockholders_equity,40405000000.0,40405000000,correct,0.0,0.0
+5272_0000005272-26-000052,American International Group,with_skill,insurance_reserves,69963000000.0,69963000000,correct,0.0,0.0
+5272_0000005272-26-000052,American International Group,with_skill,deferred_policy_acquisition_costs,2128000000.0,2128000000,correct,0.0,0.0
+5272_0000005272-26-000052,American International Group,with_skill,cash_from_operations,0.0,155000000,wrong,155000000.0,1.0
+5272_0000005272-26-000052,American International Group,with_skill,cash_from_investing,833000000.0,833000000,correct,0.0,0.0
+5272_0000005272-26-000052,American International Group,with_skill,cash_from_financing,-799000000.0,-799000000,correct,0.0,0.0
+5272_0000005272-26-000052,American International Group,with_skill,common_shares_outstanding,530206221.0,532900000,wrong,2693779.0,0.005054942765997373
+5272_0000005272-26-000052,American International Group,no_skill,issuer_name,"American International Group, Inc.","American International Group, Inc.",na,,
+5272_0000005272-26-000052,American International Group,no_skill,period_end_date,2026-03-31,2026-03-31,correct,,
+5272_0000005272-26-000052,American International Group,no_skill,total_revenues,6650000000.0,6650000000,correct,0.0,0.0
+5272_0000005272-26-000052,American International Group,no_skill,net_investment_income,712000000.0,712000000,correct,0.0,0.0
+5272_0000005272-26-000052,American International Group,no_skill,net_income,763000000.0,763000000,correct,0.0,0.0
+5272_0000005272-26-000052,American International Group,no_skill,net_income_per_share_basic,1.42,1.42,correct,0.0,0.0
+5272_0000005272-26-000052,American International Group,no_skill,net_income_per_share_diluted,1.41,1.41,correct,0.0,0.0
+5272_0000005272-26-000052,American International Group,no_skill,total_assets,161543000000.0,161543000000,correct,0.0,0.0
+5272_0000005272-26-000052,American International Group,no_skill,total_investments,90845000000.0,90845000000,correct,0.0,0.0
+5272_0000005272-26-000052,American International Group,no_skill,total_liabilities,121114000000.0,121114000000,correct,0.0,0.0
+5272_0000005272-26-000052,American International Group,no_skill,stockholders_equity,40405000000.0,40405000000,correct,0.0,0.0
+5272_0000005272-26-000052,American International Group,no_skill,insurance_reserves,69963000000.0,69963000000,correct,0.0,0.0
+5272_0000005272-26-000052,American International Group,no_skill,deferred_policy_acquisition_costs,2128000000.0,2128000000,correct,0.0,0.0
+5272_0000005272-26-000052,American International Group,no_skill,cash_from_operations,155000000.0,155000000,correct,0.0,0.0
+5272_0000005272-26-000052,American International Group,no_skill,cash_from_investing,833000000.0,833000000,correct,0.0,0.0
+5272_0000005272-26-000052,American International Group,no_skill,cash_from_financing,-799000000.0,-799000000,correct,0.0,0.0
+5272_0000005272-26-000052,American International Group,no_skill,common_shares_outstanding,530206221.0,532900000,wrong,2693779.0,0.005054942765997373
+874766_0000874766-26-000037,Hartford Financial,with_skill,issuer_name,"The Hartford Insurance Group, Inc.","The Hartford Insurance Group, Inc.",na,,
+874766_0000874766-26-000037,Hartford Financial,with_skill,period_end_date,2026-03-31,2026-03-31,correct,,
+874766_0000874766-26-000037,Hartford Financial,with_skill,total_revenues,7226000000.0,7226000000,correct,0.0,0.0
+874766_0000874766-26-000037,Hartford Financial,with_skill,net_investment_income,739000000.0,739000000,correct,0.0,0.0
+874766_0000874766-26-000037,Hartford Financial,with_skill,net_income,856000000.0,856000000,correct,0.0,0.0
+874766_0000874766-26-000037,Hartford Financial,with_skill,net_income_per_share_basic,3.08,3.08,correct,0.0,0.0
+874766_0000874766-26-000037,Hartford Financial,with_skill,net_income_per_share_diluted,3.04,3.04,correct,0.0,0.0
+874766_0000874766-26-000037,Hartford Financial,with_skill,total_assets,86322000000.0,86322000000,correct,0.0,0.0
+874766_0000874766-26-000037,Hartford Financial,with_skill,total_investments,63741000000.0,63741000000,correct,0.0,0.0
+874766_0000874766-26-000037,Hartford Financial,with_skill,total_liabilities,67433000000.0,67433000000,correct,0.0,0.0
+874766_0000874766-26-000037,Hartford Financial,with_skill,stockholders_equity,18889000000.0,18889000000,correct,0.0,0.0
+874766_0000874766-26-000037,Hartford Financial,with_skill,insurance_reserves,46723000000.0,46723000000,correct,0.0,0.0
+874766_0000874766-26-000037,Hartford Financial,with_skill,deferred_policy_acquisition_costs,1394000000.0,,na,,
+874766_0000874766-26-000037,Hartford Financial,with_skill,cash_from_operations,1045000000.0,1045000000,correct,0.0,0.0
+874766_0000874766-26-000037,Hartford Financial,with_skill,cash_from_investing,-332000000.0,-332000000,correct,0.0,0.0
+874766_0000874766-26-000037,Hartford Financial,with_skill,cash_from_financing,-663000000.0,-663000000,correct,0.0,0.0
+874766_0000874766-26-000037,Hartford Financial,with_skill,common_shares_outstanding,274130820.0,274130820,correct,0.0,0.0
+874766_0000874766-26-000037,Hartford Financial,no_skill,issuer_name,"The Hartford Insurance Group, Inc.","The Hartford Insurance Group, Inc.",na,,
+874766_0000874766-26-000037,Hartford Financial,no_skill,period_end_date,2026-03-31,2026-03-31,correct,,
+874766_0000874766-26-000037,Hartford Financial,no_skill,total_revenues,7226000000.0,7226000000,correct,0.0,0.0
+874766_0000874766-26-000037,Hartford Financial,no_skill,net_investment_income,739000000.0,739000000,correct,0.0,0.0
+874766_0000874766-26-000037,Hartford Financial,no_skill,net_income,856000000.0,856000000,correct,0.0,0.0
+874766_0000874766-26-000037,Hartford Financial,no_skill,net_income_per_share_basic,3.08,3.08,correct,0.0,0.0
+874766_0000874766-26-000037,Hartford Financial,no_skill,net_income_per_share_diluted,3.04,3.04,correct,0.0,0.0
+874766_0000874766-26-000037,Hartford Financial,no_skill,total_assets,86322000000.0,86322000000,correct,0.0,0.0
+874766_0000874766-26-000037,Hartford Financial,no_skill,total_investments,63741000000.0,63741000000,correct,0.0,0.0
+874766_0000874766-26-000037,Hartford Financial,no_skill,total_liabilities,67433000000.0,67433000000,correct,0.0,0.0
+874766_0000874766-26-000037,Hartford Financial,no_skill,stockholders_equity,18889000000.0,18889000000,correct,0.0,0.0
+874766_0000874766-26-000037,Hartford Financial,no_skill,insurance_reserves,46723000000.0,46723000000,correct,0.0,0.0
+874766_0000874766-26-000037,Hartford Financial,no_skill,deferred_policy_acquisition_costs,1394000000.0,,na,,
+874766_0000874766-26-000037,Hartford Financial,no_skill,cash_from_operations,1045000000.0,1045000000,correct,0.0,0.0
+874766_0000874766-26-000037,Hartford Financial,no_skill,cash_from_investing,-332000000.0,-332000000,correct,0.0,0.0
+874766_0000874766-26-000037,Hartford Financial,no_skill,cash_from_financing,-663000000.0,-663000000,correct,0.0,0.0
+874766_0000874766-26-000037,Hartford Financial,no_skill,common_shares_outstanding,274130820.0,274130820,correct,0.0,0.0
+1137774_0001137774-26-000095,Prudential Financial,with_skill,issuer_name,,PRUDENTIAL FINANCIAL INC,na,,
+1137774_0001137774-26-000095,Prudential Financial,with_skill,period_end_date,2026-03-31,2026-03-31,correct,,
+1137774_0001137774-26-000095,Prudential Financial,with_skill,total_revenues,15526000000.0,15526000000,correct,0.0,0.0
+1137774_0001137774-26-000095,Prudential Financial,with_skill,net_investment_income,5665000000.0,5665000000,correct,0.0,0.0
+1137774_0001137774-26-000095,Prudential Financial,with_skill,net_income,597000000.0,597000000,correct,0.0,0.0
+1137774_0001137774-26-000095,Prudential Financial,with_skill,net_income_per_share_basic,1.69,1.69,correct,0.0,0.0
+1137774_0001137774-26-000095,Prudential Financial,with_skill,net_income_per_share_diluted,1.68,1.68,correct,0.0,0.0
+1137774_0001137774-26-000095,Prudential Financial,with_skill,total_assets,765396000000.0,765396000000,correct,0.0,0.0
+1137774_0001137774-26-000095,Prudential Financial,with_skill,total_investments,474124000000.0,474124000000,correct,0.0,0.0
+1137774_0001137774-26-000095,Prudential Financial,with_skill,total_liabilities,730469000000.0,730469000000,correct,0.0,0.0
+1137774_0001137774-26-000095,Prudential Financial,with_skill,stockholders_equity,31975000000.0,31975000000,correct,0.0,0.0
+1137774_0001137774-26-000095,Prudential Financial,with_skill,insurance_reserves,181355000000.0,,na,,
+1137774_0001137774-26-000095,Prudential Financial,with_skill,deferred_policy_acquisition_costs,21730000000.0,21730000000,correct,0.0,0.0
+1137774_0001137774-26-000095,Prudential Financial,with_skill,cash_from_operations,1008000000.0,1008000000,correct,0.0,0.0
+1137774_0001137774-26-000095,Prudential Financial,with_skill,cash_from_investing,-10176000000.0,-10176000000,correct,0.0,0.0
+1137774_0001137774-26-000095,Prudential Financial,with_skill,cash_from_financing,5440000000.0,5440000000,correct,0.0,0.0
+1137774_0001137774-26-000095,Prudential Financial,with_skill,common_shares_outstanding,347000000.0,347000000,correct,0.0,0.0
+1137774_0001137774-26-000095,Prudential Financial,no_skill,issuer_name,"Prudential Financial, Inc.",PRUDENTIAL FINANCIAL INC,na,,
+1137774_0001137774-26-000095,Prudential Financial,no_skill,period_end_date,2026-03-31,2026-03-31,correct,,
+1137774_0001137774-26-000095,Prudential Financial,no_skill,total_revenues,15526000000.0,15526000000,correct,0.0,0.0
+1137774_0001137774-26-000095,Prudential Financial,no_skill,net_investment_income,5665000000.0,5665000000,correct,0.0,0.0
+1137774_0001137774-26-000095,Prudential Financial,no_skill,net_income,597000000.0,597000000,correct,0.0,0.0
+1137774_0001137774-26-000095,Prudential Financial,no_skill,net_income_per_share_basic,1.69,1.69,correct,0.0,0.0
+1137774_0001137774-26-000095,Prudential Financial,no_skill,net_income_per_share_diluted,1.68,1.68,correct,0.0,0.0
+1137774_0001137774-26-000095,Prudential Financial,no_skill,total_assets,765396000000.0,765396000000,correct,0.0,0.0
+1137774_0001137774-26-000095,Prudential Financial,no_skill,total_investments,474124000000.0,474124000000,correct,0.0,0.0
+1137774_0001137774-26-000095,Prudential Financial,no_skill,total_liabilities,730469000000.0,730469000000,correct,0.0,0.0
+1137774_0001137774-26-000095,Prudential Financial,no_skill,stockholders_equity,31975000000.0,31975000000,correct,0.0,0.0
+1137774_0001137774-26-000095,Prudential Financial,no_skill,insurance_reserves,262470000000.0,,na,,
+1137774_0001137774-26-000095,Prudential Financial,no_skill,deferred_policy_acquisition_costs,21730000000.0,21730000000,correct,0.0,0.0
+1137774_0001137774-26-000095,Prudential Financial,no_skill,cash_from_operations,1008000000.0,1008000000,correct,0.0,0.0
+1137774_0001137774-26-000095,Prudential Financial,no_skill,cash_from_investing,-10176000000.0,-10176000000,correct,0.0,0.0
+1137774_0001137774-26-000095,Prudential Financial,no_skill,cash_from_financing,5440000000.0,5440000000,correct,0.0,0.0
+1137774_0001137774-26-000095,Prudential Financial,no_skill,common_shares_outstanding,347000000.0,347000000,correct,0.0,0.0
+59558_0000059558-26-000035,Lincoln National,with_skill,issuer_name,LINCOLN NATIONAL CORPORATION,LINCOLN NATIONAL CORPORATION,na,,
+59558_0000059558-26-000035,Lincoln National,with_skill,period_end_date,2026-03-31,2026-03-31,correct,,
+59558_0000059558-26-000035,Lincoln National,with_skill,total_revenues,5306000000.0,5306000000,correct,0.0,0.0
+59558_0000059558-26-000035,Lincoln National,with_skill,net_investment_income,1605000000.0,1605000000,correct,0.0,0.0
+59558_0000059558-26-000035,Lincoln National,with_skill,net_income,-172000000.0,-172000000,correct,0.0,0.0
+59558_0000059558-26-000035,Lincoln National,with_skill,net_income_per_share_basic,-1.08,-1.08,correct,0.0,0.0
+59558_0000059558-26-000035,Lincoln National,with_skill,net_income_per_share_diluted,-1.1,-1.1,correct,0.0,0.0
+59558_0000059558-26-000035,Lincoln National,with_skill,total_assets,406161000000.0,406161000000,correct,0.0,0.0
+59558_0000059558-26-000035,Lincoln National,with_skill,total_investments,138737000000.0,138737000000,correct,0.0,0.0
+59558_0000059558-26-000035,Lincoln National,with_skill,total_liabilities,395949000000.0,395949000000,correct,0.0,0.0
+59558_0000059558-26-000035,Lincoln National,with_skill,stockholders_equity,10212000000.0,10212000000,correct,0.0,0.0
+59558_0000059558-26-000035,Lincoln National,with_skill,insurance_reserves,172043000000.0,,na,,
+59558_0000059558-26-000035,Lincoln National,with_skill,deferred_policy_acquisition_costs,12310000000.0,,na,,
+59558_0000059558-26-000035,Lincoln National,with_skill,cash_from_operations,138000000.0,138000000,correct,0.0,0.0
+59558_0000059558-26-000035,Lincoln National,with_skill,cash_from_investing,-3454000000.0,-3454000000,correct,0.0,0.0
+59558_0000059558-26-000035,Lincoln National,with_skill,cash_from_financing,1159000000.0,1159000000,correct,0.0,0.0
+59558_0000059558-26-000035,Lincoln National,with_skill,common_shares_outstanding,191213197.0,191209768,correct,3429.0,1.793318425029416e-05
+59558_0000059558-26-000035,Lincoln National,no_skill,issuer_name,Lincoln National Corporation,LINCOLN NATIONAL CORPORATION,na,,
+59558_0000059558-26-000035,Lincoln National,no_skill,period_end_date,2026-03-31,2026-03-31,correct,,
+59558_0000059558-26-000035,Lincoln National,no_skill,total_revenues,5306000000.0,5306000000,correct,0.0,0.0
+59558_0000059558-26-000035,Lincoln National,no_skill,net_investment_income,1605000000.0,1605000000,correct,0.0,0.0
+59558_0000059558-26-000035,Lincoln National,no_skill,net_income,-172000000.0,-172000000,correct,0.0,0.0
+59558_0000059558-26-000035,Lincoln National,no_skill,net_income_per_share_basic,-1.08,-1.08,correct,0.0,0.0
+59558_0000059558-26-000035,Lincoln National,no_skill,net_income_per_share_diluted,-1.1,-1.1,correct,0.0,0.0
+59558_0000059558-26-000035,Lincoln National,no_skill,total_assets,406161000000.0,406161000000,correct,0.0,0.0
+59558_0000059558-26-000035,Lincoln National,no_skill,total_investments,138737000000.0,138737000000,correct,0.0,0.0
+59558_0000059558-26-000035,Lincoln National,no_skill,total_liabilities,395949000000.0,395949000000,correct,0.0,0.0
+59558_0000059558-26-000035,Lincoln National,no_skill,stockholders_equity,10212000000.0,10212000000,correct,0.0,0.0
+59558_0000059558-26-000035,Lincoln National,no_skill,insurance_reserves,42010000000.0,,na,,
+59558_0000059558-26-000035,Lincoln National,no_skill,deferred_policy_acquisition_costs,12886000000.0,,na,,
+59558_0000059558-26-000035,Lincoln National,no_skill,cash_from_operations,138000000.0,138000000,correct,0.0,0.0
+59558_0000059558-26-000035,Lincoln National,no_skill,cash_from_investing,-3454000000.0,-3454000000,correct,0.0,0.0
+59558_0000059558-26-000035,Lincoln National,no_skill,cash_from_financing,1159000000.0,1159000000,correct,0.0,0.0
+59558_0000059558-26-000035,Lincoln National,no_skill,common_shares_outstanding,191213197.0,191209768,correct,3429.0,1.793318425029416e-05
+4977_0001628280-26-030923,Aflac,with_skill,issuer_name,Aflac Incorporated,AFLAC INC,na,,
+4977_0001628280-26-030923,Aflac,with_skill,period_end_date,2026-03-31,2026-03-31,correct,,
+4977_0001628280-26-030923,Aflac,with_skill,total_revenues,4346000000.0,4346000000,correct,0.0,0.0
+4977_0001628280-26-030923,Aflac,with_skill,net_investment_income,956000000.0,956000000,correct,0.0,0.0
+4977_0001628280-26-030923,Aflac,with_skill,net_income,1019000000.0,1019000000,correct,0.0,0.0
+4977_0001628280-26-030923,Aflac,with_skill,net_income_per_share_basic,1.99,1.99,correct,0.0,0.0
+4977_0001628280-26-030923,Aflac,with_skill,net_income_per_share_diluted,1.98,1.98,correct,0.0,0.0
+4977_0001628280-26-030923,Aflac,with_skill,total_assets,116280000000.0,116280000000,correct,0.0,0.0
+4977_0001628280-26-030923,Aflac,with_skill,total_investments,97538000000.0,,na,,
+4977_0001628280-26-030923,Aflac,with_skill,total_liabilities,86319000000.0,86319000000,correct,0.0,0.0
+4977_0001628280-26-030923,Aflac,with_skill,stockholders_equity,29961000000.0,29961000000,correct,0.0,0.0
+4977_0001628280-26-030923,Aflac,with_skill,insurance_reserves,66782000000.0,,na,,
+4977_0001628280-26-030923,Aflac,with_skill,deferred_policy_acquisition_costs,8976000000.0,8976000000,correct,0.0,0.0
+4977_0001628280-26-030923,Aflac,with_skill,cash_from_operations,968000000.0,968000000,correct,0.0,0.0
+4977_0001628280-26-030923,Aflac,with_skill,cash_from_investing,244000000.0,244000000,correct,0.0,0.0
+4977_0001628280-26-030923,Aflac,with_skill,cash_from_financing,-1762000000.0,-1762000000,correct,0.0,0.0
+4977_0001628280-26-030923,Aflac,with_skill,common_shares_outstanding,508984904.0,510530000,correct,1545096.0,0.0030264548606350264
+4977_0001628280-26-030923,Aflac,no_skill,issuer_name,Aflac Incorporated,AFLAC INC,na,,
+4977_0001628280-26-030923,Aflac,no_skill,period_end_date,2026-03-31,2026-03-31,correct,,
+4977_0001628280-26-030923,Aflac,no_skill,total_revenues,4346000000.0,4346000000,correct,0.0,0.0
+4977_0001628280-26-030923,Aflac,no_skill,net_investment_income,956000000.0,956000000,correct,0.0,0.0
+4977_0001628280-26-030923,Aflac,no_skill,net_income,1019000000.0,1019000000,correct,0.0,0.0
+4977_0001628280-26-030923,Aflac,no_skill,net_income_per_share_basic,1.99,1.99,correct,0.0,0.0
+4977_0001628280-26-030923,Aflac,no_skill,net_income_per_share_diluted,1.98,1.98,correct,0.0,0.0
+4977_0001628280-26-030923,Aflac,no_skill,total_assets,116280000000.0,116280000000,correct,0.0,0.0
+4977_0001628280-26-030923,Aflac,no_skill,total_investments,97538000000.0,,na,,
+4977_0001628280-26-030923,Aflac,no_skill,total_liabilities,86319000000.0,86319000000,correct,0.0,0.0
+4977_0001628280-26-030923,Aflac,no_skill,stockholders_equity,29961000000.0,29961000000,correct,0.0,0.0
+4977_0001628280-26-030923,Aflac,no_skill,insurance_reserves,59519000000.0,,na,,
+4977_0001628280-26-030923,Aflac,no_skill,deferred_policy_acquisition_costs,8976000000.0,8976000000,correct,0.0,0.0
+4977_0001628280-26-030923,Aflac,no_skill,cash_from_operations,968000000.0,968000000,correct,0.0,0.0
+4977_0001628280-26-030923,Aflac,no_skill,cash_from_investing,244000000.0,244000000,correct,0.0,0.0
+4977_0001628280-26-030923,Aflac,no_skill,cash_from_financing,-1762000000.0,-1762000000,correct,0.0,0.0
+4977_0001628280-26-030923,Aflac,no_skill,common_shares_outstanding,508984904.0,510530000,correct,1545096.0,0.0030264548606350264
+20286_0000020286-26-000026,Cincinnati Financial,with_skill,issuer_name,Cincinnati Financial Corporation,CINCINNATI FINANCIAL CORPORATION,na,,
+20286_0000020286-26-000026,Cincinnati Financial,with_skill,period_end_date,2026-03-31,2026-03-31,correct,,
+20286_0000020286-26-000026,Cincinnati Financial,with_skill,total_revenues,2863000000.0,2863000000,correct,0.0,0.0
+20286_0000020286-26-000026,Cincinnati Financial,with_skill,net_investment_income,318000000.0,318000000,correct,0.0,0.0
+20286_0000020286-26-000026,Cincinnati Financial,with_skill,net_income,274000000.0,274000000,correct,0.0,0.0
+20286_0000020286-26-000026,Cincinnati Financial,with_skill,net_income_per_share_basic,1.77,1.77,correct,0.0,0.0
+20286_0000020286-26-000026,Cincinnati Financial,with_skill,net_income_per_share_diluted,1.75,1.75,correct,0.0,0.0
+20286_0000020286-26-000026,Cincinnati Financial,with_skill,total_assets,41211000000.0,41211000000,correct,0.0,0.0
+20286_0000020286-26-000026,Cincinnati Financial,with_skill,total_investments,32001000000.0,32001000000,correct,0.0,0.0
+20286_0000020286-26-000026,Cincinnati Financial,with_skill,total_liabilities,25497000000.0,25497000000,correct,0.0,0.0
+20286_0000020286-26-000026,Cincinnati Financial,with_skill,stockholders_equity,15714000000.0,15714000000,correct,0.0,0.0
+20286_0000020286-26-000026,Cincinnati Financial,with_skill,insurance_reserves,14849000000.0,11959000000,wrong,2890000000.0,0.2416590015887616
+20286_0000020286-26-000026,Cincinnati Financial,with_skill,deferred_policy_acquisition_costs,1384000000.0,1384000000,correct,0.0,0.0
+20286_0000020286-26-000026,Cincinnati Financial,with_skill,cash_from_operations,656000000.0,656000000,correct,0.0,0.0
+20286_0000020286-26-000026,Cincinnati Financial,with_skill,cash_from_investing,-493000000.0,-493000000,correct,0.0,0.0
+20286_0000020286-26-000026,Cincinnati Financial,with_skill,cash_from_financing,-384000000.0,-384000000,correct,0.0,0.0
+20286_0000020286-26-000026,Cincinnati Financial,with_skill,common_shares_outstanding,154686742.0,154686742,correct,0.0,0.0
+20286_0000020286-26-000026,Cincinnati Financial,no_skill,issuer_name,Cincinnati Financial Corporation,CINCINNATI FINANCIAL CORPORATION,na,,
+20286_0000020286-26-000026,Cincinnati Financial,no_skill,period_end_date,2026-03-31,2026-03-31,correct,,
+20286_0000020286-26-000026,Cincinnati Financial,no_skill,total_revenues,2863000000.0,2863000000,correct,0.0,0.0
+20286_0000020286-26-000026,Cincinnati Financial,no_skill,net_investment_income,318000000.0,318000000,correct,0.0,0.0
+20286_0000020286-26-000026,Cincinnati Financial,no_skill,net_income,274000000.0,274000000,correct,0.0,0.0
+20286_0000020286-26-000026,Cincinnati Financial,no_skill,net_income_per_share_basic,1.77,1.77,correct,0.0,0.0
+20286_0000020286-26-000026,Cincinnati Financial,no_skill,net_income_per_share_diluted,1.75,1.75,correct,0.0,0.0
+20286_0000020286-26-000026,Cincinnati Financial,no_skill,total_assets,41211000000.0,41211000000,correct,0.0,0.0
+20286_0000020286-26-000026,Cincinnati Financial,no_skill,total_investments,32001000000.0,32001000000,correct,0.0,0.0
+20286_0000020286-26-000026,Cincinnati Financial,no_skill,total_liabilities,25497000000.0,25497000000,correct,0.0,0.0
+20286_0000020286-26-000026,Cincinnati Financial,no_skill,stockholders_equity,15714000000.0,15714000000,correct,0.0,0.0
+20286_0000020286-26-000026,Cincinnati Financial,no_skill,insurance_reserves,11959000000.0,11959000000,correct,0.0,0.0
+20286_0000020286-26-000026,Cincinnati Financial,no_skill,deferred_policy_acquisition_costs,1384000000.0,1384000000,correct,0.0,0.0
+20286_0000020286-26-000026,Cincinnati Financial,no_skill,cash_from_operations,656000000.0,656000000,correct,0.0,0.0
+20286_0000020286-26-000026,Cincinnati Financial,no_skill,cash_from_investing,-493000000.0,-493000000,correct,0.0,0.0
+20286_0000020286-26-000026,Cincinnati Financial,no_skill,cash_from_financing,-384000000.0,-384000000,correct,0.0,0.0
+20286_0000020286-26-000026,Cincinnati Financial,no_skill,common_shares_outstanding,154686742.0,154686742,correct,0.0,0.0
+1000228_0001000228-26-000024,Principal Financial,with_skill,issuer_name,"HENRY SCHEIN, INC.","HENRY SCHEIN, INC.",na,,
+1000228_0001000228-26-000024,Principal Financial,with_skill,period_end_date,2026-03-28,2026-03-28,correct,,
+1000228_0001000228-26-000024,Principal Financial,with_skill,total_revenues,3368000000.0,,na,,
+1000228_0001000228-26-000024,Principal Financial,with_skill,net_investment_income,,,na,,
+1000228_0001000228-26-000024,Principal Financial,with_skill,net_income,107000000.0,107000000,correct,0.0,0.0
+1000228_0001000228-26-000024,Principal Financial,with_skill,net_income_per_share_basic,0.93,0.93,correct,0.0,0.0
+1000228_0001000228-26-000024,Principal Financial,with_skill,net_income_per_share_diluted,0.92,0.92,correct,0.0,0.0
+1000228_0001000228-26-000024,Principal Financial,with_skill,total_assets,11304000000.0,11304000000,correct,0.0,0.0
+1000228_0001000228-26-000024,Principal Financial,with_skill,total_investments,,,na,,
+1000228_0001000228-26-000024,Principal Financial,with_skill,total_liabilities,6482000000.0,6482000000,correct,0.0,0.0
+1000228_0001000228-26-000024,Principal Financial,with_skill,stockholders_equity,3266000000.0,3266000000,correct,0.0,0.0
+1000228_0001000228-26-000024,Principal Financial,with_skill,insurance_reserves,,,na,,
+1000228_0001000228-26-000024,Principal Financial,with_skill,deferred_policy_acquisition_costs,,,na,,
+1000228_0001000228-26-000024,Principal Financial,with_skill,cash_from_operations,-97000000.0,-97000000,correct,0.0,0.0
+1000228_0001000228-26-000024,Principal Financial,with_skill,cash_from_investing,-63000000.0,-63000000,correct,0.0,0.0
+1000228_0001000228-26-000024,Principal Financial,with_skill,cash_from_financing,120000000.0,120000000,correct,0.0,0.0
+1000228_0001000228-26-000024,Principal Financial,with_skill,common_shares_outstanding,113916757.0,114424682,correct,507925.0,0.00443894613576466
+1000228_0001000228-26-000024,Principal Financial,no_skill,issuer_name,"Henry Schein, Inc.","HENRY SCHEIN, INC.",na,,
+1000228_0001000228-26-000024,Principal Financial,no_skill,period_end_date,2026-03-28,2026-03-28,correct,,
+1000228_0001000228-26-000024,Principal Financial,no_skill,total_revenues,3368000000.0,,na,,
+1000228_0001000228-26-000024,Principal Financial,no_skill,net_investment_income,,,na,,
+1000228_0001000228-26-000024,Principal Financial,no_skill,net_income,107000000.0,107000000,correct,0.0,0.0
+1000228_0001000228-26-000024,Principal Financial,no_skill,net_income_per_share_basic,0.93,0.93,correct,0.0,0.0
+1000228_0001000228-26-000024,Principal Financial,no_skill,net_income_per_share_diluted,0.92,0.92,correct,0.0,0.0
+1000228_0001000228-26-000024,Principal Financial,no_skill,total_assets,11304000000.0,11304000000,correct,0.0,0.0
+1000228_0001000228-26-000024,Principal Financial,no_skill,total_investments,,,na,,
+1000228_0001000228-26-000024,Principal Financial,no_skill,total_liabilities,6482000000.0,6482000000,correct,0.0,0.0
+1000228_0001000228-26-000024,Principal Financial,no_skill,stockholders_equity,3266000000.0,3266000000,correct,0.0,0.0
+1000228_0001000228-26-000024,Principal Financial,no_skill,insurance_reserves,,,na,,
+1000228_0001000228-26-000024,Principal Financial,no_skill,deferred_policy_acquisition_costs,,,na,,
+1000228_0001000228-26-000024,Principal Financial,no_skill,cash_from_operations,-97000000.0,-97000000,correct,0.0,0.0
+1000228_0001000228-26-000024,Principal Financial,no_skill,cash_from_investing,-63000000.0,-63000000,correct,0.0,0.0
+1000228_0001000228-26-000024,Principal Financial,no_skill,cash_from_financing,120000000.0,120000000,correct,0.0,0.0
+1000228_0001000228-26-000024,Principal Financial,no_skill,common_shares_outstanding,113916757.0,114424682,correct,507925.0,0.00443894613576466
+914208_0000914208-26-000106,Unum Group,with_skill,issuer_name,Invesco Ltd.,Invesco Ltd.,na,,
+914208_0000914208-26-000106,Unum Group,with_skill,period_end_date,2026-03-31,2026-03-31,correct,,
+914208_0000914208-26-000106,Unum Group,with_skill,total_revenues,1744.5,,na,,
+914208_0000914208-26-000106,Unum Group,with_skill,net_investment_income,,,na,,
+914208_0000914208-26-000106,Unum Group,with_skill,net_income,230.4,219100000,wrong,219099769.6,0.9999989484253765
+914208_0000914208-26-000106,Unum Group,with_skill,net_income_per_share_basic,0.51,0.51,correct,0.0,0.0
+914208_0000914208-26-000106,Unum Group,with_skill,net_income_per_share_diluted,0.51,0.51,correct,0.0,0.0
+914208_0000914208-26-000106,Unum Group,with_skill,total_assets,26834.6,26834600000,wrong,26834573165.4,0.9999990000000001
+914208_0000914208-26-000106,Unum Group,with_skill,total_investments,1320.9,1320900000,wrong,1320898679.1,0.999999
+914208_0000914208-26-000106,Unum Group,with_skill,total_liabilities,13572.3,13572300000,wrong,13572286427.7,0.9999990000000001
+914208_0000914208-26-000106,Unum Group,with_skill,stockholders_equity,12255.0,12255000000,wrong,12254987745.0,0.999999
+914208_0000914208-26-000106,Unum Group,with_skill,insurance_reserves,,,na,,
+914208_0000914208-26-000106,Unum Group,with_skill,deferred_policy_acquisition_costs,,,na,,
+914208_0000914208-26-000106,Unum Group,with_skill,cash_from_operations,212.6,212600000,wrong,212599787.4,0.9999990000000001
+914208_0000914208-26-000106,Unum Group,with_skill,cash_from_investing,-733.2,-733200000,wrong,733199266.8,0.999999
+914208_0000914208-26-000106,Unum Group,with_skill,cash_from_financing,271.3,271300000,wrong,271299728.7,0.999999
+914208_0000914208-26-000106,Unum Group,with_skill,common_shares_outstanding,443296629.0,443300000,correct,3371.0,7.60433115271825e-06
+914208_0000914208-26-000106,Unum Group,no_skill,issuer_name,Invesco Ltd.,Invesco Ltd.,na,,
+914208_0000914208-26-000106,Unum Group,no_skill,period_end_date,2026-03-31,2026-03-31,correct,,
+914208_0000914208-26-000106,Unum Group,no_skill,total_revenues,1744500000.0,,na,,
+914208_0000914208-26-000106,Unum Group,no_skill,net_investment_income,,,na,,
+914208_0000914208-26-000106,Unum Group,no_skill,net_income,230400000.0,219100000,wrong,11300000.0,0.051574623459607484
+914208_0000914208-26-000106,Unum Group,no_skill,net_income_per_share_basic,0.51,0.51,correct,0.0,0.0
+914208_0000914208-26-000106,Unum Group,no_skill,net_income_per_share_diluted,0.51,0.51,correct,0.0,0.0
+914208_0000914208-26-000106,Unum Group,no_skill,total_assets,26834600000.0,26834600000,correct,0.0,0.0
+914208_0000914208-26-000106,Unum Group,no_skill,total_investments,1320900000.0,1320900000,correct,0.0,0.0
+914208_0000914208-26-000106,Unum Group,no_skill,total_liabilities,13572300000.0,13572300000,correct,0.0,0.0
+914208_0000914208-26-000106,Unum Group,no_skill,stockholders_equity,12255000000.0,12255000000,correct,0.0,0.0
+914208_0000914208-26-000106,Unum Group,no_skill,insurance_reserves,,,na,,
+914208_0000914208-26-000106,Unum Group,no_skill,deferred_policy_acquisition_costs,,,na,,
+914208_0000914208-26-000106,Unum Group,no_skill,cash_from_operations,212600000.0,212600000,correct,0.0,0.0
+914208_0000914208-26-000106,Unum Group,no_skill,cash_from_investing,-733200000.0,-733200000,correct,0.0,0.0
+914208_0000914208-26-000106,Unum Group,no_skill,cash_from_financing,271300000.0,271300000,correct,0.0,0.0
+914208_0000914208-26-000106,Unum Group,no_skill,common_shares_outstanding,443296629.0,443300000,correct,3371.0,7.60433115271825e-06

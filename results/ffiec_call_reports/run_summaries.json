@@ -1,0 +1,49 @@
+[
+  {
+    "rssd": "2745426",
+    "name": "Legends Bank",
+    "condition": "with_skill",
+    "exit_code": 0,
+    "wall_seconds": 93.85,
+    "ab_error": null,
+    "output_present": true,
+    "skills_loaded": [
+      "update-config",
+      "debug",
+      "simplify",
+      "batch",
+      "less-permission-prompts",
+      "loop",
+      "claude-api",
+      "llama-extract"
+    ],
+    "total_cost_usd": 0.33823575,
+    "duration_ms": 92657,
+    "duration_api_ms": 53998,
+    "num_turns": 6,
+    "stop_reason": "end_turn"
+  },
+  {
+    "rssd": "2745426",
+    "name": "Legends Bank",
+    "condition": "no_skill",
+    "exit_code": 0,
+    "wall_seconds": 116.13,
+    "ab_error": null,
+    "output_present": true,
+    "skills_loaded": [
+      "update-config",
+      "debug",
+      "simplify",
+      "batch",
+      "less-permission-prompts",
+      "loop",
+      "claude-api"
+    ],
+    "total_cost_usd": 0.7263590000000001,
+    "duration_ms": 114819,
+    "duration_api_ms": 114548,
+    "num_turns": 15,
+    "stop_reason": "end_turn"
+  }
+]

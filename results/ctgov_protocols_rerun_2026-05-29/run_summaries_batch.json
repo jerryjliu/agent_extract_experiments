@@ -1,0 +1,59 @@
+[
+  {
+    "mode": "batch",
+    "condition": "with_skill",
+    "n_records": 12,
+    "exit_code": 0,
+    "wall_seconds": 63.24,
+    "ab_error": null,
+    "skills_loaded": [
+      "llama-extract",
+      "update-config",
+      "verify",
+      "debug",
+      "code-review",
+      "simplify",
+      "batch",
+      "fewer-permission-prompts",
+      "loop",
+      "claude-api",
+      "run",
+      "run-skill-generator"
+    ],
+    "n_outputs_present": 12,
+    "missing_outputs": [],
+    "total_cost_usd": 0.373763,
+    "duration_ms": 62846,
+    "duration_api_ms": 43041,
+    "num_turns": 19,
+    "stop_reason": "end_turn"
+  },
+  {
+    "mode": "batch",
+    "condition": "no_skill",
+    "n_records": 12,
+    "exit_code": 0,
+    "wall_seconds": 326.74,
+    "ab_error": null,
+    "skills_loaded": [
+      "update-config",
+      "verify",
+      "debug",
+      "code-review",
+      "simplify",
+      "batch",
+      "fewer-permission-prompts",
+      "loop",
+      "claude-api",
+      "run",
+      "run-skill-generator"
+    ],
+    "n_outputs_present": 12,
+    "missing_outputs": [],
+    "total_cost_usd": 3.0353850000000007,
+    "duration_ms": 326308,
+    "duration_api_ms": 303921,
+    "num_turns": 66,
+    "stop_reason": "end_turn"
+  }
+]

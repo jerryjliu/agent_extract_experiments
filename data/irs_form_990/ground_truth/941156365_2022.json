@@ -1,0 +1,24 @@
+{
+  "ein": "941156365",
+  "tax_year": 2022,
+  "name": "The Board Of Trustees Of The Leland Stanford Junior University",
+  "values": {
+    "ein": "941156365",
+    "legal_name": "The Board Of Trustees Of The Leland Stanford Junior University",
+    "tax_year": 2022,
+    "total_revenue": 8473666240.0,
+    "contributions_grants": 3468332075.0,
+    "program_service_revenue": 3723764565.0,
+    "investment_income": 373737079.0,
+    "total_expenses": 8133284247.0,
+    "compensation_current_officers": 13308833.0,
+    "other_salaries_wages": 3942818376.0,
+    "professional_fundraising_fees": 2492107.0,
+    "total_assets_eoy": 61810855396.0,
+    "total_liabilities_eoy": 10572551350.0,
+    "net_assets_eoy": 51238304046.0,
+    "revenue_less_expenses": 340381993.0
+  },
+  "populated_count": 15,
+  "total_fields": 15
+}

@@ -1,0 +1,167 @@
+[
+  {
+    "rssd": "2745426",
+    "cert": "34936",
+    "name": "Legends Bank",
+    "state": "Tennessee",
+    "bkclass": "NM",
+    "asset_thousands": 899140,
+    "asset_bucket": "community",
+    "expected_form_version": "051",
+    "report_date": "2024-09-30"
+  },
+  {
+    "rssd": "805755",
+    "cert": "5269",
+    "name": "First National Bank North",
+    "state": "Minnesota",
+    "bkclass": "N",
+    "asset_thousands": 845498,
+    "asset_bucket": "community",
+    "expected_form_version": "051",
+    "report_date": "2024-09-30"
+  },
+  {
+    "rssd": "507152",
+    "cert": "21848",
+    "name": "Quail Creek Bank",
+    "state": "Oklahoma",
+    "bkclass": "NM",
+    "asset_thousands": 821884,
+    "asset_bucket": "community",
+    "expected_form_version": "051",
+    "report_date": "2024-09-30"
+  },
+  {
+    "rssd": "207872",
+    "cert": "22738",
+    "name": "First Utah Bank",
+    "state": "Utah",
+    "bkclass": "NM",
+    "asset_thousands": 845540,
+    "asset_bucket": "community",
+    "expected_form_version": "051",
+    "report_date": "2024-09-30"
+  },
+  {
+    "rssd": "2667957",
+    "cert": "34811",
+    "name": "Nebraskaland Bank",
+    "state": "Nebraska",
+    "bkclass": "SM",
+    "asset_thousands": 986380,
+    "asset_bucket": "community",
+    "expected_form_version": "051",
+    "report_date": "2024-09-30"
+  },
+  {
+    "rssd": "456045",
+    "cert": "11241",
+    "name": "Centennial Bank",
+    "state": "Arkansas",
+    "bkclass": "SM",
+    "asset_thousands": 22716797,
+    "asset_bucket": "midsize_regional",
+    "expected_form_version": "041",
+    "report_date": "2024-09-30"
+  },
+  {
+    "rssd": "264772",
+    "cert": "32551",
+    "name": "LendingClub Bank, National Association",
+    "state": "Utah",
+    "bkclass": "N",
+    "asset_thousands": 11472011,
+    "asset_bucket": "midsize_regional",
+    "expected_form_version": "041",
+    "report_date": "2024-09-30"
+  },
+  {
+    "rssd": "3076248",
+    "cert": "57311",
+    "name": "Stifel Bank and Trust",
+    "state": "Missouri",
+    "bkclass": "SM",
+    "asset_thousands": 19412996,
+    "asset_bucket": "midsize_regional",
+    "expected_form_version": "041",
+    "report_date": "2024-09-30"
+  },
+  {
+    "rssd": "3317932",
+    "cert": "57919",
+    "name": "ConnectOne Bank",
+    "state": "New Jersey",
+    "bkclass": "NM",
+    "asset_thousands": 13993791,
+    "asset_bucket": "midsize_regional",
+    "expected_form_version": "041",
+    "report_date": "2024-09-30"
+  },
+  {
+    "rssd": "317342",
+    "cert": "258",
+    "name": "Stock Yards Bank & Trust Company",
+    "state": "Kentucky",
+    "bkclass": "NM",
+    "asset_thousands": 9533246,
+    "asset_bucket": "midsize_regional",
+    "expected_form_version": "041",
+    "report_date": "2024-09-30"
+  },
+  {
+    "rssd": "233031",
+    "cert": "12368",
+    "name": "Regions Bank",
+    "state": "Alabama",
+    "bkclass": "SM",
+    "asset_thousands": 158218000,
+    "asset_bucket": "large_regional",
+    "expected_form_version": "031",
+    "report_date": "2024-09-30"
+  },
+  {
+    "rssd": "722777",
+    "cert": "29950",
+    "name": "Santander Bank, N.A.",
+    "state": "Delaware",
+    "bkclass": "N",
+    "asset_thousands": 104148024,
+    "asset_bucket": "large_regional",
+    "expected_form_version": "031",
+    "report_date": "2024-09-30"
+  },
+  {
+    "rssd": "3138146",
+    "cert": "57512",
+    "name": "Western Alliance Bank",
+    "state": "Arizona",
+    "bkclass": "SM",
+    "asset_thousands": 92735703,
+    "asset_bucket": "large_regional",
+    "expected_form_version": "031",
+    "report_date": "2024-09-30"
+  },
+  {
+    "rssd": "480228",
+    "cert": "3510",
+    "name": "Bank of America, National Association",
+    "state": "North Carolina",
+    "bkclass": "N",
+    "asset_thousands": 2636823000,
+    "asset_bucket": "megabank",
+    "expected_form_version": "031",
+    "report_date": "2024-09-30"
+  },
+  {
+    "rssd": "504713",
+    "cert": "6548",
+    "name": "U.S. Bank National Association",
+    "state": "Ohio",
+    "bkclass": "N",
+    "asset_thousands": 676125227,
+    "asset_bucket": "megabank",
+    "expected_form_version": "031",
+    "report_date": "2024-09-30"
+  }
+]

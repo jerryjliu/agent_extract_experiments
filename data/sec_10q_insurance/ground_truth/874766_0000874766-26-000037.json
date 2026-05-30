@@ -1,0 +1,29 @@
+{
+  "cik": "874766",
+  "accession": "0000874766-26-000037",
+  "ticker": "HIG",
+  "name": "Hartford Financial",
+  "form": "10-Q",
+  "period": "2026-03-31",
+  "values": {
+    "issuer_name": "The Hartford Insurance Group, Inc.",
+    "period_end_date": "2026-03-31",
+    "total_revenues": 7226000000,
+    "net_investment_income": 739000000,
+    "net_income": 856000000,
+    "net_income_per_share_basic": 3.08,
+    "net_income_per_share_diluted": 3.04,
+    "total_assets": 86322000000,
+    "total_investments": 63741000000,
+    "total_liabilities": 67433000000,
+    "stockholders_equity": 18889000000,
+    "insurance_reserves": 46723000000,
+    "deferred_policy_acquisition_costs": null,
+    "cash_from_operations": 1045000000,
+    "cash_from_investing": -332000000,
+    "cash_from_financing": -663000000,
+    "common_shares_outstanding": 274130820
+  },
+  "populated_count": 16,
+  "total_fields": 17
+}

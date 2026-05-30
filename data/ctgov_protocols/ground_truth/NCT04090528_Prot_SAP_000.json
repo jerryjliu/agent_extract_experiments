@@ -1,0 +1,29 @@
+{
+  "nct_id": "NCT04090528",
+  "doc_id": "Prot_SAP_000",
+  "label": "pTVG-HP DNA Vaccine With or Without pTVG-AR DNA Vaccine and ",
+  "values": {
+    "nct_id": "NCT04090528",
+    "brief_title": "pTVG-HP DNA Vaccine With or Without pTVG-AR DNA Vaccine and Pembrolizumab in Patients With Castration-Resistant, Metastatic Prostate Cancer",
+    "official_title": "Phase II Trial of pTVG-HP DNA Vaccine With or Without pTVG-AR DNA Vaccine and Pembrolizumab in Patients With Castration-Resistant, Metastatic Prostate Cancer",
+    "sponsor": "University of Wisconsin, Madison",
+    "study_type": "INTERVENTIONAL",
+    "phase": "PHASE2",
+    "allocation": "RANDOMIZED",
+    "masking": "NONE",
+    "intervention_model": "PARALLEL",
+    "enrollment_count": 60,
+    "start_date": "2019-10-21",
+    "primary_completion_date": "2024-11-24",
+    "completion_date": "2026-10-01",
+    "minimum_age": "18 Years",
+    "maximum_age": null,
+    "sex": "MALE",
+    "healthy_volunteers": false,
+    "primary_outcome_measure": "Progression-Free Survival (PFS)",
+    "primary_outcome_time_frame": "6 months",
+    "overall_status": "ACTIVE_NOT_RECRUITING"
+  },
+  "populated_count": 19,
+  "total_fields": 20
+}

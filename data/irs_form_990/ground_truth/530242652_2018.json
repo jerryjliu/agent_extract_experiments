@@ -1,0 +1,24 @@
+{
+  "ein": "530242652",
+  "tax_year": 2018,
+  "name": "Nature Conservancy",
+  "values": {
+    "ein": "530242652",
+    "legal_name": "Nature Conservancy",
+    "tax_year": 2018,
+    "total_revenue": 998088724.0,
+    "contributions_grants": 739848206.0,
+    "program_service_revenue": 154634920.0,
+    "investment_income": 29579592.0,
+    "total_expenses": 932617948.0,
+    "compensation_current_officers": 13369341.0,
+    "other_salaries_wages": 325532620.0,
+    "professional_fundraising_fees": 19781805.0,
+    "total_assets_eoy": 7710290418.0,
+    "total_liabilities_eoy": 993655329.0,
+    "net_assets_eoy": 6716635089.0,
+    "revenue_less_expenses": 65470776.0
+  },
+  "populated_count": 15,
+  "total_fields": 15
+}

@@ -1,0 +1,288 @@
+"""Render the cleaned cross-dataset batch-mode report to results/cross_dataset_summary.md.
+
+For each registered dataset it reads the *updated* batch results: the latest
+``results/<slug>_rerun_*`` directory if one exists, otherwise the canonical
+``results/<slug>``. Pulls summary_batch.json (accuracy/cost/wall) and
+invocation_stats.json (skill firing, CLI calls).
+
+Run: python scripts/render_cross_dataset_summary.py [--date YYYY-MM-DD]
+"""
+from __future__ import annotations
+
+import argparse
+import glob
+import json
+from pathlib import Path
+
+from scripts.datasets import REGISTRY, get_dataset
+
+
+RESULTS = Path("results")
+
+
+def _pct(x: float | None) -> str:
+    return f"{x*100:.1f}%" if isinstance(x, (int, float)) else "—"
+
+
+def _money(x: float | None) -> str:
+    return f"${x:,.2f}" if isinstance(x, (int, float)) else "—"
+
+
+def _secs(ms: float | None) -> str:
+    return f"{ms/1000:.0f}s" if isinstance(ms, (int, float)) and ms else "—"
+
+
+def _load(p: Path) -> dict:
+    return json.loads(p.read_text()) if p.exists() else {}
+
+
+def _md_bold_to_html(s: str) -> str:
+    """Escape HTML, then render the small markdown subset used in FINDINGS."""
+    import html as _h
+    import re
+    out = _h.escape(s)
+    out = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", out)
+    out = re.sub(r"`(.+?)`", r"<code>\1</code>", out)
+    out = re.sub(r"\*(.+?)\*", r"<i>\1</i>", out)
+    return out
+
+
+def _source_dir(slug: str) -> tuple[Path, str]:
+    """Latest results/<slug>_rerun_* if present, else canonical results/<slug>."""
+    reruns = sorted(glob.glob(str(RESULTS / f"{slug}_rerun_*")))
+    if reruns:
+        d = Path(reruns[-1])
+        return d, d.name.split("_rerun_")[-1] + " (rerun)"
+    return RESULTS / slug, "original"
+
+
+# One-line, dataset-specific explanation of the with-vs-no accuracy result. These
+# are the established conclusions from the per-dataset error analyses.
+FINDINGS: dict[str, str] = {
+    "ffiec_call_reports": "Skill **edges ahead** — Call Report values are raw dollars on a fixed "
+        "form grid; delegated extraction reads the schedule cells cleanly.",
+    "sec_10q_insurance": "Skill **trails by ~18pp** — a systematic dropped unit conversion: on "
+        "\"(in millions)\" filings llama-extract returns the table value verbatim (28 of 37 misses "
+        "are off by exactly ×1,000,000). Direct reading sees the header and multiplies.",
+    "irs_form_990": "**Near tie** — Form 990 amounts are raw dollars (no unit trap). Most remaining "
+        "errors are `investment_income`, which mismatches the ground-truth line definition under "
+        "*both* conditions.",
+    "ctgov_protocols": "Skill **trails by ~20pp** — brittle exact-string matches on free-text "
+        "`brief_title`/`sponsor`, plus nulls on categorical design fields (allocation/masking) that "
+        "direct reading recovers from deep in the document.",
+}
+
+
+def _delta_html(d: float | None) -> str:
+    if d is None:
+        return '<span class="dim">—</span>'
+    cls = "pos" if d >= 0 else "neg"
+    return f'<span class="{cls}">{"+" if d>=0 else ""}{d*100:.1f}pp</span>'
+
+
+def render_html(rows: list[dict], date: str | None) -> str:
+    import html as _h
+    acc_tr = "\n".join(
+        f"<tr><td class='name'>{_h.escape(r['name'])}</td><td>{r['n']}</td>"
+        f"<td class='with'>{_pct(r['acc_w'])}</td><td class='no'>{_pct(r['acc_n'])}</td>"
+        f"<td>{_delta_html(r['acc_delta'])}</td><td class='why'>{r['why_html']}</td></tr>"
+        for r in rows
+    )
+    cost_tr = "\n".join(
+        f"<tr><td class='name'>{_h.escape(r['name'])}</td>"
+        f"<td class='with'>{_money(r['cost_w'])}</td><td class='no'>{_money(r['cost_n'])}</td>"
+        f"<td><span class='pos'>{r['cost_ratio']:.1f}× cheaper</span></td>"
+        f"<td class='with'>{_secs(r['wall_w'])}</td><td class='no'>{_secs(r['wall_n'])}</td></tr>"
+        for r in rows if r["cost_ratio"]
+    )
+    links = "\n".join(
+        f"<li><b>{_h.escape(r['name'])}</b> <span class='dim'>({_h.escape(r['src_label'])})</span> — "
+        f"<a href='{r['src'].relative_to(RESULTS)}/report.html'>report.html</a></li>"
+        for r in rows
+    )
+    stamp = f"Generated {date} · " if date else ""
+    return f"""<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<title>Cross-Dataset Batch Extraction — Claude Code vs Claude Code + LlamaExtract Skill</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/fontsource/fonts/overused-grotesk@latest/latin.css" rel="stylesheet">
+<style>
+:root {{
+  --bg:#FFFFFF; --bg-alt:#F5F5F5; --border:#E7E7E7; --text:#000; --text-dim:#737373;
+  --purple:#3E18F9; --orange:#FF8705;
+  --gradient-stroke:linear-gradient(180deg,#37D7FA 0%,#4B72FE 40%,#FF8DF2 68%,#FF8705 100%);
+  --success:#1FA853; --danger:#E0344C;
+}}
+*{{margin:0;padding:0;box-sizing:border-box;}}
+body{{font-family:'Overused Grotesk',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;}}
+.hero{{text-align:center;padding:2.5rem 2rem 2rem;
+  background:linear-gradient(180deg,rgba(150,231,249,0.08),rgba(146,174,255,0.06) 30%,rgba(255,191,248,0.04) 60%,transparent 85%);
+  border-bottom:1px solid var(--border);position:relative;}}
+.hero::after{{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--gradient-stroke);}}
+.hero h1{{font-size:2.1rem;font-weight:500;letter-spacing:-0.03em;line-height:1.1;margin-bottom:0.4rem;}}
+.hero h1 .accent{{background:var(--gradient-stroke);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}}
+.hero .subtitle{{color:var(--text-dim);font-size:0.95rem;max-width:760px;margin:0.3rem auto 0;}}
+.container{{max-width:1100px;margin:0 auto;padding:2rem 1.5rem 4rem;}}
+.section-label{{font-family:'IBM Plex Mono',monospace;font-size:0.7rem;font-weight:500;color:var(--text-dim);
+  text-transform:uppercase;letter-spacing:0.04em;margin:2rem 0 0.9rem;padding-bottom:0.4rem;
+  border-bottom:2px solid transparent;border-image:var(--gradient-stroke) 1;}}
+table{{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;margin-bottom:1rem;}}
+th,td{{padding:0.6rem 0.7rem;text-align:left;border-bottom:1px solid var(--border);vertical-align:top;}}
+th{{font-family:'IBM Plex Mono',monospace;font-weight:500;font-size:0.72rem;text-transform:uppercase;color:var(--text-dim);}}
+tbody tr:hover{{background:var(--bg-alt);}}
+td.name{{font-weight:500;}}
+td.with,th.with{{color:var(--purple);}}
+td.no,th.no{{color:var(--orange);}}
+td.why{{font-size:0.82rem;color:var(--text);max-width:420px;}}
+.pos{{color:var(--success);font-weight:500;}} .neg{{color:var(--danger);font-weight:500;}} .dim{{color:var(--text-dim);}}
+.findings li{{margin:0.5rem 0;font-size:0.9rem;}} .findings{{padding-left:1.1rem;}}
+.links{{list-style:none;padding:0;}} .links li{{padding:0.35rem 0;border-bottom:1px dashed var(--border);font-size:0.9rem;}}
+.links a{{color:var(--purple);text-decoration:none;font-family:'IBM Plex Mono',monospace;font-size:0.82rem;}}
+.links a:hover{{text-decoration:underline;}}
+.intro{{font-size:0.92rem;color:var(--text);max-width:860px;margin-bottom:0.5rem;}}
+.intro .with{{color:var(--purple);font-weight:500;}} .intro .no{{color:var(--orange);font-weight:500;}}
+code{{font-family:'IBM Plex Mono',monospace;font-size:0.85em;background:var(--bg-alt);padding:0.05rem 0.3rem;border-radius:3px;}}
+footer{{text-align:center;padding:2rem 1rem;color:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:0.7rem;}}
+</style></head>
+<body>
+<div class="hero">
+  <h1>Claude Code <span class="accent">vs</span> Claude Code + LlamaExtract Skill</h1>
+  <div class="subtitle">Cross-dataset batch-mode structured extraction — {len(rows)} document corpora, one session per condition.</div>
+</div>
+<div class="container">
+  <p class="intro">Claude Code extracts a structured schema from a corpus of PDFs, one batch session per condition.
+  <span class="with">with_skill</span> loads the <code>llama-extract</code> skill (delegates extraction to a LlamaCloud
+  parse+extract job); <span class="no">no_skill</span> runs <code>--bare</code> (Claude reads the PDFs directly).
+  Model <code>claude-opus-4-7</code>. Numbers use the latest run per dataset (rerun where present).</p>
+
+  <div class="section-label">Accuracy</div>
+  <table>
+    <thead><tr><th>Dataset</th><th>N</th><th class="with">Acc (with)</th><th class="no">Acc (no)</th><th>Δ (with−no)</th><th>Why</th></tr></thead>
+    <tbody>
+{acc_tr}
+    </tbody>
+  </table>
+
+  <div class="section-label">Cost &amp; latency</div>
+  <table>
+    <thead><tr><th>Dataset</th><th class="with">Cost (with)</th><th class="no">Cost (no)</th><th>Cost saving</th><th class="with">Wall (with)</th><th class="no">Wall (no)</th></tr></thead>
+    <tbody>
+{cost_tr}
+    </tbody>
+  </table>
+
+  <div class="section-label">What holds across every dataset</div>
+  <ul class="findings">
+    <li><b>Cost: with_skill is 3–8× cheaper, consistently.</b> Cost tracks Claude tokens; the skill offloads document reading to LlamaCloud, so the Claude side does little.</li>
+    <li><b>Accuracy is deterministic and reproduces to the field.</b> The with-vs-no gap is set by whether correct extraction needs a <i>convention applied after reading</i> (SEC unit scaling) or <i>robust free-text matching</i> (ClinicalTrials) — things the delegated extractor doesn't do — versus face-value cell reads where it keeps pace (FFIEC, IRS).</li>
+    <li><b>Wall time for with_skill is dominated by a variable LlamaCloud tail, not Claude.</b> <code>extract.py</code> uploads each PDF and polls a remote job. In a fast run that tail is ~15s and with_skill finishes in ~63–69s across datasets (4–7× faster than no_skill); under load the same runs took 196–805s. The Claude-side time is small and stable, so the swing is external I/O the cost meter never sees. For batch SLAs, watch that tail — not cost.</li>
+  </ul>
+
+  <div class="section-label">Per-dataset reports</div>
+  <ul class="links">
+{links}
+  </ul>
+</div>
+<footer>{stamp}generated by <code>scripts/render_cross_dataset_summary.py</code> · with-skill loads <code>llama-extract</code> as a project skill, no-skill runs <code>--bare</code></footer>
+</body></html>"""
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output", type=Path, default=RESULTS / "cross_dataset_summary.md")
+    parser.add_argument("--html-output", type=Path, default=RESULTS / "cross_dataset_summary.html")
+    parser.add_argument("--date", type=str, default=None)
+    args = parser.parse_args()
+
+    rows = []
+    for slug in REGISTRY:
+        ds = get_dataset(slug)
+        src, src_label = _source_dir(slug)
+        sb = _load(src / "summary_batch.json")
+        if not sb:
+            continue
+        inv = (_load(src / "invocation_stats.json").get("batch") or {})
+        ws, ns = sb.get("with_skill", {}) or {}, sb.get("no_skill", {}) or {}
+        acc_w, acc_n = ws.get("accuracy"), ns.get("accuracy")
+        cost_w, cost_n = ws.get("total_cost_usd"), ns.get("total_cost_usd")
+        wall_w = ws.get("total_duration_ms") or ws.get("session_duration_ms")
+        wall_n = ns.get("total_duration_ms") or ns.get("session_duration_ms")
+        acc_delta = (acc_w - acc_n) if (acc_w is not None and acc_n is not None) else None
+        cost_ratio = (cost_n / cost_w) if (cost_w and cost_n) else None
+        rows.append({
+            "name": ds.display_name, "slug": slug, "src": src, "src_label": src_label,
+            "n": ws.get("n_runs") or ns.get("n_runs") or 0,
+            "acc_w": acc_w, "acc_n": acc_n, "acc_delta": acc_delta,
+            "cost_w": cost_w, "cost_n": cost_n, "cost_ratio": cost_ratio,
+            "wall_w": wall_w, "wall_n": wall_n,
+            "skill": (inv.get("with_skill") or {}).get("n_invoked_skill"),
+            "cli": (inv.get("with_skill") or {}).get("extract_calls"),
+            "why": FINDINGS.get(slug, ""),
+            "why_html": _md_bold_to_html(FINDINGS.get(slug, "")),
+        })
+
+    L: list[str] = ["# Cross-Dataset Batch-Mode Comparison", ""]
+    if args.date:
+        L.append(f"Generated {args.date} by `scripts/render_cross_dataset_summary.py`.")
+        L.append("")
+    L += [
+        "Claude Code extracting a structured schema from a corpus of PDFs, one batch session per "
+        "condition. **with_skill** loads the `llama-extract` skill (delegates extraction to a "
+        "LlamaCloud parse+extract job); **no_skill** runs `--bare` (Claude reads the PDFs directly). "
+        "Model `claude-opus-4-7`. Numbers below use the latest run per dataset (rerun where present).",
+        "",
+        "## Accuracy",
+        "",
+        "| Dataset | N | Acc (with) | Acc (no) | Δ (with−no) | Why |",
+        "|---|---|---|---|---|---|",
+    ]
+    for r in rows:
+        d = r["acc_delta"]
+        dstr = (f"{'+' if d>=0 else ''}{d*100:.1f}pp") if d is not None else "—"
+        L.append(f"| {r['name']} | {r['n']} | {_pct(r['acc_w'])} | {_pct(r['acc_n'])} | {dstr} | "
+                 f"{FINDINGS.get(r['slug'],'')} |")
+
+    L += [
+        "",
+        "## Cost & latency",
+        "",
+        "| Dataset | Cost (with) | Cost (no) | Cost saving | Wall (with) | Wall (no) |",
+        "|---|---|---|---|---|---|",
+    ]
+    for r in rows:
+        ratio = f"{r['cost_ratio']:.1f}× cheaper" if r["cost_ratio"] else "—"
+        L.append(f"| {r['name']} | {_money(r['cost_w'])} | {_money(r['cost_n'])} | {ratio} | "
+                 f"{_secs(r['wall_w'])} | {_secs(r['wall_n'])} |")
+
+    L += [
+        "",
+        "## What holds across every dataset",
+        "",
+        "- **Cost: with_skill is 3–8× cheaper, consistently.** Cost tracks Claude tokens; the skill "
+        "offloads document reading to LlamaCloud, so the Claude side does little.",
+        "- **Accuracy is deterministic and reproduces to the field.** The with-vs-no gap is set by "
+        "whether correct extraction needs a *convention applied after reading* (SEC unit scaling) or "
+        "*robust free-text matching* (ClinicalTrials) — things the delegated extractor doesn't do — "
+        "versus face-value cell reads where it keeps pace (FFIEC, IRS).",
+        "- **Wall time for with_skill is dominated by a variable LlamaCloud tail, not Claude.** "
+        "`extract.py` uploads each PDF and polls a remote job. In a fast run that tail is ~15s and "
+        "with_skill finishes in ~63–69s across datasets (4–7× faster than no_skill); when LlamaCloud "
+        "is under load the same runs took 196–805s. The Claude-side time is small and stable, so the "
+        "swing is external I/O the cost meter never sees. For batch SLAs, watch that tail — not cost.",
+        "",
+        "## Per-dataset reports",
+        "",
+    ]
+    for r in rows:
+        rel = r["src"].relative_to(RESULTS)
+        L.append(f"- **{r['name']}** ({r['src_label']}): [`{rel}/report.html`]({rel}/report.html)")
+    L.append("")
+
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text("\n".join(L))
+    args.html_output.write_text(render_html(rows, args.date))
+    print(f"Wrote {args.output} and {args.html_output} ({len(rows)} datasets)")
+
+
+if __name__ == "__main__":
+    main()

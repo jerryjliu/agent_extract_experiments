@@ -1,0 +1,24 @@
+{
+  "ein": "200097189",
+  "tax_year": 2023,
+  "name": "Mozilla Foundation",
+  "values": {
+    "ein": "200097189",
+    "legal_name": "Mozilla Foundation",
+    "tax_year": 2023,
+    "total_revenue": 64660933.0,
+    "contributions_grants": 7821194.0,
+    "program_service_revenue": 19254387.0,
+    "investment_income": 37574982.0,
+    "total_expenses": 39845284.0,
+    "compensation_current_officers": 3287433.0,
+    "other_salaries_wages": 10106669.0,
+    "professional_fundraising_fees": 0.0,
+    "total_assets_eoy": 124157331.0,
+    "total_liabilities_eoy": 6199575.0,
+    "net_assets_eoy": 117957756.0,
+    "revenue_less_expenses": 24815649.0
+  },
+  "populated_count": 15,
+  "total_fields": 15
+}

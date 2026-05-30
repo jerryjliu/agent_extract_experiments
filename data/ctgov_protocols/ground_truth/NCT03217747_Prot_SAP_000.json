@@ -1,0 +1,29 @@
+{
+  "nct_id": "NCT03217747",
+  "doc_id": "Prot_SAP_000",
+  "label": "Avelumab, Utomilumab, Anti-OX40 Antibody PF-04518600, and Ra",
+  "values": {
+    "nct_id": "NCT03217747",
+    "brief_title": "Avelumab, Utomilumab, Anti-OX40 Antibody PF-04518600, and Radiation Therapy in Treating Patients With Advanced Malignancies",
+    "official_title": "Phase I/II Study to Evaluate the Safety and Tolerability of Avelumab in Combination With Other Anti-Cancer Therapies in Patients With Advanced Malignancies",
+    "sponsor": "M.D. Anderson Cancer Center",
+    "study_type": "INTERVENTIONAL",
+    "phase": "PHASE1|PHASE2",
+    "allocation": "NON_RANDOMIZED",
+    "masking": "NONE",
+    "intervention_model": "PARALLEL",
+    "enrollment_count": 173,
+    "start_date": "2017-08-02",
+    "primary_completion_date": "2025-09-02",
+    "completion_date": "2026-04-30",
+    "minimum_age": "18 Years",
+    "maximum_age": null,
+    "sex": "ALL",
+    "healthy_volunteers": false,
+    "primary_outcome_measure": "Number of Participants With Dose-limiting Toxicities (DLTs) (All Will be Graded According to CTCAEv4.03 Criteria)",
+    "primary_outcome_time_frame": "DLT was assessed during the first 2 cycles or 8 weeks (56 days) since C1D1 of treatment.",
+    "overall_status": "ACTIVE_NOT_RECRUITING"
+  },
+  "populated_count": 19,
+  "total_fields": 20
+}

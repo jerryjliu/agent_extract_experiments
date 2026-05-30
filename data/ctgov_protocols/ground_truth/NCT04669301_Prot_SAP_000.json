@@ -1,0 +1,29 @@
+{
+  "nct_id": "NCT04669301",
+  "doc_id": "Prot_SAP_000",
+  "label": "Memory and Attention Adaptation Training-Geriatrics (MAAT-G)",
+  "values": {
+    "nct_id": "NCT04669301",
+    "brief_title": "Memory and Attention Adaptation Training-Geriatrics (MAAT-G) Phase II",
+    "official_title": "Mitigating Cancer-Related Cognitive Impairment in Older Adults With Breast Cancer Receiving Chemotherapy: Memory and Attention Adaptation Training-Geriatrics (MAAT-G): A Randomized Pilot Study",
+    "sponsor": "University of Rochester",
+    "study_type": "INTERVENTIONAL",
+    "phase": "NA",
+    "allocation": "RANDOMIZED",
+    "masking": "DOUBLE",
+    "intervention_model": "PARALLEL",
+    "enrollment_count": 72,
+    "start_date": "2021-04-02",
+    "primary_completion_date": "2024-04-17",
+    "completion_date": "2024-08-30",
+    "minimum_age": "65 Years",
+    "maximum_age": null,
+    "sex": "ALL",
+    "healthy_volunteers": false,
+    "primary_outcome_measure": "Mean of the Functional Assessment of Cancer Therapy-Cognition (FACT-COG)",
+    "primary_outcome_time_frame": "Within four weeks of intervention completion, the intervention window was 10 weeks plus or minus 2 weeks (8 to 12 weeks).",
+    "overall_status": "COMPLETED"
+  },
+  "populated_count": 19,
+  "total_fields": 20
+}

@@ -1,0 +1,23 @@
+# Benchmark run artifacts — reproducible via scripts/run_benchmark.py.
+# Full claude --print stream-json session transcripts (~347MB, mostly base64
+# PDF imagery in trace.jsonl); regenerate from data/ rather than committing.
+runs/
+runs_batch/
+
+# Internal working notes — reference confidential strategy/fundraising memos
+# and private sibling repos; kept local, not published.
+plans/
+research/
+
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Claude Code local state
+.claude/scheduled_tasks.lock

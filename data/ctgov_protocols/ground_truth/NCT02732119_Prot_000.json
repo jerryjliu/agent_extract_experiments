@@ -1,0 +1,29 @@
+{
+  "nct_id": "NCT02732119",
+  "doc_id": "Prot_000",
+  "label": "Study of Ribociclib With Everolimus + Exemestane in HR+ HER2",
+  "values": {
+    "nct_id": "NCT02732119",
+    "brief_title": "Study of Ribociclib With Everolimus + Exemestane in HR+ HER2- Locally Advanced/Metastatic Breast Cancer Post Progression on CDK 4/6 Inhibitor.",
+    "official_title": "A Phase I/II, Single Arm, Open-label Study of Ribociclib in Combination With Everolimus + Exemestane in the Treatment of Men and Postmenopausal Women With HR+, HER2- Locally Advanced or Metastatic Breast Cancer Following Progression on a CDK 4/6 Inhibitor",
+    "sponsor": "Novartis Pharmaceuticals",
+    "study_type": "INTERVENTIONAL",
+    "phase": "PHASE1|PHASE2",
+    "allocation": "NON_RANDOMIZED",
+    "masking": "NONE",
+    "intervention_model": "SINGLE_GROUP",
+    "enrollment_count": 104,
+    "start_date": "2016-06-14",
+    "primary_completion_date": "2020-02-25",
+    "completion_date": "2020-02-25",
+    "minimum_age": "18 Years",
+    "maximum_age": null,
+    "sex": "ALL",
+    "healthy_volunteers": false,
+    "primary_outcome_measure": "Participants With Dose Limiting Toxicities by Preferred Term in Cycle 1 (28 Days) - in Phase I",
+    "primary_outcome_time_frame": "Baseline up to 28 days",
+    "overall_status": "COMPLETED"
+  },
+  "populated_count": 19,
+  "total_fields": 20
+}

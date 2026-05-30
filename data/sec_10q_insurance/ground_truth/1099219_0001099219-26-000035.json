@@ -1,0 +1,29 @@
+{
+  "cik": "1099219",
+  "accession": "0001099219-26-000035",
+  "ticker": "MET",
+  "name": "MetLife",
+  "form": "10-Q",
+  "period": "2026-03-31",
+  "values": {
+    "issuer_name": "MetLife, Inc.",
+    "period_end_date": "2026-03-31",
+    "total_revenues": 19074000000,
+    "net_investment_income": 5355000000,
+    "net_income": 1185000000,
+    "net_income_per_share_basic": 1.75,
+    "net_income_per_share_diluted": 1.74,
+    "total_assets": 743211000000,
+    "total_investments": 473112000000,
+    "total_liabilities": 715410000000,
+    "stockholders_equity": 27324000000,
+    "insurance_reserves": 17640000000,
+    "deferred_policy_acquisition_costs": 19951000000,
+    "cash_from_operations": 2687000000,
+    "cash_from_investing": -5455000000,
+    "cash_from_financing": 3559000000,
+    "common_shares_outstanding": 646024938
+  },
+  "populated_count": 17,
+  "total_fields": 17
+}

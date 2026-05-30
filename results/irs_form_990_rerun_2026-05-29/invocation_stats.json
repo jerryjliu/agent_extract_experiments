@@ -1,0 +1,56 @@
+{
+  "v2": {
+    "with_skill": {
+      "n_runs": 0
+    },
+    "no_skill": {
+      "n_runs": 0
+    }
+  },
+  "batch": {
+    "with_skill": {
+      "n_runs": 1,
+      "n_invoked_skill": 1,
+      "skill_invocation_rate": 1.0,
+      "n_wrote_py": 0,
+      "py_write_rate": 0.0,
+      "n_called_cli": 1,
+      "cli_call_rate": 1.0,
+      "extract_calls": 11,
+      "py_writes": 0,
+      "n_tool_uses": 15,
+      "parallel_turns": 0,
+      "max_parallel_in_turn": 1,
+      "task_starts": 11,
+      "session_cost_usd": 0.581,
+      "session_wall_s": 68.7,
+      "session_api_s": 68.0,
+      "session_turns": 2,
+      "session_output_tokens": 4927,
+      "session_cache_read_tokens": 440422,
+      "session_cache_create_tokens": 37479
+    },
+    "no_skill": {
+      "n_runs": 1,
+      "n_invoked_skill": 0,
+      "skill_invocation_rate": 0.0,
+      "n_wrote_py": 0,
+      "py_write_rate": 0.0,
+      "n_called_cli": 0,
+      "cli_call_rate": 0.0,
+      "extract_calls": 0,
+      "py_writes": 0,
+      "n_tool_uses": 90,
+      "parallel_turns": 0,
+      "max_parallel_in_turn": 1,
+      "task_starts": 0,
+      "session_cost_usd": 4.6239,
+      "session_wall_s": 487.6,
+      "session_api_s": 478.7,
+      "session_turns": 91,
+      "session_output_tokens": 29125,
+      "session_cache_read_tokens": 6152456,
+      "session_cache_create_tokens": 130548
+    }
+  }
+}

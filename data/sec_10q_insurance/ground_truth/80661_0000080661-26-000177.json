@@ -1,0 +1,29 @@
+{
+  "cik": "80661",
+  "accession": "0000080661-26-000177",
+  "ticker": "PGR",
+  "name": "Progressive",
+  "form": "10-Q",
+  "period": "2026-03-31",
+  "values": {
+    "issuer_name": "PROGRESSIVE CORP/OH/",
+    "period_end_date": "2026-03-31",
+    "total_revenues": 22188000000,
+    "net_investment_income": 909000000,
+    "net_income": 2818000000,
+    "net_income_per_share_basic": 4.81,
+    "net_income_per_share_diluted": 4.8,
+    "total_assets": 122209000000,
+    "total_investments": 94131000000,
+    "total_liabilities": 90170000000,
+    "stockholders_equity": 32039000000,
+    "insurance_reserves": 44377000000,
+    "deferred_policy_acquisition_costs": 2131000000,
+    "cash_from_operations": 4367000000,
+    "cash_from_investing": 2637000000,
+    "cash_from_financing": -6963000000,
+    "common_shares_outstanding": 584336464
+  },
+  "populated_count": 17,
+  "total_fields": 17
+}

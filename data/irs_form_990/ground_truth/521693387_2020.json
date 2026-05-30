@@ -1,0 +1,24 @@
+{
+  "ein": "521693387",
+  "tax_year": 2020,
+  "name": "World Wildlife Fund Inc",
+  "values": {
+    "ein": "521693387",
+    "legal_name": "World Wildlife Fund Inc",
+    "tax_year": 2020,
+    "total_revenue": 408317459.0,
+    "contributions_grants": 391898333.0,
+    "program_service_revenue": 76475.0,
+    "investment_income": 4996060.0,
+    "total_expenses": 283476575.0,
+    "compensation_current_officers": 4706160.0,
+    "other_salaries_wages": 71362356.0,
+    "professional_fundraising_fees": 2075428.0,
+    "total_assets_eoy": 698927854.0,
+    "total_liabilities_eoy": 124503195.0,
+    "net_assets_eoy": 574424659.0,
+    "revenue_less_expenses": 124840884.0
+  },
+  "populated_count": 15,
+  "total_fields": 15
+}

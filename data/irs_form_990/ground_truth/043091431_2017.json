@@ -1,0 +1,24 @@
+{
+  "ein": "043091431",
+  "tax_year": 2017,
+  "name": "Electronic Frontier Foundation Inc",
+  "values": {
+    "ein": "043091431",
+    "legal_name": "Electronic Frontier Foundation Inc",
+    "tax_year": 2017,
+    "total_revenue": 15913065.0,
+    "contributions_grants": 12915696.0,
+    "program_service_revenue": 144659.0,
+    "investment_income": 490783.0,
+    "total_expenses": 13379612.0,
+    "compensation_current_officers": 896847.0,
+    "other_salaries_wages": 7993235.0,
+    "professional_fundraising_fees": 0.0,
+    "total_assets_eoy": 40253077.0,
+    "total_liabilities_eoy": 527100.0,
+    "net_assets_eoy": 39725977.0,
+    "revenue_less_expenses": 2533453.0
+  },
+  "populated_count": 15,
+  "total_fields": 15
+}

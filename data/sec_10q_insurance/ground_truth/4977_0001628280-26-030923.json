@@ -1,0 +1,29 @@
+{
+  "cik": "4977",
+  "accession": "0001628280-26-030923",
+  "ticker": "AFL",
+  "name": "Aflac",
+  "form": "10-Q",
+  "period": "2026-03-31",
+  "values": {
+    "issuer_name": "AFLAC INC",
+    "period_end_date": "2026-03-31",
+    "total_revenues": 4346000000,
+    "net_investment_income": 956000000,
+    "net_income": 1019000000,
+    "net_income_per_share_basic": 1.99,
+    "net_income_per_share_diluted": 1.98,
+    "total_assets": 116280000000,
+    "total_investments": null,
+    "total_liabilities": 86319000000,
+    "stockholders_equity": 29961000000,
+    "insurance_reserves": null,
+    "deferred_policy_acquisition_costs": 8976000000,
+    "cash_from_operations": 968000000,
+    "cash_from_investing": 244000000,
+    "cash_from_financing": -1762000000,
+    "common_shares_outstanding": 510530000
+  },
+  "populated_count": 15,
+  "total_fields": 17
+}

@@ -1,0 +1,29 @@
+{
+  "cik": "1000228",
+  "accession": "0001000228-26-000024",
+  "ticker": "PFG",
+  "name": "Principal Financial",
+  "form": "10-Q",
+  "period": "2026-03-28",
+  "values": {
+    "issuer_name": "HENRY SCHEIN, INC.",
+    "period_end_date": "2026-03-28",
+    "total_revenues": null,
+    "net_investment_income": null,
+    "net_income": 107000000,
+    "net_income_per_share_basic": 0.93,
+    "net_income_per_share_diluted": 0.92,
+    "total_assets": 11304000000,
+    "total_investments": null,
+    "total_liabilities": 6482000000,
+    "stockholders_equity": 3266000000,
+    "insurance_reserves": null,
+    "deferred_policy_acquisition_costs": null,
+    "cash_from_operations": -97000000,
+    "cash_from_investing": -63000000,
+    "cash_from_financing": 120000000,
+    "common_shares_outstanding": 114424682
+  },
+  "populated_count": 12,
+  "total_fields": 17
+}

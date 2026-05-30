@@ -1,0 +1,24 @@
+{
+  "ein": "261544963",
+  "tax_year": 2021,
+  "name": "Khan Academy Inc",
+  "values": {
+    "ein": "261544963",
+    "legal_name": "Khan Academy Inc",
+    "tax_year": 2021,
+    "total_revenue": 59263743.0,
+    "contributions_grants": 48693146.0,
+    "program_service_revenue": 9355361.0,
+    "investment_income": 1221511.0,
+    "total_expenses": 53879015.0,
+    "compensation_current_officers": 3750144.0,
+    "other_salaries_wages": 29332523.0,
+    "professional_fundraising_fees": 0.0,
+    "total_assets_eoy": 115035528.0,
+    "total_liabilities_eoy": 9272154.0,
+    "net_assets_eoy": 105763374.0,
+    "revenue_less_expenses": 5384728.0
+  },
+  "populated_count": 15,
+  "total_fields": 15
+}

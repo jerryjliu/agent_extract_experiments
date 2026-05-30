@@ -1,0 +1,29 @@
+{
+  "nct_id": "NCT02015819",
+  "doc_id": "Prot_SAP_000",
+  "label": "Genetically Modified Neural Stem Cells, Flucytosine, and Leu",
+  "values": {
+    "nct_id": "NCT02015819",
+    "brief_title": "Genetically Modified Neural Stem Cells, Flucytosine, and Leucovorin for Treating Patients With Recurrent High-Grade Gliomas",
+    "official_title": "A Phase I Study of Cytosine Deaminase-Expressing Neural Stem Cells in Combination With Oral 5-Fluorocytosine and Leucovorin for the Treatment of Recurrent High-Grade Gliomas",
+    "sponsor": "City of Hope Medical Center",
+    "study_type": "INTERVENTIONAL",
+    "phase": "PHASE1",
+    "allocation": "NA",
+    "masking": "NONE",
+    "intervention_model": "SINGLE_GROUP",
+    "enrollment_count": 16,
+    "start_date": "2014-10-07",
+    "primary_completion_date": "2017-10-07",
+    "completion_date": "2017-10-07",
+    "minimum_age": "18 Years",
+    "maximum_age": null,
+    "sex": "ALL",
+    "healthy_volunteers": false,
+    "primary_outcome_measure": "Number of Participants With Dose Limiting Toxicities (DLTs) and Maximum Tolerated Dose (MTD)",
+    "primary_outcome_time_frame": "Day 28 of course 1",
+    "overall_status": "COMPLETED"
+  },
+  "populated_count": 19,
+  "total_fields": 20
+}

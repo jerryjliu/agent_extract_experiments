@@ -1,0 +1,331 @@
+doc_key,name,condition,field,extracted,truth,status,abs_error,rel_error
+200097189_2023,Mozilla Foundation,with_skill,ein,200097189,200097189,correct,,
+200097189_2023,Mozilla Foundation,with_skill,legal_name,MOZILLA FOUNDATION,Mozilla Foundation,na,,
+200097189_2023,Mozilla Foundation,with_skill,tax_year,2023,2023,correct,0.0,0.0
+200097189_2023,Mozilla Foundation,with_skill,total_revenue,64660933.0,64660933.0,correct,0.0,0.0
+200097189_2023,Mozilla Foundation,with_skill,contributions_grants,7821194.0,7821194.0,correct,0.0,0.0
+200097189_2023,Mozilla Foundation,with_skill,program_service_revenue,19254387.0,19254387.0,correct,0.0,0.0
+200097189_2023,Mozilla Foundation,with_skill,investment_income,37574982.0,37574982.0,correct,0.0,0.0
+200097189_2023,Mozilla Foundation,with_skill,total_expenses,39845284.0,39845284.0,correct,0.0,0.0
+200097189_2023,Mozilla Foundation,with_skill,revenue_less_expenses,24815649.0,24815649.0,correct,0.0,0.0
+200097189_2023,Mozilla Foundation,with_skill,compensation_current_officers,3287433.0,3287433.0,correct,0.0,0.0
+200097189_2023,Mozilla Foundation,with_skill,other_salaries_wages,10106669.0,10106669.0,correct,0.0,0.0
+200097189_2023,Mozilla Foundation,with_skill,professional_fundraising_fees,0.0,0.0,correct,0.0,0.0
+200097189_2023,Mozilla Foundation,with_skill,total_assets_eoy,124157331.0,124157331.0,correct,0.0,0.0
+200097189_2023,Mozilla Foundation,with_skill,total_liabilities_eoy,6199575.0,6199575.0,correct,0.0,0.0
+200097189_2023,Mozilla Foundation,with_skill,net_assets_eoy,117957756.0,117957756.0,correct,0.0,0.0
+200097189_2023,Mozilla Foundation,no_skill,ein,200097189,200097189,correct,,
+200097189_2023,Mozilla Foundation,no_skill,legal_name,MOZILLA FOUNDATION,Mozilla Foundation,na,,
+200097189_2023,Mozilla Foundation,no_skill,tax_year,2023,2023,correct,0.0,0.0
+200097189_2023,Mozilla Foundation,no_skill,total_revenue,64660933.0,64660933.0,correct,0.0,0.0
+200097189_2023,Mozilla Foundation,no_skill,contributions_grants,7821194.0,7821194.0,correct,0.0,0.0
+200097189_2023,Mozilla Foundation,no_skill,program_service_revenue,19254387.0,19254387.0,correct,0.0,0.0
+200097189_2023,Mozilla Foundation,no_skill,investment_income,37574982.0,37574982.0,correct,0.0,0.0
+200097189_2023,Mozilla Foundation,no_skill,total_expenses,39845284.0,39845284.0,correct,0.0,0.0
+200097189_2023,Mozilla Foundation,no_skill,revenue_less_expenses,24815649.0,24815649.0,correct,0.0,0.0
+200097189_2023,Mozilla Foundation,no_skill,compensation_current_officers,3287433.0,3287433.0,correct,0.0,0.0
+200097189_2023,Mozilla Foundation,no_skill,other_salaries_wages,10106669.0,10106669.0,correct,0.0,0.0
+200097189_2023,Mozilla Foundation,no_skill,professional_fundraising_fees,0.0,0.0,correct,0.0,0.0
+200097189_2023,Mozilla Foundation,no_skill,total_assets_eoy,124157331.0,124157331.0,correct,0.0,0.0
+200097189_2023,Mozilla Foundation,no_skill,total_liabilities_eoy,6199575.0,6199575.0,correct,0.0,0.0
+200097189_2023,Mozilla Foundation,no_skill,net_assets_eoy,117957756.0,117957756.0,correct,0.0,0.0
+261544963_2021,"Khan Academy, Inc.",with_skill,ein,261544963,261544963,correct,,
+261544963_2021,"Khan Academy, Inc.",with_skill,legal_name,"KHAN ACADEMY, INC.",Khan Academy Inc,na,,
+261544963_2021,"Khan Academy, Inc.",with_skill,tax_year,2021,2021,correct,0.0,0.0
+261544963_2021,"Khan Academy, Inc.",with_skill,total_revenue,59263743.0,59263743.0,correct,0.0,0.0
+261544963_2021,"Khan Academy, Inc.",with_skill,contributions_grants,48693146.0,48693146.0,correct,0.0,0.0
+261544963_2021,"Khan Academy, Inc.",with_skill,program_service_revenue,9355361.0,9355361.0,correct,0.0,0.0
+261544963_2021,"Khan Academy, Inc.",with_skill,investment_income,1221511.0,1221511.0,correct,0.0,0.0
+261544963_2021,"Khan Academy, Inc.",with_skill,total_expenses,53879015.0,53879015.0,correct,0.0,0.0
+261544963_2021,"Khan Academy, Inc.",with_skill,revenue_less_expenses,5384728.0,5384728.0,correct,0.0,0.0
+261544963_2021,"Khan Academy, Inc.",with_skill,compensation_current_officers,3750144.0,3750144.0,correct,0.0,0.0
+261544963_2021,"Khan Academy, Inc.",with_skill,other_salaries_wages,29332523.0,29332523.0,correct,0.0,0.0
+261544963_2021,"Khan Academy, Inc.",with_skill,professional_fundraising_fees,0.0,0.0,correct,0.0,0.0
+261544963_2021,"Khan Academy, Inc.",with_skill,total_assets_eoy,115035528.0,115035528.0,correct,0.0,0.0
+261544963_2021,"Khan Academy, Inc.",with_skill,total_liabilities_eoy,9272154.0,9272154.0,correct,0.0,0.0
+261544963_2021,"Khan Academy, Inc.",with_skill,net_assets_eoy,105763374.0,105763374.0,correct,0.0,0.0
+261544963_2021,"Khan Academy, Inc.",no_skill,ein,261544963,261544963,correct,,
+261544963_2021,"Khan Academy, Inc.",no_skill,legal_name,"KHAN ACADEMY, INC.",Khan Academy Inc,na,,
+261544963_2021,"Khan Academy, Inc.",no_skill,tax_year,2021,2021,correct,0.0,0.0
+261544963_2021,"Khan Academy, Inc.",no_skill,total_revenue,59263743.0,59263743.0,correct,0.0,0.0
+261544963_2021,"Khan Academy, Inc.",no_skill,contributions_grants,48693146.0,48693146.0,correct,0.0,0.0
+261544963_2021,"Khan Academy, Inc.",no_skill,program_service_revenue,9355361.0,9355361.0,correct,0.0,0.0
+261544963_2021,"Khan Academy, Inc.",no_skill,investment_income,1221511.0,1221511.0,correct,0.0,0.0
+261544963_2021,"Khan Academy, Inc.",no_skill,total_expenses,53879015.0,53879015.0,correct,0.0,0.0
+261544963_2021,"Khan Academy, Inc.",no_skill,revenue_less_expenses,5384728.0,5384728.0,correct,0.0,0.0
+261544963_2021,"Khan Academy, Inc.",no_skill,compensation_current_officers,3750144.0,3750144.0,correct,0.0,0.0
+261544963_2021,"Khan Academy, Inc.",no_skill,other_salaries_wages,29332523.0,29332523.0,correct,0.0,0.0
+261544963_2021,"Khan Academy, Inc.",no_skill,professional_fundraising_fees,0.0,0.0,correct,0.0,0.0
+261544963_2021,"Khan Academy, Inc.",no_skill,total_assets_eoy,115035528.0,115035528.0,correct,0.0,0.0
+261544963_2021,"Khan Academy, Inc.",no_skill,total_liabilities_eoy,9272154.0,9272154.0,correct,0.0,0.0
+261544963_2021,"Khan Academy, Inc.",no_skill,net_assets_eoy,105763374.0,105763374.0,correct,0.0,0.0
+530196605_2021,American National Red Cross,with_skill,ein,530196605,530196605,correct,,
+530196605_2021,American National Red Cross,with_skill,legal_name,AMERICAN NATIONAL RED CROSS & ITS CONSTITUENT CHAPTERS AND BRANCHES,American National Red Cross,na,,
+530196605_2021,American National Red Cross,with_skill,tax_year,2021,2021,correct,0.0,0.0
+530196605_2021,American National Red Cross,with_skill,total_revenue,3182229338.0,3182229338.0,correct,0.0,0.0
+530196605_2021,American National Red Cross,with_skill,contributions_grants,1060031161.0,1060031161.0,correct,0.0,0.0
+530196605_2021,American National Red Cross,with_skill,program_service_revenue,2018755758.0,2018755758.0,correct,0.0,0.0
+530196605_2021,American National Red Cross,with_skill,investment_income,60268572.0,48466117.0,wrong,11802455.0,0.243519715020702
+530196605_2021,American National Red Cross,with_skill,total_expenses,3048182336.0,3048182336.0,correct,0.0,0.0
+530196605_2021,American National Red Cross,with_skill,revenue_less_expenses,134047002.0,134047002.0,correct,0.0,0.0
+530196605_2021,American National Red Cross,with_skill,compensation_current_officers,5758532.0,5758532.0,correct,0.0,0.0
+530196605_2021,American National Red Cross,with_skill,other_salaries_wages,1119398026.0,1119398026.0,correct,0.0,0.0
+530196605_2021,American National Red Cross,with_skill,professional_fundraising_fees,301063.0,301063.0,correct,0.0,0.0
+530196605_2021,American National Red Cross,with_skill,total_assets_eoy,3872181875.0,3872181875.0,correct,0.0,0.0
+530196605_2021,American National Red Cross,with_skill,total_liabilities_eoy,1171891777.0,1171891777.0,correct,0.0,0.0
+530196605_2021,American National Red Cross,with_skill,net_assets_eoy,2700290098.0,2700290098.0,correct,0.0,0.0
+530196605_2021,American National Red Cross,no_skill,ein,530196605,530196605,correct,,
+530196605_2021,American National Red Cross,no_skill,legal_name,AMERICAN NATIONAL RED CROSS & ITS CONSTITUENT CHAPTERS AND BRANCHES,American National Red Cross,na,,
+530196605_2021,American National Red Cross,no_skill,tax_year,2021,2021,correct,0.0,0.0
+530196605_2021,American National Red Cross,no_skill,total_revenue,3182229338.0,3182229338.0,correct,0.0,0.0
+530196605_2021,American National Red Cross,no_skill,contributions_grants,1060031161.0,1060031161.0,correct,0.0,0.0
+530196605_2021,American National Red Cross,no_skill,program_service_revenue,2018755758.0,2018755758.0,correct,0.0,0.0
+530196605_2021,American National Red Cross,no_skill,investment_income,60268572.0,48466117.0,wrong,11802455.0,0.243519715020702
+530196605_2021,American National Red Cross,no_skill,total_expenses,3048182336.0,3048182336.0,correct,0.0,0.0
+530196605_2021,American National Red Cross,no_skill,revenue_less_expenses,134047002.0,134047002.0,correct,0.0,0.0
+530196605_2021,American National Red Cross,no_skill,compensation_current_officers,5758532.0,5758532.0,correct,0.0,0.0
+530196605_2021,American National Red Cross,no_skill,other_salaries_wages,1119398026.0,1119398026.0,correct,0.0,0.0
+530196605_2021,American National Red Cross,no_skill,professional_fundraising_fees,301063.0,301063.0,correct,0.0,0.0
+530196605_2021,American National Red Cross,no_skill,total_assets_eoy,3872181875.0,3872181875.0,correct,0.0,0.0
+530196605_2021,American National Red Cross,no_skill,total_liabilities_eoy,1171891777.0,1171891777.0,correct,0.0,0.0
+530196605_2021,American National Red Cross,no_skill,net_assets_eoy,2700290098.0,2700290098.0,correct,0.0,0.0
+043091431_2017,Electronic Frontier Foundation,with_skill,ein,043091431,043091431,correct,,
+043091431_2017,Electronic Frontier Foundation,with_skill,legal_name,"Electronic Frontier Foundation, Inc.",Electronic Frontier Foundation Inc,na,,
+043091431_2017,Electronic Frontier Foundation,with_skill,tax_year,2017,2017,correct,0.0,0.0
+043091431_2017,Electronic Frontier Foundation,with_skill,total_revenue,15913065.0,15913065.0,correct,0.0,0.0
+043091431_2017,Electronic Frontier Foundation,with_skill,contributions_grants,12915696.0,12915696.0,correct,0.0,0.0
+043091431_2017,Electronic Frontier Foundation,with_skill,program_service_revenue,144659.0,144659.0,correct,0.0,0.0
+043091431_2017,Electronic Frontier Foundation,with_skill,investment_income,490783.0,490783.0,correct,0.0,0.0
+043091431_2017,Electronic Frontier Foundation,with_skill,total_expenses,13379612.0,13379612.0,correct,0.0,0.0
+043091431_2017,Electronic Frontier Foundation,with_skill,revenue_less_expenses,2533453.0,2533453.0,correct,0.0,0.0
+043091431_2017,Electronic Frontier Foundation,with_skill,compensation_current_officers,896847.0,896847.0,correct,0.0,0.0
+043091431_2017,Electronic Frontier Foundation,with_skill,other_salaries_wages,7993235.0,7993235.0,correct,0.0,0.0
+043091431_2017,Electronic Frontier Foundation,with_skill,professional_fundraising_fees,0.0,0.0,correct,0.0,0.0
+043091431_2017,Electronic Frontier Foundation,with_skill,total_assets_eoy,40253077.0,40253077.0,correct,0.0,0.0
+043091431_2017,Electronic Frontier Foundation,with_skill,total_liabilities_eoy,527100.0,527100.0,correct,0.0,0.0
+043091431_2017,Electronic Frontier Foundation,with_skill,net_assets_eoy,39725977.0,39725977.0,correct,0.0,0.0
+043091431_2017,Electronic Frontier Foundation,no_skill,ein,043091431,043091431,correct,,
+043091431_2017,Electronic Frontier Foundation,no_skill,legal_name,"Electronic Frontier Foundation, Inc.",Electronic Frontier Foundation Inc,na,,
+043091431_2017,Electronic Frontier Foundation,no_skill,tax_year,2017,2017,correct,0.0,0.0
+043091431_2017,Electronic Frontier Foundation,no_skill,total_revenue,15913065.0,15913065.0,correct,0.0,0.0
+043091431_2017,Electronic Frontier Foundation,no_skill,contributions_grants,12915696.0,12915696.0,correct,0.0,0.0
+043091431_2017,Electronic Frontier Foundation,no_skill,program_service_revenue,144659.0,144659.0,correct,0.0,0.0
+043091431_2017,Electronic Frontier Foundation,no_skill,investment_income,490783.0,490783.0,correct,0.0,0.0
+043091431_2017,Electronic Frontier Foundation,no_skill,total_expenses,13379612.0,13379612.0,correct,0.0,0.0
+043091431_2017,Electronic Frontier Foundation,no_skill,revenue_less_expenses,2533453.0,2533453.0,correct,0.0,0.0
+043091431_2017,Electronic Frontier Foundation,no_skill,compensation_current_officers,896847.0,896847.0,correct,0.0,0.0
+043091431_2017,Electronic Frontier Foundation,no_skill,other_salaries_wages,7993235.0,7993235.0,correct,0.0,0.0
+043091431_2017,Electronic Frontier Foundation,no_skill,professional_fundraising_fees,0.0,0.0,correct,0.0,0.0
+043091431_2017,Electronic Frontier Foundation,no_skill,total_assets_eoy,40253077.0,40253077.0,correct,0.0,0.0
+043091431_2017,Electronic Frontier Foundation,no_skill,total_liabilities_eoy,527100.0,527100.0,correct,0.0,0.0
+043091431_2017,Electronic Frontier Foundation,no_skill,net_assets_eoy,39725977.0,39725977.0,correct,0.0,0.0
+530242652_2018,The Nature Conservancy,with_skill,ein,530242652,530242652,correct,,
+530242652_2018,The Nature Conservancy,with_skill,legal_name,NATURE CONSERVANCY,Nature Conservancy,na,,
+530242652_2018,The Nature Conservancy,with_skill,tax_year,2018,2018,correct,0.0,0.0
+530242652_2018,The Nature Conservancy,with_skill,total_revenue,998088724.0,998088724.0,correct,0.0,0.0
+530242652_2018,The Nature Conservancy,with_skill,contributions_grants,739848206.0,739848206.0,correct,0.0,0.0
+530242652_2018,The Nature Conservancy,with_skill,program_service_revenue,154634920.0,154634920.0,correct,0.0,0.0
+530242652_2018,The Nature Conservancy,with_skill,investment_income,88132946.0,29579592.0,wrong,58553354.0,1.9795186492092252
+530242652_2018,The Nature Conservancy,with_skill,total_expenses,932617948.0,932617948.0,correct,0.0,0.0
+530242652_2018,The Nature Conservancy,with_skill,revenue_less_expenses,65470776.0,65470776.0,correct,0.0,0.0
+530242652_2018,The Nature Conservancy,with_skill,compensation_current_officers,13369341.0,13369341.0,correct,0.0,0.0
+530242652_2018,The Nature Conservancy,with_skill,other_salaries_wages,325532620.0,325532620.0,correct,0.0,0.0
+530242652_2018,The Nature Conservancy,with_skill,professional_fundraising_fees,19781805.0,19781805.0,correct,0.0,0.0
+530242652_2018,The Nature Conservancy,with_skill,total_assets_eoy,7710290418.0,7710290418.0,correct,0.0,0.0
+530242652_2018,The Nature Conservancy,with_skill,total_liabilities_eoy,993655329.0,993655329.0,correct,0.0,0.0
+530242652_2018,The Nature Conservancy,with_skill,net_assets_eoy,6716635089.0,6716635089.0,correct,0.0,0.0
+530242652_2018,The Nature Conservancy,no_skill,ein,530242652,530242652,correct,,
+530242652_2018,The Nature Conservancy,no_skill,legal_name,NATURE CONSERVANCY,Nature Conservancy,na,,
+530242652_2018,The Nature Conservancy,no_skill,tax_year,2018,2018,correct,0.0,0.0
+530242652_2018,The Nature Conservancy,no_skill,total_revenue,998088724.0,998088724.0,correct,0.0,0.0
+530242652_2018,The Nature Conservancy,no_skill,contributions_grants,739848206.0,739848206.0,correct,0.0,0.0
+530242652_2018,The Nature Conservancy,no_skill,program_service_revenue,154634920.0,154634920.0,correct,0.0,0.0
+530242652_2018,The Nature Conservancy,no_skill,investment_income,88132946.0,29579592.0,wrong,58553354.0,1.9795186492092252
+530242652_2018,The Nature Conservancy,no_skill,total_expenses,932617948.0,932617948.0,correct,0.0,0.0
+530242652_2018,The Nature Conservancy,no_skill,revenue_less_expenses,65470776.0,65470776.0,correct,0.0,0.0
+530242652_2018,The Nature Conservancy,no_skill,compensation_current_officers,13369341.0,13369341.0,correct,0.0,0.0
+530242652_2018,The Nature Conservancy,no_skill,other_salaries_wages,325532620.0,325532620.0,correct,0.0,0.0
+530242652_2018,The Nature Conservancy,no_skill,professional_fundraising_fees,19781805.0,19781805.0,correct,0.0,0.0
+530242652_2018,The Nature Conservancy,no_skill,total_assets_eoy,7710290418.0,7710290418.0,correct,0.0,0.0
+530242652_2018,The Nature Conservancy,no_skill,total_liabilities_eoy,993655329.0,993655329.0,correct,0.0,0.0
+530242652_2018,The Nature Conservancy,no_skill,net_assets_eoy,6716635089.0,6716635089.0,correct,0.0,0.0
+521693387_2020,"World Wildlife Fund, Inc.",with_skill,ein,521693387,521693387,correct,,
+521693387_2020,"World Wildlife Fund, Inc.",with_skill,legal_name,WORLD WILDLIFE FUND INC,World Wildlife Fund Inc,na,,
+521693387_2020,"World Wildlife Fund, Inc.",with_skill,tax_year,2020,2020,correct,0.0,0.0
+521693387_2020,"World Wildlife Fund, Inc.",with_skill,total_revenue,408317459.0,408317459.0,correct,0.0,0.0
+521693387_2020,"World Wildlife Fund, Inc.",with_skill,contributions_grants,391898333.0,391898333.0,correct,0.0,0.0
+521693387_2020,"World Wildlife Fund, Inc.",with_skill,program_service_revenue,76475.0,76475.0,correct,0.0,0.0
+521693387_2020,"World Wildlife Fund, Inc.",with_skill,investment_income,15149240.0,4996060.0,wrong,10153180.0,2.032237403073622
+521693387_2020,"World Wildlife Fund, Inc.",with_skill,total_expenses,283476575.0,283476575.0,correct,0.0,0.0
+521693387_2020,"World Wildlife Fund, Inc.",with_skill,revenue_less_expenses,124840884.0,124840884.0,correct,0.0,0.0
+521693387_2020,"World Wildlife Fund, Inc.",with_skill,compensation_current_officers,4706160.0,4706160.0,correct,0.0,0.0
+521693387_2020,"World Wildlife Fund, Inc.",with_skill,other_salaries_wages,71362356.0,71362356.0,correct,0.0,0.0
+521693387_2020,"World Wildlife Fund, Inc.",with_skill,professional_fundraising_fees,2075428.0,2075428.0,correct,0.0,0.0
+521693387_2020,"World Wildlife Fund, Inc.",with_skill,total_assets_eoy,698927854.0,698927854.0,correct,0.0,0.0
+521693387_2020,"World Wildlife Fund, Inc.",with_skill,total_liabilities_eoy,124503195.0,124503195.0,correct,0.0,0.0
+521693387_2020,"World Wildlife Fund, Inc.",with_skill,net_assets_eoy,574424659.0,574424659.0,correct,0.0,0.0
+521693387_2020,"World Wildlife Fund, Inc.",no_skill,ein,521693387,521693387,correct,,
+521693387_2020,"World Wildlife Fund, Inc.",no_skill,legal_name,WORLD WILDLIFE FUND INC,World Wildlife Fund Inc,na,,
+521693387_2020,"World Wildlife Fund, Inc.",no_skill,tax_year,2020,2020,correct,0.0,0.0
+521693387_2020,"World Wildlife Fund, Inc.",no_skill,total_revenue,408317459.0,408317459.0,correct,0.0,0.0
+521693387_2020,"World Wildlife Fund, Inc.",no_skill,contributions_grants,391898333.0,391898333.0,correct,0.0,0.0
+521693387_2020,"World Wildlife Fund, Inc.",no_skill,program_service_revenue,76475.0,76475.0,correct,0.0,0.0
+521693387_2020,"World Wildlife Fund, Inc.",no_skill,investment_income,15149240.0,4996060.0,wrong,10153180.0,2.032237403073622
+521693387_2020,"World Wildlife Fund, Inc.",no_skill,total_expenses,283476575.0,283476575.0,correct,0.0,0.0
+521693387_2020,"World Wildlife Fund, Inc.",no_skill,revenue_less_expenses,124840884.0,124840884.0,correct,0.0,0.0
+521693387_2020,"World Wildlife Fund, Inc.",no_skill,compensation_current_officers,4706160.0,4706160.0,correct,0.0,0.0
+521693387_2020,"World Wildlife Fund, Inc.",no_skill,other_salaries_wages,71362356.0,71362356.0,correct,0.0,0.0
+521693387_2020,"World Wildlife Fund, Inc.",no_skill,professional_fundraising_fees,2075428.0,2075428.0,correct,0.0,0.0
+521693387_2020,"World Wildlife Fund, Inc.",no_skill,total_assets_eoy,698927854.0,698927854.0,correct,0.0,0.0
+521693387_2020,"World Wildlife Fund, Inc.",no_skill,total_liabilities_eoy,124503195.0,124503195.0,correct,0.0,0.0
+521693387_2020,"World Wildlife Fund, Inc.",no_skill,net_assets_eoy,574424659.0,574424659.0,correct,0.0,0.0
+363673599_2019,Feeding America,with_skill,ein,363673599,363673599,correct,,
+363673599_2019,Feeding America,with_skill,legal_name,Feeding America,Feeding America,na,,
+363673599_2019,Feeding America,with_skill,tax_year,2019,2019,correct,0.0,0.0
+363673599_2019,Feeding America,with_skill,total_revenue,3571430346.0,3571430346.0,correct,0.0,0.0
+363673599_2019,Feeding America,with_skill,contributions_grants,3478482753.0,3478482753.0,correct,0.0,0.0
+363673599_2019,Feeding America,with_skill,program_service_revenue,20326823.0,20326823.0,correct,0.0,0.0
+363673599_2019,Feeding America,with_skill,investment_income,1908671.0,1930894.0,wrong,22223.0,0.011509176578310357
+363673599_2019,Feeding America,with_skill,total_expenses,3309075710.0,3309075710.0,correct,0.0,0.0
+363673599_2019,Feeding America,with_skill,revenue_less_expenses,262354636.0,262354636.0,correct,0.0,0.0
+363673599_2019,Feeding America,with_skill,compensation_current_officers,4398170.0,4398170.0,correct,0.0,0.0
+363673599_2019,Feeding America,with_skill,other_salaries_wages,28973099.0,28973099.0,correct,0.0,0.0
+363673599_2019,Feeding America,with_skill,professional_fundraising_fees,2674356.0,2674356.0,correct,0.0,0.0
+363673599_2019,Feeding America,with_skill,total_assets_eoy,432594156.0,432594156.0,correct,0.0,0.0
+363673599_2019,Feeding America,with_skill,total_liabilities_eoy,32638854.0,32638854.0,correct,0.0,0.0
+363673599_2019,Feeding America,with_skill,net_assets_eoy,399955302.0,399955302.0,correct,0.0,0.0
+363673599_2019,Feeding America,no_skill,ein,363673599,363673599,correct,,
+363673599_2019,Feeding America,no_skill,legal_name,Feeding America,Feeding America,na,,
+363673599_2019,Feeding America,no_skill,tax_year,2019,2019,correct,0.0,0.0
+363673599_2019,Feeding America,no_skill,total_revenue,3571430346.0,3571430346.0,correct,0.0,0.0
+363673599_2019,Feeding America,no_skill,contributions_grants,3478482753.0,3478482753.0,correct,0.0,0.0
+363673599_2019,Feeding America,no_skill,program_service_revenue,20326823.0,20326823.0,correct,0.0,0.0
+363673599_2019,Feeding America,no_skill,investment_income,1908671.0,1930894.0,wrong,22223.0,0.011509176578310357
+363673599_2019,Feeding America,no_skill,total_expenses,3309075710.0,3309075710.0,correct,0.0,0.0
+363673599_2019,Feeding America,no_skill,revenue_less_expenses,262354636.0,262354636.0,correct,0.0,0.0
+363673599_2019,Feeding America,no_skill,compensation_current_officers,4398170.0,4398170.0,correct,0.0,0.0
+363673599_2019,Feeding America,no_skill,other_salaries_wages,28973099.0,28973099.0,correct,0.0,0.0
+363673599_2019,Feeding America,no_skill,professional_fundraising_fees,2674356.0,2674356.0,correct,0.0,0.0
+363673599_2019,Feeding America,no_skill,total_assets_eoy,432594156.0,432594156.0,correct,0.0,0.0
+363673599_2019,Feeding America,no_skill,total_liabilities_eoy,32638854.0,32638854.0,correct,0.0,0.0
+363673599_2019,Feeding America,no_skill,net_assets_eoy,399955302.0,399955302.0,correct,0.0,0.0
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",with_skill,ein,136213516,136213516,correct,,
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",with_skill,legal_name,"AMERICAN CIVIL LIBERTIES UNION FOUNDATION, INC.",American Civil Liberties Union Foundation Inc,na,,
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",with_skill,tax_year,2022,2022,correct,0.0,0.0
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",with_skill,total_revenue,201181635.0,201181635.0,correct,0.0,0.0
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",with_skill,contributions_grants,184197455.0,184197455.0,correct,0.0,0.0
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",with_skill,program_service_revenue,0.0,0.0,correct,0.0,0.0
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",with_skill,investment_income,8216520.0,6674105.0,wrong,1542415.0,0.2311043952709764
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",with_skill,total_expenses,186344190.0,186344190.0,correct,0.0,0.0
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",with_skill,revenue_less_expenses,14837445.0,14837445.0,correct,0.0,0.0
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",with_skill,compensation_current_officers,3003753.0,3003753.0,correct,0.0,0.0
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",with_skill,other_salaries_wages,57276338.0,57276338.0,correct,0.0,0.0
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",with_skill,professional_fundraising_fees,359652.0,359652.0,correct,0.0,0.0
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",with_skill,total_assets_eoy,785630158.0,785630158.0,correct,0.0,0.0
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",with_skill,total_liabilities_eoy,145527053.0,145527053.0,correct,0.0,0.0
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",with_skill,net_assets_eoy,640103105.0,640103105.0,correct,0.0,0.0
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",no_skill,ein,136213516,136213516,correct,,
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",no_skill,legal_name,"AMERICAN CIVIL LIBERTIES UNION FOUNDATION, INC.",American Civil Liberties Union Foundation Inc,na,,
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",no_skill,tax_year,2022,2022,correct,0.0,0.0
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",no_skill,total_revenue,201181635.0,201181635.0,correct,0.0,0.0
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",no_skill,contributions_grants,184197455.0,184197455.0,correct,0.0,0.0
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",no_skill,program_service_revenue,0.0,0.0,correct,0.0,0.0
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",no_skill,investment_income,8216520.0,6674105.0,wrong,1542415.0,0.2311043952709764
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",no_skill,total_expenses,186344190.0,186344190.0,correct,0.0,0.0
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",no_skill,revenue_less_expenses,14837445.0,14837445.0,correct,0.0,0.0
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",no_skill,compensation_current_officers,3003753.0,3003753.0,correct,0.0,0.0
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",no_skill,other_salaries_wages,57276338.0,57276338.0,correct,0.0,0.0
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",no_skill,professional_fundraising_fees,359652.0,359652.0,correct,0.0,0.0
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",no_skill,total_assets_eoy,785630158.0,785630158.0,correct,0.0,0.0
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",no_skill,total_liabilities_eoy,145527053.0,145527053.0,correct,0.0,0.0
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",no_skill,net_assets_eoy,640103105.0,640103105.0,correct,0.0,0.0
+910511770_2015,Group Health Cooperative,with_skill,ein,910511770,910511770,correct,,
+910511770_2015,Group Health Cooperative,with_skill,legal_name,GROUP HEALTH COOPERATIVE,Kaiser Foundation Health Plan Of Washington,na,,
+910511770_2015,Group Health Cooperative,with_skill,tax_year,2015,2015,correct,0.0,0.0
+910511770_2015,Group Health Cooperative,with_skill,total_revenue,3027840937.0,3027840937.0,correct,0.0,0.0
+910511770_2015,Group Health Cooperative,with_skill,contributions_grants,46364989.0,46364989.0,correct,0.0,0.0
+910511770_2015,Group Health Cooperative,with_skill,program_service_revenue,2869169578.0,2869169578.0,correct,0.0,0.0
+910511770_2015,Group Health Cooperative,with_skill,investment_income,42865145.0,37042600.0,wrong,5822545.0,0.1571851057971093
+910511770_2015,Group Health Cooperative,with_skill,total_expenses,2908625317.0,2908625317.0,correct,0.0,0.0
+910511770_2015,Group Health Cooperative,with_skill,revenue_less_expenses,119215620.0,119215620.0,correct,0.0,0.0
+910511770_2015,Group Health Cooperative,with_skill,compensation_current_officers,15559270.0,15559270.0,correct,0.0,0.0
+910511770_2015,Group Health Cooperative,with_skill,other_salaries_wages,447715014.0,447715014.0,correct,0.0,0.0
+910511770_2015,Group Health Cooperative,with_skill,professional_fundraising_fees,0.0,0.0,correct,0.0,0.0
+910511770_2015,Group Health Cooperative,with_skill,total_assets_eoy,1877474544.0,1877474544.0,correct,0.0,0.0
+910511770_2015,Group Health Cooperative,with_skill,total_liabilities_eoy,838748423.0,838748423.0,correct,0.0,0.0
+910511770_2015,Group Health Cooperative,with_skill,net_assets_eoy,1038726121.0,1038726121.0,correct,0.0,0.0
+910511770_2015,Group Health Cooperative,no_skill,ein,910511770,910511770,correct,,
+910511770_2015,Group Health Cooperative,no_skill,legal_name,GROUP HEALTH COOPERATIVE,Kaiser Foundation Health Plan Of Washington,na,,
+910511770_2015,Group Health Cooperative,no_skill,tax_year,2015,2015,correct,0.0,0.0
+910511770_2015,Group Health Cooperative,no_skill,total_revenue,3027840937.0,3027840937.0,correct,0.0,0.0
+910511770_2015,Group Health Cooperative,no_skill,contributions_grants,46364989.0,46364989.0,correct,0.0,0.0
+910511770_2015,Group Health Cooperative,no_skill,program_service_revenue,2869169578.0,2869169578.0,correct,0.0,0.0
+910511770_2015,Group Health Cooperative,no_skill,investment_income,42865145.0,37042600.0,wrong,5822545.0,0.1571851057971093
+910511770_2015,Group Health Cooperative,no_skill,total_expenses,2908625317.0,2908625317.0,correct,0.0,0.0
+910511770_2015,Group Health Cooperative,no_skill,revenue_less_expenses,119215620.0,119215620.0,correct,0.0,0.0
+910511770_2015,Group Health Cooperative,no_skill,compensation_current_officers,15559270.0,15559270.0,correct,0.0,0.0
+910511770_2015,Group Health Cooperative,no_skill,other_salaries_wages,447715014.0,447715014.0,correct,0.0,0.0
+910511770_2015,Group Health Cooperative,no_skill,professional_fundraising_fees,0.0,0.0,correct,0.0,0.0
+910511770_2015,Group Health Cooperative,no_skill,total_assets_eoy,1877474544.0,1877474544.0,correct,0.0,0.0
+910511770_2015,Group Health Cooperative,no_skill,total_liabilities_eoy,838748423.0,838748423.0,correct,0.0,0.0
+910511770_2015,Group Health Cooperative,no_skill,net_assets_eoy,1038726121.0,1038726121.0,correct,0.0,0.0
+941156365_2022,Leland Stanford Junior University,with_skill,ein,941156365,941156365,correct,,
+941156365_2022,Leland Stanford Junior University,with_skill,legal_name,THE BOARD OF TRUSTEES OF THE LELAND STANFORD JUNIOR UNIVERSITY,The Board Of Trustees Of The Leland Stanford Junior University,na,,
+941156365_2022,Leland Stanford Junior University,with_skill,tax_year,2022,2022,correct,0.0,0.0
+941156365_2022,Leland Stanford Junior University,with_skill,total_revenue,8473666240.0,8473666240.0,correct,0.0,0.0
+941156365_2022,Leland Stanford Junior University,with_skill,contributions_grants,3468332075.0,3468332075.0,correct,0.0,0.0
+941156365_2022,Leland Stanford Junior University,with_skill,program_service_revenue,3723764565.0,3723764565.0,correct,0.0,0.0
+941156365_2022,Leland Stanford Junior University,with_skill,investment_income,1064657583.0,373737079.0,wrong,690920504.0,1.848680644287906
+941156365_2022,Leland Stanford Junior University,with_skill,total_expenses,8133284247.0,8133284247.0,correct,0.0,0.0
+941156365_2022,Leland Stanford Junior University,with_skill,revenue_less_expenses,340381993.0,340381993.0,correct,0.0,0.0
+941156365_2022,Leland Stanford Junior University,with_skill,compensation_current_officers,20083897.0,13308833.0,wrong,6775064.0,0.5090652200685064
+941156365_2022,Leland Stanford Junior University,with_skill,other_salaries_wages,3942818376.0,3942818376.0,correct,0.0,0.0
+941156365_2022,Leland Stanford Junior University,with_skill,professional_fundraising_fees,2492107.0,2492107.0,correct,0.0,0.0
+941156365_2022,Leland Stanford Junior University,with_skill,total_assets_eoy,61810853996.0,61810855396.0,correct,1400.0,2.2649743172630465e-08
+941156365_2022,Leland Stanford Junior University,with_skill,total_liabilities_eoy,10572551350.0,10572551350.0,correct,0.0,0.0
+941156365_2022,Leland Stanford Junior University,with_skill,net_assets_eoy,51238304046.0,51238304046.0,correct,0.0,0.0
+941156365_2022,Leland Stanford Junior University,no_skill,ein,941156365,941156365,correct,,
+941156365_2022,Leland Stanford Junior University,no_skill,legal_name,THE BOARD OF TRUSTEES OF THE LELAND STANFORD JUNIOR UNIVERSITY,The Board Of Trustees Of The Leland Stanford Junior University,na,,
+941156365_2022,Leland Stanford Junior University,no_skill,tax_year,2022,2022,correct,0.0,0.0
+941156365_2022,Leland Stanford Junior University,no_skill,total_revenue,8473666240.0,8473666240.0,correct,0.0,0.0
+941156365_2022,Leland Stanford Junior University,no_skill,contributions_grants,3468332075.0,3468332075.0,correct,0.0,0.0
+941156365_2022,Leland Stanford Junior University,no_skill,program_service_revenue,3723764565.0,3723764565.0,correct,0.0,0.0
+941156365_2022,Leland Stanford Junior University,no_skill,investment_income,1064657583.0,373737079.0,wrong,690920504.0,1.848680644287906
+941156365_2022,Leland Stanford Junior University,no_skill,total_expenses,8133284247.0,8133284247.0,correct,0.0,0.0
+941156365_2022,Leland Stanford Junior University,no_skill,revenue_less_expenses,340381993.0,340381993.0,correct,0.0,0.0
+941156365_2022,Leland Stanford Junior University,no_skill,compensation_current_officers,13308833.0,13308833.0,correct,0.0,0.0
+941156365_2022,Leland Stanford Junior University,no_skill,other_salaries_wages,3942818376.0,3942818376.0,correct,0.0,0.0
+941156365_2022,Leland Stanford Junior University,no_skill,professional_fundraising_fees,2492107.0,2492107.0,correct,0.0,0.0
+941156365_2022,Leland Stanford Junior University,no_skill,total_assets_eoy,61810855396.0,61810855396.0,correct,0.0,0.0
+941156365_2022,Leland Stanford Junior University,no_skill,total_liabilities_eoy,10572551350.0,10572551350.0,correct,0.0,0.0
+941156365_2022,Leland Stanford Junior University,no_skill,net_assets_eoy,51238304046.0,51238304046.0,correct,0.0,0.0
+340714585_2019,The Cleveland Clinic Foundation,with_skill,ein,340714585,340714585,correct,,
+340714585_2019,The Cleveland Clinic Foundation,with_skill,legal_name,THE CLEVELAND CLINIC FOUNDATION,The Cleveland Clinic Foundation,na,,
+340714585_2019,The Cleveland Clinic Foundation,with_skill,tax_year,2019,2019,correct,0.0,0.0
+340714585_2019,The Cleveland Clinic Foundation,with_skill,total_revenue,6830413008.0,6830413008.0,correct,0.0,0.0
+340714585_2019,The Cleveland Clinic Foundation,with_skill,contributions_grants,263593024.0,263593024.0,correct,0.0,0.0
+340714585_2019,The Cleveland Clinic Foundation,with_skill,program_service_revenue,6207489737.0,6207489737.0,correct,0.0,0.0
+340714585_2019,The Cleveland Clinic Foundation,with_skill,investment_income,185811169.0,65932993.0,wrong,119878176.0,1.8181819229714022
+340714585_2019,The Cleveland Clinic Foundation,with_skill,total_expenses,6232896760.0,6232896760.0,correct,0.0,0.0
+340714585_2019,The Cleveland Clinic Foundation,with_skill,revenue_less_expenses,597516248.0,597516248.0,correct,0.0,0.0
+340714585_2019,The Cleveland Clinic Foundation,with_skill,compensation_current_officers,21169952.0,21169952.0,correct,0.0,0.0
+340714585_2019,The Cleveland Clinic Foundation,with_skill,other_salaries_wages,2725966635.0,2725966635.0,correct,0.0,0.0
+340714585_2019,The Cleveland Clinic Foundation,with_skill,professional_fundraising_fees,1770231.0,1770231.0,correct,0.0,0.0
+340714585_2019,The Cleveland Clinic Foundation,with_skill,total_assets_eoy,12446161990.0,12446161990.0,correct,0.0,0.0
+340714585_2019,The Cleveland Clinic Foundation,with_skill,total_liabilities_eoy,6172018991.0,6172018991.0,correct,0.0,0.0
+340714585_2019,The Cleveland Clinic Foundation,with_skill,net_assets_eoy,6274142999.0,6274142999.0,correct,0.0,0.0
+340714585_2019,The Cleveland Clinic Foundation,no_skill,ein,340714585,340714585,correct,,
+340714585_2019,The Cleveland Clinic Foundation,no_skill,legal_name,THE CLEVELAND CLINIC FOUNDATION,The Cleveland Clinic Foundation,na,,
+340714585_2019,The Cleveland Clinic Foundation,no_skill,tax_year,2019,2019,correct,0.0,0.0
+340714585_2019,The Cleveland Clinic Foundation,no_skill,total_revenue,6830413008.0,6830413008.0,correct,0.0,0.0
+340714585_2019,The Cleveland Clinic Foundation,no_skill,contributions_grants,263593024.0,263593024.0,correct,0.0,0.0
+340714585_2019,The Cleveland Clinic Foundation,no_skill,program_service_revenue,6207489737.0,6207489737.0,correct,0.0,0.0
+340714585_2019,The Cleveland Clinic Foundation,no_skill,investment_income,185811169.0,65932993.0,wrong,119878176.0,1.8181819229714022
+340714585_2019,The Cleveland Clinic Foundation,no_skill,total_expenses,6232896760.0,6232896760.0,correct,0.0,0.0
+340714585_2019,The Cleveland Clinic Foundation,no_skill,revenue_less_expenses,597516248.0,597516248.0,correct,0.0,0.0
+340714585_2019,The Cleveland Clinic Foundation,no_skill,compensation_current_officers,21169952.0,21169952.0,correct,0.0,0.0
+340714585_2019,The Cleveland Clinic Foundation,no_skill,other_salaries_wages,2725966635.0,2725966635.0,correct,0.0,0.0
+340714585_2019,The Cleveland Clinic Foundation,no_skill,professional_fundraising_fees,1770231.0,1770231.0,correct,0.0,0.0
+340714585_2019,The Cleveland Clinic Foundation,no_skill,total_assets_eoy,12446161990.0,12446161990.0,correct,0.0,0.0
+340714585_2019,The Cleveland Clinic Foundation,no_skill,total_liabilities_eoy,6172018991.0,6172018991.0,correct,0.0,0.0
+340714585_2019,The Cleveland Clinic Foundation,no_skill,net_assets_eoy,6274142999.0,6274142999.0,correct,0.0,0.0

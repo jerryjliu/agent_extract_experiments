@@ -1,0 +1,24 @@
+{
+  "ein": "910511770",
+  "tax_year": 2015,
+  "name": "Kaiser Foundation Health Plan Of Washington",
+  "values": {
+    "ein": "910511770",
+    "legal_name": "Kaiser Foundation Health Plan Of Washington",
+    "tax_year": 2015,
+    "total_revenue": 3027840937.0,
+    "contributions_grants": 46364989.0,
+    "program_service_revenue": 2869169578.0,
+    "investment_income": 37042600.0,
+    "total_expenses": 2908625317.0,
+    "compensation_current_officers": 15559270.0,
+    "other_salaries_wages": 447715014.0,
+    "professional_fundraising_fees": 0.0,
+    "total_assets_eoy": 1877474544.0,
+    "total_liabilities_eoy": 838748423.0,
+    "net_assets_eoy": 1038726121.0,
+    "revenue_less_expenses": 119215620.0
+  },
+  "populated_count": 15,
+  "total_fields": 15
+}

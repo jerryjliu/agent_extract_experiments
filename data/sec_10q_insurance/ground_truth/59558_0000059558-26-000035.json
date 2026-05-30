@@ -1,0 +1,29 @@
+{
+  "cik": "59558",
+  "accession": "0000059558-26-000035",
+  "ticker": "LNC",
+  "name": "Lincoln National",
+  "form": "10-Q",
+  "period": "2026-03-31",
+  "values": {
+    "issuer_name": "LINCOLN NATIONAL CORPORATION",
+    "period_end_date": "2026-03-31",
+    "total_revenues": 5306000000,
+    "net_investment_income": 1605000000,
+    "net_income": -172000000,
+    "net_income_per_share_basic": -1.08,
+    "net_income_per_share_diluted": -1.1,
+    "total_assets": 406161000000,
+    "total_investments": 138737000000,
+    "total_liabilities": 395949000000,
+    "stockholders_equity": 10212000000,
+    "insurance_reserves": null,
+    "deferred_policy_acquisition_costs": null,
+    "cash_from_operations": 138000000,
+    "cash_from_investing": -3454000000,
+    "cash_from_financing": 1159000000,
+    "common_shares_outstanding": 191209768
+  },
+  "populated_count": 15,
+  "total_fields": 17
+}

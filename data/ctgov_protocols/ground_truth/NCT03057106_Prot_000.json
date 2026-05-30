@@ -1,0 +1,29 @@
+{
+  "nct_id": "NCT03057106",
+  "doc_id": "Prot_000",
+  "label": "Durvalumab and Tremelimumab \u00b1 Platinum-Based Chemotherapy in",
+  "values": {
+    "nct_id": "NCT03057106",
+    "brief_title": "Durvalumab and Tremelimumab \u00b1 Platinum-Based Chemotherapy in Patients With Metastatic Squamous or Non-Squamous NSCLC",
+    "official_title": "A Randomized Trial of Durvalumab and Tremelimumab \u00b1 Platinum-Based Chemotherapy in Patients With Metastatic (Stage IV) Squamous or Non-Squamous Non-Small Cell Lung Cancer (NSCLC)",
+    "sponsor": "Canadian Cancer Trials Group",
+    "study_type": "INTERVENTIONAL",
+    "phase": "PHASE2",
+    "allocation": "RANDOMIZED",
+    "masking": "NONE",
+    "intervention_model": "PARALLEL",
+    "enrollment_count": 301,
+    "start_date": "2017-03-28",
+    "primary_completion_date": "2020-02-24",
+    "completion_date": "2026-06-30",
+    "minimum_age": "18 Years",
+    "maximum_age": null,
+    "sex": "ALL",
+    "healthy_volunteers": false,
+    "primary_outcome_measure": "Overall Survival",
+    "primary_outcome_time_frame": "33 months",
+    "overall_status": "ACTIVE_NOT_RECRUITING"
+  },
+  "populated_count": 19,
+  "total_fields": 20
+}

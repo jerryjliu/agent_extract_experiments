@@ -1,0 +1,24 @@
+{
+  "ein": "340714585",
+  "tax_year": 2019,
+  "name": "The Cleveland Clinic Foundation",
+  "values": {
+    "ein": "340714585",
+    "legal_name": "The Cleveland Clinic Foundation",
+    "tax_year": 2019,
+    "total_revenue": 6830413008.0,
+    "contributions_grants": 263593024.0,
+    "program_service_revenue": 6207489737.0,
+    "investment_income": 65932993.0,
+    "total_expenses": 6232896760.0,
+    "compensation_current_officers": 21169952.0,
+    "other_salaries_wages": 2725966635.0,
+    "professional_fundraising_fees": 1770231.0,
+    "total_assets_eoy": 12446161990.0,
+    "total_liabilities_eoy": 6172018991.0,
+    "net_assets_eoy": 6274142999.0,
+    "revenue_less_expenses": 597516248.0
+  },
+  "populated_count": 15,
+  "total_fields": 15
+}

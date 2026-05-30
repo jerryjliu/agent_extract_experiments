@@ -1,0 +1,29 @@
+{
+  "nct_id": "NCT02744534",
+  "doc_id": "Prot_SAP_000",
+  "label": "Targeted Fusion Biopsy of the Prostate",
+  "values": {
+    "nct_id": "NCT02744534",
+    "brief_title": "Targeted Fusion Biopsy of the Prostate",
+    "official_title": "Targeted Fusion Biopsy of the Prostate",
+    "sponsor": "Emory University",
+    "study_type": "INTERVENTIONAL",
+    "phase": "PHASE2",
+    "allocation": "NON_RANDOMIZED",
+    "masking": "NONE",
+    "intervention_model": "PARALLEL",
+    "enrollment_count": 21,
+    "start_date": "2015-11-01",
+    "primary_completion_date": "2018-03-31",
+    "completion_date": "2018-03-31",
+    "minimum_age": "18 Years",
+    "maximum_age": null,
+    "sex": "MALE",
+    "healthy_volunteers": false,
+    "primary_outcome_measure": "Percentage of Cores Positive for Cancer",
+    "primary_outcome_time_frame": "Two weeks",
+    "overall_status": "COMPLETED"
+  },
+  "populated_count": 19,
+  "total_fields": 20
+}

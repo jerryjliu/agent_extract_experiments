@@ -1,0 +1,29 @@
+{
+  "nct_id": "NCT02186821",
+  "doc_id": "Prot_001",
+  "label": "Ceritinib (LDK378) for Patients Whose Tumors Have Aberration",
+  "values": {
+    "nct_id": "NCT02186821",
+    "brief_title": "Ceritinib (LDK378) for Patients Whose Tumors Have Aberrations in ALK or ROS1 (SIGNATURE)",
+    "official_title": "Modular Phase II Study to Link Targeted Therapy to Patients With Pathway Activated Tumors: Module - 7 Ceritinib (LDK378) for Patients Whose Tumors Have Aberrations in ALK or ROS1",
+    "sponsor": "Novartis Pharmaceuticals",
+    "study_type": "INTERVENTIONAL",
+    "phase": "PHASE2",
+    "allocation": "NA",
+    "masking": "NONE",
+    "intervention_model": "SINGLE_GROUP",
+    "enrollment_count": 47,
+    "start_date": "2014-09-17",
+    "primary_completion_date": "2017-12-13",
+    "completion_date": "2017-12-13",
+    "minimum_age": "18 Years",
+    "maximum_age": null,
+    "sex": "ALL",
+    "healthy_volunteers": false,
+    "primary_outcome_measure": "Percentage of Participants Overall Response Rate (ORR) and Clinical Benefit Rate (CBR) Utilizing RECIST 1.1 at Approximately 16 Weeks",
+    "primary_outcome_time_frame": "Baseline up to approximately 16 weeks",
+    "overall_status": "TERMINATED"
+  },
+  "populated_count": 19,
+  "total_fields": 20
+}

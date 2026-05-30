@@ -1,0 +1,24 @@
+{
+  "ein": "136213516",
+  "tax_year": 2022,
+  "name": "American Civil Liberties Union Foundation Inc",
+  "values": {
+    "ein": "136213516",
+    "legal_name": "American Civil Liberties Union Foundation Inc",
+    "tax_year": 2022,
+    "total_revenue": 201181635.0,
+    "contributions_grants": 184197455.0,
+    "program_service_revenue": 0.0,
+    "investment_income": 6674105.0,
+    "total_expenses": 186344190.0,
+    "compensation_current_officers": 3003753.0,
+    "other_salaries_wages": 57276338.0,
+    "professional_fundraising_fees": 359652.0,
+    "total_assets_eoy": 785630158.0,
+    "total_liabilities_eoy": 145527053.0,
+    "net_assets_eoy": 640103105.0,
+    "revenue_less_expenses": 14837445.0
+  },
+  "populated_count": 15,
+  "total_fields": 15
+}

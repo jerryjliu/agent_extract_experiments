@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>FFIEC Call Report Extraction — Claude Code vs Claude Code + LlamaExtract Skill</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/fontsource/fonts/overused-grotesk@latest/latin.css" rel="stylesheet">
+<style>
+:root {
+  --bg: #FFFFFF; --bg-alt: #F5F5F5; --surface: #FFFFFF; --surface2: #F5F5F5;
+  --border: #E7E7E7; --text: #000000; --text-dim: #737373;
+  --purple: #3E18F9; --blue: #37D7FA; --pink: #FF8DF2; --orange: #FF8705;
+  --gradient-stroke: linear-gradient(180deg, #37D7FA 0%, #4B72FE 40%, #FF8DF2 68%, #FF8705 100%);
+  --success: #1FA853; --danger: #E0344C; --missing: #FFBD74; --neutral: #C8C8C8;
+}
+* { margin:0; padding:0; box-sizing: border-box; }
+body { font-family: 'Overused Grotesk', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.55; }
+.hero { text-align:center; padding: 2.5rem 2rem 2rem;
+  background: linear-gradient(180deg, rgba(150,231,249,0.08), rgba(146,174,255,0.06) 30%, rgba(255,191,248,0.04) 60%, transparent 85%);
+  border-bottom: 1px solid var(--border); position: relative;
+}
+.hero::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background: var(--gradient-stroke); }
+.hero h1 { font-size: 2.1rem; font-weight: 500; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 0.4rem; }
+.hero h1 .accent { background: var(--gradient-stroke); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.hero .subtitle { color: var(--text-dim); font-size: 0.95rem; max-width: 720px; margin: 0.3rem auto 0; }
+.stats-bar { display:grid; grid-template-columns: repeat(4, 1fr); max-width: 800px; margin: 1.5rem auto 0;
+  gap: 1px; background: var(--border); border-radius: 12px; overflow: hidden; position: relative; }
+.stats-bar::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background: var(--gradient-stroke); z-index:1; }
+.stat { background: var(--bg); padding: 0.9rem 0.6rem; text-align: center; }
+.stat .val { font-size: 1.35rem; font-weight: 500; font-variant-numeric: tabular-nums; letter-spacing: -0.03em; }
+.stat .lbl { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 0.15rem; }
+.delta-pos { color: var(--success); }
+.delta-neg { color: var(--danger); }
+.container { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+.section-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; font-weight: 500; color: var(--text-dim);
+  text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.9rem;
+  padding-bottom: 0.4rem; border-bottom: 2px solid transparent; border-image: var(--gradient-stroke) 1; }
+.cmp-table { width:100%; border-collapse: collapse; font-variant-numeric: tabular-nums; margin-bottom: 2.5rem; }
+.cmp-table th, .cmp-table td { padding: 0.55rem 0.7rem; text-align: left; border-bottom: 1px solid var(--border); }
+.cmp-table th { font-family: 'IBM Plex Mono', monospace; font-weight: 500; font-size: 0.75rem; text-transform: uppercase; color: var(--text-dim); }
+.cmp-table tbody tr:hover { background: var(--bg-alt); }
+.cond-with { color: var(--purple); font-weight: 500; }
+.cond-with-v1 { color: var(--text-dim); font-weight: 400; font-style: italic; }
+.cond-no { color: var(--orange); font-weight: 500; }
+.filing-card { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 0.75rem; overflow: hidden; }
+.filing-card[open] { box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+.filing-card summary { list-style: none; padding: 0.85rem 1rem; cursor: pointer; display: grid;
+  grid-template-columns: minmax(180px, 0.3fr) minmax(200px, 0.3fr) minmax(200px, 0.5fr); align-items: center; gap: 1rem; }
+.filing-card summary::-webkit-details-marker { display: none; }
+.filing-name { font-weight: 500; font-size: 1rem; }
+.filing-meta { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--text-dim); }
+.filing-scores { display: flex; gap: 1.1rem; justify-content: flex-end; flex-wrap: wrap; font-variant-numeric: tabular-nums; }
+.score-pair .label { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; }
+.score-pair .val { font-weight: 500; font-size: 0.9rem; margin-left: 0.2rem; }
+.filing-body { padding: 1rem 1.4rem 1.4rem; border-top: 1px solid var(--border); display: grid; grid-template-columns: 1fr 1.2fr; gap: 1.5rem; }
+.heatmap-wrap h4, .excerpts-col h4 { font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; text-transform: uppercase;
+  color: var(--text-dim); letter-spacing: 0.04em; margin-bottom: 0.5rem; font-weight: 500; }
+.heatmap { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+.heatmap th { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--text-dim); text-align: left; padding: 0.2rem 0.4rem;
+  font-weight: 500; text-transform: uppercase; }
+.heatmap td { padding: 0.18rem 0.4rem; vertical-align: middle; }
+.field-name { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; color: var(--text); }
+.cell { width: 14px; height: 14px; border-radius: 3px; display: inline-block; }
+.cell-correct { background: var(--success); }
+.cell-wrong { background: var(--danger); }
+.cell-missing { background: var(--missing); }
+.cell-format_error { background: var(--danger); border: 1px dashed #000; }
+.cell-na { background: var(--neutral); }
+.excerpts { display: flex; flex-direction: column; gap: 1rem; }
+.excerpts-col { background: var(--bg-alt); border-radius: 8px; padding: 0.7rem 0.9rem; }
+.tool-event { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; padding: 0.2rem 0; border-bottom: 1px dashed var(--border); }
+.tool-event:last-child { border-bottom: none; }
+.tool-name { background: var(--purple); color: white; padding: 0.05rem 0.35rem; border-radius: 3px; font-size: 0.65rem; font-weight: 500; }
+.tool-input { color: var(--text-dim); margin-left: 0.5rem; }
+.warn-callout { background: rgba(255, 135, 5, 0.08); border-left: 3px solid var(--orange); padding: 0.6rem 0.9rem; border-radius: 4px;
+  font-size: 0.85rem; margin-bottom: 1rem; }
+.warn-callout code { background: var(--bg-alt); padding: 0.05rem 0.3rem; border-radius: 3px; font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; }
+.discipline-note { font-size: 0.85rem; color: var(--text); margin: 0.5rem 0 0.3rem; }
+.caveat { font-size: 0.75rem; color: var(--text-dim); font-style: italic; margin-bottom: 2.5rem; }
+footer { text-align: center; padding: 2rem 1rem; color: var(--text-dim); font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; }
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>Claude Code <span class="accent">vs</span> Claude Code + LlamaExtract Skill</h1>
+  <div class="subtitle">FFIEC Call Report structured extraction — 15 documents, ~28 fields each.</div>
+  <div class="stats-bar">
+    <div class="stat"><div class="val delta-pos">1/15 &rarr; 15/15</div><div class="lbl">skill invocation rate (v1 → v2)</div></div>
+    <div class="stat"><div class="val">-3.2pp</div><div class="lbl">accuracy Δ (with−no)</div></div>
+    <div class="stat"><div class="val">$-5.58</div><div class="lbl">total cost Δ (with−no)</div></div>
+    <div class="stat"><div class="val">15</div><div class="lbl">documents</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="section-label">Aggregate comparison · with_skill vs no_skill</div>
+  <table class="cmp-table">
+    <thead><tr><th>condition</th><th>accuracy</th><th>correct</th><th>wrong</th><th>missing</th><th>total cost</th><th>total/session duration</th></tr></thead>
+    <tbody>
+      <tr><td class="cond-with-v1">with_skill (v1 baseline)</td><td>89.8%</td><td>362</td><td>40</td><td>1</td><td>$11.83</td><td>147.3s</td></tr>
+      <tr><td class="cond-with">with_skill</td><td>86.8%</td><td>350</td><td>51</td><td>2</td><td>$5.47</td><td>2634.0s</td></tr>
+      <tr><td class="cond-no">no_skill</td><td>90.1%</td><td>363</td><td>39</td><td>1</td><td>$11.05</td><td>2364.2s</td></tr>
+    </tbody>
+  </table>
+
+  
+  <div class="section-label">Per-file vs batch session · same 15 PDFs, v2 skill</div>
+  
+  <table class="cmp-table">
+    <thead><tr><th></th><th>per-file (15 sessions)</th><th>batch (1 session)</th><th>delta (per-file − batch)</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="cond-with">with_skill · total cost</td>
+        <td>$5.47</td>
+        <td>$0.72</td>
+        <td><span class='delta-pos'>+$4.74</span></td>
+      </tr>
+      <tr>
+        <td class="cond-with">with_skill · wall time</td>
+        <td>2634.0s</td>
+        <td>91.8s</td>
+        <td><span class='delta-pos'>+2542.3s</span></td>
+      </tr>
+      <tr>
+        <td class="cond-no">no_skill · total cost</td>
+        <td>$11.05</td>
+        <td>$1.98</td>
+        <td><span class='delta-pos'>+$9.07</span></td>
+      </tr>
+      <tr>
+        <td class="cond-no">no_skill · wall time</td>
+        <td>2364.2s</td>
+        <td>566.4s</td>
+        <td><span class='delta-pos'>+1797.9s</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="cmp-table">
+    <thead><tr><th>condition · mode</th><th>Skill fires</th><th>extract.py calls</th><th>Task subagents</th><th>py writes</th><th>parallel turns</th><th>max parallel in turn</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="cond-with">with_skill · batch</td>
+        <td>1/1</td>
+        <td>15</td>
+        <td><b>15</b></td>
+        <td>0</td>
+        <td>0</td>
+        <td>1</td>
+      </tr>
+      <tr>
+        <td class="cond-no">no_skill · batch</td>
+        <td>—</td>
+        <td>—</td>
+        <td>3</td>
+        <td>0</td>
+        <td>0</td>
+        <td>1</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="discipline-note">Batch with_skill invocation pattern: <b>Background-parallel via Task tool</b>: launched <b>15</b> Task subagents (one per extract.py call), running concurrently in the background while the main agent's turns themselves stayed sequential. This is where the wall-time win comes from.</p>
+  <p class="caveat">Batch wall time is end-to-end session duration; per-file wall time is the sum of 15 independent session durations. Both measure "time to extract the corpus."</p>
+
+
+  <div class="section-label">Per-document comparison · click to expand</div>
+  
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>Legends Bank</span>
+    <span class='filing-meta'>RSSD 2745426 · community · expected form 051</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>24/28</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>24/28</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>$0.34 vs $0.73</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>form_version</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_deposits</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_loans_net</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>allowance_credit_losses_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_equity_capital</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_securities</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>provision_credit_losses</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_chargeoffs_loans_leases</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>nonaccrual_loans_total</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>past_due_30_89_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>past_due_90_plus_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>tier1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cet1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>leverage_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_risk_based_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs/, content={
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;title&quot;: &quot;CallReportExtraction&quot;,
+  &quot;</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python &quot;.claude/skills/llama-extract/scripts/extract.py&quot; --input ./input.pdf --s, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./input.pdf, description=Check input PDF exists</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=1-5</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=7-12</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(2 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=39-44</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=51-56</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ./output.json &lt;&lt; &#x27;EOF&#x27;
+{
+  &quot;form_version&quot;: &quot;041&quot;,
+  &quot;total_assets&quot;: 853110, description=Write output.json and validate it</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>First National Bank North</span>
+    <span class='filing-meta'>RSSD 805755 · community · expected form 051</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>24/28</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>25/28</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>$0.35 vs $0.73</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>form_version</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_deposits</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_loans_net</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>allowance_credit_losses_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_equity_capital</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_securities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>provision_credit_losses</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_chargeoffs_loans_leases</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>nonaccrual_loans_total</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>past_due_30_89_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>past_due_90_plus_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>tier1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cet1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>leverage_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_risk_based_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs/, content={
+  &quot;description&quot;: &quot;Target schema for FFIEC Call Report extr</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python &quot;~/Programming/other/jerry-exp/2026_05_24_extract_experimen, timeout=1800000</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List directory contents</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import pypdf; r = pypdf.PdfReader(&#x27;input.pdf&#x27;); print(&#x27;pages:&#x27;, len(, description=Check PDF page count</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=1-5</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(3 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=39-42</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=51-55</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ., description=Write output.json and validate</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>Quail Creek Bank</span>
+    <span class='filing-meta'>RSSD 507152 · community · expected form 051</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>25/28</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>25/28</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>$0.33 vs $0.52</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>form_version</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_deposits</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_loans_net</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>allowance_credit_losses_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_equity_capital</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_securities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>provision_credit_losses</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_chargeoffs_loans_leases</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>nonaccrual_loans_total</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>past_due_30_89_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>past_due_90_plus_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>tier1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cet1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>leverage_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_risk_based_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs/, content={
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;title&quot;: &quot;CallReportExtraction&quot;,
+  &quot;</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python &quot;~/Programming/other/jerry-exp/2026_05_24_extract_experimen, description=Run llama-extract CLI on the Call Report PDF, timeout=6000</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List files in working directory</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=1-5</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=7-12</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=15-20</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=36-45</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ., description=Write output.json and validate JSON</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>First Utah Bank</span>
+    <span class='filing-meta'>RSSD 207872 · community · expected form 051</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>25/28</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>25/28</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>$0.35 vs $0.58</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>form_version</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_deposits</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_loans_net</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>allowance_credit_losses_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_equity_capital</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_securities</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>provision_credit_losses</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_chargeoffs_loans_leases</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>nonaccrual_loans_total</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>past_due_30_89_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>past_due_90_plus_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>tier1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cet1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>leverage_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_risk_based_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory contents</span></div>
+<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs/, content={
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;title&quot;: &quot;CallReportExtraction&quot;,
+  &quot;</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python &quot;~/Programming/other/jerry-exp/2026_05_24_extract_experimen, description=Run llama-extract CLI on the Call Report PDF, timeout=6000</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./input.pdf &amp;&amp; file ./input.pdf, description=Check the input PDF file</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=1-5</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=7-12</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(1 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=20-25</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=36-44</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ./output.json &lt;&lt; &#x27;EOF&#x27;
+{
+  &quot;form_version&quot;: &quot;051&quot;,
+  &quot;total_assets&quot;: 789008, description=Write output JSON and validate</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>Nebraskaland Bank</span>
+    <span class='filing-meta'>RSSD 2667957 · community · expected form 051</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>22/28</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>23/28</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>$0.34 vs $0.71</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>form_version</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_deposits</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_loans_net</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>allowance_credit_losses_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_equity_capital</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_securities</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>provision_credit_losses</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_chargeoffs_loans_leases</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>nonaccrual_loans_total</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>past_due_30_89_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>past_due_90_plus_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>tier1_capital_ratio</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>cet1_capital_ratio</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>leverage_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_risk_based_capital_ratio</td><td class='cell cell-missing' title='missing'></td><td class='cell cell-missing' title='missing'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs/, content={
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;title&quot;: &quot;CallReportExtraction&quot;,
+  &quot;</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python &quot;.claude/skills/llama-extract/scripts/extract.py&quot; --input ./input.pdf --s, description=Run llama-extract CLI on Call Report PDF, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./input.pdf &amp;&amp; file ./input.pdf, description=Check input PDF exists</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=1-5</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=7-15</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(1 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=39-43</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=51-58</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ., description=Write output.json and validate</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>Centennial Bank</span>
+    <span class='filing-meta'>RSSD 456045 · midsize_regional · expected form 041</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>24/28</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>25/28</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>$0.33 vs $1.00</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>form_version</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_deposits</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_loans_net</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>allowance_credit_losses_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_equity_capital</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_securities</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>provision_credit_losses</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_chargeoffs_loans_leases</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>nonaccrual_loans_total</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>past_due_30_89_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>past_due_90_plus_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>tier1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cet1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>leverage_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_risk_based_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs/, content={
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;title&quot;: &quot;CallReportExtraction&quot;,
+  &quot;</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python &quot;~/Programming/other/jerry-exp/2026_05_24_extract_experimen, description=Run llama-extract CLI on Call Report PDF, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List files in working directory</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import pypdf; r = pypdf.PdfReader(&#x27;input.pdf&#x27;); print(&#x27;Pages:&#x27;, len(, description=Count PDF pages</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
+import pypdf
+r = pypdf.PdfReader(&#x27;input.pdf&#x27;)
+for i in range(3):
+  , description=Extract text from first 3 pages</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(9 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
+import pypdf
+r = pypdf.PdfReader(&#x27;input.pdf&#x27;)
+# Find RC-N (star, description=Find RC-N pages</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
+import pypdf
+r = pypdf.PdfReader(&#x27;input.pdf&#x27;)
+# Find RC-R Part , description=Find RC-R Part I capital ratios</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ./output.json &lt;&lt; &#x27;EOF&#x27;
+{
+  &quot;form_version&quot;: &quot;041&quot;,
+  &quot;total_assets&quot;: 227473, description=Write output.json and validate</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>LendingClub Bank, National Association</span>
+    <span class='filing-meta'>RSSD 264772 · midsize_regional · expected form 041</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>25/28</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>25/28</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>$0.38 vs $0.67</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>form_version</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_deposits</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_loans_net</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>allowance_credit_losses_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_equity_capital</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_securities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>provision_credit_losses</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_chargeoffs_loans_leases</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>nonaccrual_loans_total</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>past_due_30_89_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>past_due_90_plus_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>tier1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cet1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>leverage_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_risk_based_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs/, content={
+  &quot;description&quot;: &quot;Target schema for FFIEC Call Report extr</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python &quot;./.claude/skills/llama-extract/scripts/extract.py&quot; --input ./input.pdf -, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List directory contents</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import PyPDF2; r = PyPDF2.PdfReader(&#x27;input.pdf&#x27;); print(&#x27;Pages:&#x27;, le, description=Check PDF page count</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; pdfinfo input.pdf 2&gt;&amp;1 | head -10, description=Check pdftools availability</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(13 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, offset=460, limit=35</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, offset=3240, limit=90</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ., description=Write output JSON and validate</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>Stifel Bank and Trust</span>
+    <span class='filing-meta'>RSSD 3076248 · midsize_regional · expected form 041</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>24/28</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>25/28</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>$0.33 vs $0.64</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>form_version</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_deposits</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_loans_net</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>allowance_credit_losses_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_equity_capital</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_securities</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>provision_credit_losses</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_chargeoffs_loans_leases</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>nonaccrual_loans_total</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>past_due_30_89_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>past_due_90_plus_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>tier1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cet1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>leverage_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_risk_based_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs/, content={
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;title&quot;: &quot;CallReportExtraction&quot;,
+  &quot;</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python &quot;~/Programming/other/jerry-exp/2026_05_24_extract_experimen, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List the working directory</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=pdftotext -layout input.pdf input.txt &amp;&amp; wc -l input.txt, description=Convert PDF to text with layout</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, limit=100</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(9 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, offset=2430, limit=60</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, offset=605, limit=90</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ., description=Write output.json and validate JSON</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>ConnectOne Bank</span>
+    <span class='filing-meta'>RSSD 3317932 · midsize_regional · expected form 041</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>23/28</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>24/28</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>$0.34 vs $0.69</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>form_version</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_deposits</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_loans_net</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>allowance_credit_losses_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_equity_capital</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_securities</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>provision_credit_losses</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_chargeoffs_loans_leases</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>nonaccrual_loans_total</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>past_due_30_89_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>past_due_90_plus_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>tier1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cet1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>leverage_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_risk_based_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs/, content={
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;title&quot;: &quot;CallReportExtraction&quot;,
+  &quot;</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python &quot;.claude/skills/llama-extract/scripts/extract.py&quot; --input ./input.pdf --s, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List files in working directory</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=1-5</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=7-12</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(2 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=39-46</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=51-58</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ., description=Write output.json and validate</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>Stock Yards Bank &amp; Trust Company</span>
+    <span class='filing-meta'>RSSD 317342 · midsize_regional · expected form 041</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>24/28</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>25/28</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>$0.35 vs $0.95</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>form_version</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_deposits</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_loans_net</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>allowance_credit_losses_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_equity_capital</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_securities</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>provision_credit_losses</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_chargeoffs_loans_leases</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>nonaccrual_loans_total</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>past_due_30_89_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>past_due_90_plus_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>tier1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cet1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>leverage_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_risk_based_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs/, content={
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;title&quot;: &quot;CallReportExtraction&quot;,
+  &quot;</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python &quot;~/Programming/other/jerry-exp/2026_05_24_extract_experimen, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./input.pdf &amp;&amp; pdfinfo ./input.pdf 2&gt;/dev/null | head -20, description=Check PDF file and metadata</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=pdftotext -layout ./input.pdf ./input.txt &amp;&amp; wc -l ./input.txt, description=Convert PDF to text</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, limit=100</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(9 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=grep -n &quot;RIADJJ33\|RIAD4230&quot; ~/Programming/other/jerry-exp/2026_05, description=Search for provision code</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
+re_loans = 22150+652768+42980+236819+1124570+44429+368427+926098+12, description=Compute derived totals</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ., description=Write output.json and validate</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>Regions Bank</span>
+    <span class='filing-meta'>RSSD 233031 · large_regional · expected form 031</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>23/28</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>24/28</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>$0.64 vs $0.72</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>form_version</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_deposits</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_loans_net</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>allowance_credit_losses_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_equity_capital</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_securities</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-missing' title='missing'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>provision_credit_losses</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_chargeoffs_loans_leases</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>nonaccrual_loans_total</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>past_due_30_89_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>past_due_90_plus_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>tier1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cet1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>leverage_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_risk_based_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./input.pdf &amp;&amp; file ./input.pdf, description=Check input PDF file</span></div>
+<div class='tool-event'><code class='tool-name'>ToolSearch</code><span class='tool-input'>query=select:llama-extract, max_results=3</span></div>
+<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(6 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
+import subprocess
+result = subprocess.run([&#x27;pdftotext&#x27;, &#x27;-layout&#x27;, , description=Show context around RCFD1410 and the cover page</span></div>
+<div class='tool-event'><code class='tool-name'>Edit</code><span class='tool-input'>replace_all=False, file_path=runs/, old_string=  &quot;total_real_estate_loans&quot;: 0.0,</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import json; d=json.load(open(&#x27;./output.json&#x27;)); print(&#x27;valid JSON, , description=Validate output.json</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List files in working directory</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=1-5</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=8-13</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(2 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=43-50</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=54-58</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ., description=Write output.json and validate</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>Santander Bank, N.A.</span>
+    <span class='filing-meta'>RSSD 722777 · large_regional · expected form 031</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>23/28</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>24/28</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>$0.34 vs $0.69</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>form_version</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_deposits</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_loans_net</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>allowance_credit_losses_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_equity_capital</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_securities</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>provision_credit_losses</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_chargeoffs_loans_leases</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>nonaccrual_loans_total</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>past_due_30_89_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>past_due_90_plus_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>tier1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cet1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>leverage_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_risk_based_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs/, content={
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;title&quot;: &quot;CallReportExtraction&quot;,
+  &quot;</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python &quot;~/Programming/other/jerry-exp/2026_05_24_extract_experimen, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./input.pdf &amp;&amp; file ./input.pdf, description=Check input PDF file</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=1-3</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=8-12</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(2 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=43-50</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=50-60</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ./output.json &lt;&lt; &#x27;EOF&#x27;
+{
+  &quot;form_version&quot;: &quot;031&quot;,
+  &quot;total_assets&quot;: 101732, description=Write output.json and validate</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>Western Alliance Bank</span>
+    <span class='filing-meta'>RSSD 3138146 · large_regional · expected form 031</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>23/28</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>24/28</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>$0.35 vs $0.64</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>form_version</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_deposits</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_loans_net</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>allowance_credit_losses_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_equity_capital</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_securities</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>provision_credit_losses</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_chargeoffs_loans_leases</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>nonaccrual_loans_total</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>past_due_30_89_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>past_due_90_plus_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>tier1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cet1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>leverage_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_risk_based_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs/, content={
+  &quot;description&quot;: &quot;Target schema for FFIEC Call Report extr</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python &quot;~/Programming/other/jerry-exp/2026_05_24_extract_experimen, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./input.pdf, description=Check input PDF file</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf, pages=1-5</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf, pages=7-11</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(2 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf, pages=39-44</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf, pages=51-56</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ./output.json &lt;&lt; &#x27;EOF&#x27;
+{
+  &quot;form_version&quot;: &quot;041&quot;,
+  &quot;total_assets&quot;: 799377, description=Write output.json and validate</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>Bank of America, National Association</span>
+    <span class='filing-meta'>RSSD 480228 · megabank · expected form 031</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>21/28</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>22/28</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>$0.36 vs $0.92</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>form_version</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_deposits</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>total_loans_net</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>allowance_credit_losses_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_equity_capital</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_securities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>provision_credit_losses</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_chargeoffs_loans_leases</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>nonaccrual_loans_total</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>past_due_30_89_days_loans</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>past_due_90_plus_days_loans</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>tier1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cet1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>leverage_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_risk_based_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./input.pdf &amp;&amp; file ./input.pdf, description=Check PDF file</span></div>
+<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs/, content={
+  &quot;description&quot;: &quot;Target schema for FFIEC Call Report extr</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python &quot;~/Programming/other/jerry-exp/2026_05_24_extract_experimen, description=Run llama-extract CLI, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./input.pdf, description=Check input PDF exists</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=pdftotext -layout ./input.pdf ./input.txt &amp;&amp; wc -l ./input.txt, description=Convert PDF to text</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, limit=100</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(17 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, offset=752, limit=25</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ., description=Write and validate output JSON</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
+import json
+with open(&#x27;~/Programming/other/jerry-exp/, description=Validate JSON output</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>U.S. Bank National Association</span>
+    <span class='filing-meta'>RSSD 504713 · megabank · expected form 031</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>20/28</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>23/28</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>$0.33 vs $0.87</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>form_version</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_deposits</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>total_loans_net</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>allowance_credit_losses_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_equity_capital</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_securities</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>provision_credit_losses</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_chargeoffs_loans_leases</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>nonaccrual_loans_total</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>past_due_30_89_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>past_due_90_plus_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>tier1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cet1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>leverage_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_risk_based_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs/, content={
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;title&quot;: &quot;CallReportExtraction&quot;,
+  &quot;</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python ./.claude/skills/llama-extract/scripts/extract.py --input ./input.pdf --s, timeout=1800000</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./input.pdf &amp;&amp; file ./input.pdf, description=Check input PDF file</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=1-3</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=8-12</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(3 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=43-48</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/, pages=55-65</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ., description=Write output.json and validate</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+</div>
+
+<footer>
+  Generated for dataset <code>ffiec_call_reports</code> ·
+  model <code>claude-opus-4-7</code> · with-skill loads <code>llama-extract</code> as a project skill,
+  no-skill runs with <code>--bare</code>
+</footer>
+
+</body>
+</html>

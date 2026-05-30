@@ -1,0 +1,29 @@
+{
+  "nct_id": "NCT03417895",
+  "doc_id": "Prot_000",
+  "label": "SHR-1210 Combined With Apatinib in Treatment of ED-SCLC Afte",
+  "values": {
+    "nct_id": "NCT03417895",
+    "brief_title": "SHR-1210 Combined With Apatinib in Treatment of ED-SCLC After Failure of First Line Standard Therapy",
+    "official_title": "Anti-PD-1 Antibody SHR-1210 Combined With Anti-angiogenesis Inhibitor Apatinib in Treatment of Extensive-stage Disease Small Cell Lung Cancer After Failure of First Line Standard Therapy",
+    "sponsor": "Jiangsu HengRui Medicine Co., Ltd.",
+    "study_type": "INTERVENTIONAL",
+    "phase": "PHASE2",
+    "allocation": "RANDOMIZED",
+    "masking": "NONE",
+    "intervention_model": "PARALLEL",
+    "enrollment_count": 59,
+    "start_date": "2018-04-20",
+    "primary_completion_date": "2021-08-04",
+    "completion_date": "2021-08-04",
+    "minimum_age": "18 Years",
+    "maximum_age": "70 Years",
+    "sex": "ALL",
+    "healthy_volunteers": false,
+    "primary_outcome_measure": "Adverse Event",
+    "primary_outcome_time_frame": "24 months",
+    "overall_status": "COMPLETED"
+  },
+  "populated_count": 20,
+  "total_fields": 20
+}

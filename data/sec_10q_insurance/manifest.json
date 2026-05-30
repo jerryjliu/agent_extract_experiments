@@ -1,0 +1,110 @@
+[
+  {
+    "cik": "80661",
+    "ticker": "PGR",
+    "name": "Progressive",
+    "accession": "0000080661-26-000177",
+    "form": "10-Q",
+    "period": "2026-03-31",
+    "primary_doc": "pgr-20260331.htm"
+  },
+  {
+    "cik": "1099219",
+    "ticker": "MET",
+    "name": "MetLife",
+    "accession": "0001099219-26-000035",
+    "form": "10-Q",
+    "period": "2026-03-31",
+    "primary_doc": "met-20260331.htm"
+  },
+  {
+    "cik": "899051",
+    "ticker": "ALL",
+    "name": "Allstate",
+    "accession": "0000899051-26-000075",
+    "form": "10-Q",
+    "period": "2026-03-31",
+    "primary_doc": "all-20260331.htm"
+  },
+  {
+    "cik": "86312",
+    "ticker": "TRV",
+    "name": "Travelers",
+    "accession": "0000086312-26-000111",
+    "form": "10-Q",
+    "period": "2026-03-31",
+    "primary_doc": "trv-20260331.htm"
+  },
+  {
+    "cik": "5272",
+    "ticker": "AIG",
+    "name": "American International Group",
+    "accession": "0000005272-26-000052",
+    "form": "10-Q",
+    "period": "2026-03-31",
+    "primary_doc": "aig-20260331.htm"
+  },
+  {
+    "cik": "874766",
+    "ticker": "HIG",
+    "name": "Hartford Financial",
+    "accession": "0000874766-26-000037",
+    "form": "10-Q",
+    "period": "2026-03-31",
+    "primary_doc": "hig-20260331.htm"
+  },
+  {
+    "cik": "1137774",
+    "ticker": "PRU",
+    "name": "Prudential Financial",
+    "accession": "0001137774-26-000095",
+    "form": "10-Q",
+    "period": "2026-03-31",
+    "primary_doc": "pru-20260331.htm"
+  },
+  {
+    "cik": "59558",
+    "ticker": "LNC",
+    "name": "Lincoln National",
+    "accession": "0000059558-26-000035",
+    "form": "10-Q",
+    "period": "2026-03-31",
+    "primary_doc": "lnc-20260331.htm"
+  },
+  {
+    "cik": "4977",
+    "ticker": "AFL",
+    "name": "Aflac",
+    "accession": "0001628280-26-030923",
+    "form": "10-Q",
+    "period": "2026-03-31",
+    "primary_doc": "afl-20260331.htm"
+  },
+  {
+    "cik": "20286",
+    "ticker": "CINF",
+    "name": "Cincinnati Financial",
+    "accession": "0000020286-26-000026",
+    "form": "10-Q",
+    "period": "2026-03-31",
+    "primary_doc": "cinf-20260331.htm"
+  },
+  {
+    "cik": "1000228",
+    "ticker": "PFG",
+    "name": "Principal Financial",
+    "accession": "0001000228-26-000024",
+    "form": "10-Q",
+    "period": "2026-03-28",
+    "primary_doc": "hsic-20260328.htm"
+  },
+  {
+    "cik": "914208",
+    "ticker": "UNM",
+    "name": "Unum Group",
+    "accession": "0000914208-26-000106",
+    "form": "10-Q",
+    "period": "2026-03-31",
+    "primary_doc": "ivz-20260331.htm"
+  }
+]

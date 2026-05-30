@@ -1,0 +1,29 @@
+{
+  "nct_id": "NCT02855944",
+  "doc_id": "Prot_000",
+  "label": "ARIEL4: A Study of Rucaparib Versus Chemotherapy BRCA Mutant",
+  "values": {
+    "nct_id": "NCT02855944",
+    "brief_title": "ARIEL4: A Study of Rucaparib Versus Chemotherapy BRCA Mutant Ovarian, Fallopian Tube, or Primary Peritoneal Cancer Patients",
+    "official_title": "ARIEL4 (Assessment of Rucaparib In Ovarian CancEr TriaL): A Phase 3 Multicenter, Randomized Study of Rucaparib Versus Chemotherapy in Patients With Relapsed, BRCA Mutant, High Grade Epithelial Ovarian, Fallopian Tube, or Primary Peritoneal Cancer",
+    "sponsor": "pharmaand GmbH",
+    "study_type": "INTERVENTIONAL",
+    "phase": "PHASE3",
+    "allocation": "RANDOMIZED",
+    "masking": "NONE",
+    "intervention_model": "PARALLEL",
+    "enrollment_count": 349,
+    "start_date": "2017-03-01",
+    "primary_completion_date": "2020-12-03",
+    "completion_date": "2022-09-16",
+    "minimum_age": "18 Years",
+    "maximum_age": null,
+    "sex": "FEMALE",
+    "healthy_volunteers": false,
+    "primary_outcome_measure": "Investigator Assessed Progression-Free Survival (invPFS) by RECIST Version 1.1 for Rucaparib Versus Chemotherapy (Efficacy Population)",
+    "primary_outcome_time_frame": "Assessments every 8 weeks from Cycle 1 Day 1 (C1D1) until disease progression, death, or initiation of subsequent treatment. After 18 months on study, assessments every 16 weeks. Total follow-up was up to approximately 3.5 years.",
+    "overall_status": "COMPLETED"
+  },
+  "populated_count": 19,
+  "total_fields": 20
+}

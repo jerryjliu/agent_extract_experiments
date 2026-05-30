@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ClinicalTrials.gov protocol Extraction — Claude Code vs Claude Code + LlamaExtract Skill</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/fontsource/fonts/overused-grotesk@latest/latin.css" rel="stylesheet">
+<style>
+:root {
+  --bg: #FFFFFF; --bg-alt: #F5F5F5; --surface: #FFFFFF; --surface2: #F5F5F5;
+  --border: #E7E7E7; --text: #000000; --text-dim: #737373;
+  --purple: #3E18F9; --blue: #37D7FA; --pink: #FF8DF2; --orange: #FF8705;
+  --gradient-stroke: linear-gradient(180deg, #37D7FA 0%, #4B72FE 40%, #FF8DF2 68%, #FF8705 100%);
+  --success: #1FA853; --danger: #E0344C; --missing: #FFBD74; --neutral: #C8C8C8;
+}
+* { margin:0; padding:0; box-sizing: border-box; }
+body { font-family: 'Overused Grotesk', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.55; }
+.hero { text-align:center; padding: 2.5rem 2rem 2rem;
+  background: linear-gradient(180deg, rgba(150,231,249,0.08), rgba(146,174,255,0.06) 30%, rgba(255,191,248,0.04) 60%, transparent 85%);
+  border-bottom: 1px solid var(--border); position: relative;
+}
+.hero::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background: var(--gradient-stroke); }
+.hero h1 { font-size: 2.1rem; font-weight: 500; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 0.4rem; }
+.hero h1 .accent { background: var(--gradient-stroke); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.hero .subtitle { color: var(--text-dim); font-size: 0.95rem; max-width: 720px; margin: 0.3rem auto 0; }
+.stats-bar { display:grid; grid-template-columns: repeat(4, 1fr); max-width: 800px; margin: 1.5rem auto 0;
+  gap: 1px; background: var(--border); border-radius: 12px; overflow: hidden; position: relative; }
+.stats-bar::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background: var(--gradient-stroke); z-index:1; }
+.stat { background: var(--bg); padding: 0.9rem 0.6rem; text-align: center; }
+.stat .val { font-size: 1.35rem; font-weight: 500; font-variant-numeric: tabular-nums; letter-spacing: -0.03em; }
+.stat .lbl { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 0.15rem; }
+.delta-pos { color: var(--success); }
+.delta-neg { color: var(--danger); }
+.container { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+.section-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; font-weight: 500; color: var(--text-dim);
+  text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.9rem;
+  padding-bottom: 0.4rem; border-bottom: 2px solid transparent; border-image: var(--gradient-stroke) 1; }
+.cmp-table { width:100%; border-collapse: collapse; font-variant-numeric: tabular-nums; margin-bottom: 2.5rem; }
+.cmp-table th, .cmp-table td { padding: 0.55rem 0.7rem; text-align: left; border-bottom: 1px solid var(--border); }
+.cmp-table th { font-family: 'IBM Plex Mono', monospace; font-weight: 500; font-size: 0.75rem; text-transform: uppercase; color: var(--text-dim); }
+.cmp-table tbody tr:hover { background: var(--bg-alt); }
+.cond-with { color: var(--purple); font-weight: 500; }
+.cond-with-v1 { color: var(--text-dim); font-weight: 400; font-style: italic; }
+.cond-no { color: var(--orange); font-weight: 500; }
+.filing-card { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 0.75rem; overflow: hidden; }
+.filing-card[open] { box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+.filing-card summary { list-style: none; padding: 0.85rem 1rem; cursor: pointer; display: grid;
+  grid-template-columns: minmax(180px, 0.3fr) minmax(200px, 0.3fr) minmax(200px, 0.5fr); align-items: center; gap: 1rem; }
+.filing-card summary::-webkit-details-marker { display: none; }
+.filing-name { font-weight: 500; font-size: 1rem; }
+.filing-meta { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--text-dim); }
+.filing-scores { display: flex; gap: 1.1rem; justify-content: flex-end; flex-wrap: wrap; font-variant-numeric: tabular-nums; }
+.score-pair .label { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; }
+.score-pair .val { font-weight: 500; font-size: 0.9rem; margin-left: 0.2rem; }
+.filing-body { padding: 1rem 1.4rem 1.4rem; border-top: 1px solid var(--border); display: grid; grid-template-columns: 1fr 1.2fr; gap: 1.5rem; }
+.heatmap-wrap h4, .excerpts-col h4 { font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; text-transform: uppercase;
+  color: var(--text-dim); letter-spacing: 0.04em; margin-bottom: 0.5rem; font-weight: 500; }
+.heatmap { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+.heatmap th { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--text-dim); text-align: left; padding: 0.2rem 0.4rem;
+  font-weight: 500; text-transform: uppercase; }
+.heatmap td { padding: 0.18rem 0.4rem; vertical-align: middle; }
+.field-name { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; color: var(--text); }
+.cell { width: 14px; height: 14px; border-radius: 3px; display: inline-block; }
+.cell-correct { background: var(--success); }
+.cell-wrong { background: var(--danger); }
+.cell-missing { background: var(--missing); }
+.cell-format_error { background: var(--danger); border: 1px dashed #000; }
+.cell-na { background: var(--neutral); }
+.excerpts { display: flex; flex-direction: column; gap: 1rem; }
+.excerpts-col { background: var(--bg-alt); border-radius: 8px; padding: 0.7rem 0.9rem; }
+.tool-event { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; padding: 0.2rem 0; border-bottom: 1px dashed var(--border); }
+.tool-event:last-child { border-bottom: none; }
+.tool-name { background: var(--purple); color: white; padding: 0.05rem 0.35rem; border-radius: 3px; font-size: 0.65rem; font-weight: 500; }
+.tool-input { color: var(--text-dim); margin-left: 0.5rem; }
+.warn-callout { background: rgba(255, 135, 5, 0.08); border-left: 3px solid var(--orange); padding: 0.6rem 0.9rem; border-radius: 4px;
+  font-size: 0.85rem; margin-bottom: 1rem; }
+.warn-callout code { background: var(--bg-alt); padding: 0.05rem 0.3rem; border-radius: 3px; font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; }
+.discipline-note { font-size: 0.85rem; color: var(--text); margin: 0.5rem 0 0.3rem; }
+.caveat { font-size: 0.75rem; color: var(--text-dim); font-style: italic; margin-bottom: 2.5rem; }
+footer { text-align: center; padding: 2rem 1rem; color: var(--text-dim); font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; }
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>Claude Code <span class="accent">vs</span> Claude Code + LlamaExtract Skill</h1>
+  <div class="subtitle">ClinicalTrials.gov protocol structured extraction — 12 documents, ~20 fields each.</div>
+  <div class="stats-bar">
+    <div class="stat"><div class="val delta-pos">1/1</div><div class="lbl">skill invoked (batch with_skill)</div></div>
+    <div class="stat"><div class="val">-22.1pp</div><div class="lbl">accuracy Δ (with−no)</div></div>
+    <div class="stat"><div class="val">$-2.66</div><div class="lbl">total cost Δ (with−no)</div></div>
+    <div class="stat"><div class="val">12</div><div class="lbl">documents</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="section-label">Aggregate comparison · with_skill vs no_skill</div>
+  <table class="cmp-table">
+    <thead><tr><th>condition</th><th>accuracy</th><th>correct</th><th>wrong</th><th>missing</th><th>total cost</th><th>total/session duration</th></tr></thead>
+    <tbody>
+      
+      <tr><td class="cond-with">with_skill</td><td>59.3%</td><td>86</td><td>47</td><td>12</td><td>$0.37</td><td>63.2s</td></tr>
+      <tr><td class="cond-no">no_skill</td><td>81.4%</td><td>118</td><td>27</td><td>0</td><td>$3.04</td><td>326.7s</td></tr>
+    </tbody>
+  </table>
+
+  
+
+  <div class="section-label">Per-document comparison · click to expand</div>
+  
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>SHR-1210 Combined With Apatinib in Treatment of ED-SCLC Afte</span>
+    <span class='filing-meta'>NCT03417895 · SHR-1210 Combined With Apatinib in Treatment of ED-SCLC Afte</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>10/20</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>10/20</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>nct_id</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>brief_title</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>official_title</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>sponsor</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>study_type</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>phase</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>allocation</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>masking</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>intervention_model</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>enrollment_count</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>start_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>primary_completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>minimum_age</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>maximum_age</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>sex</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>healthy_volunteers</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>primary_outcome_measure</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>primary_outcome_time_frame</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>overall_status</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and ensure outputs dir exists</span></div>
+<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./schema.json &amp;&amp; echo &quot;---&quot; &amp;&amp; ls .claude/skills/llama-extract/scripts/extrac, description=Verify schema and CLI exist</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(11 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python .claude/skills/llama-extract/scripts/extract.py --input ./inputs/NCT04090, description=Extract NCT04090528, run_in_background=True</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=while [ $(ls ./outputs/*.json 2&gt;/dev/null | wc -l) -lt 12 ]; do sleep 10; done; , description=Wait for all 12 outputs, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=for f in ./outputs/*.json; do python -c &quot;import json; json.load(open(&#x27;$f&#x27;))&quot; &amp;&amp; , description=Validate all outputs are valid JSON</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50, description=List input and output directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; pdftotext -v 2&gt;&amp;1 | head -3, description=Check for pdftotext utility</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p /tmp/pdftxt &amp;&amp; for f in ./inputs/*.pdf; do base=$(basename &quot;$f&quot; .pdf); , description=Convert all PDFs to text</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(59 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=grep -n -i -E &quot;sponsor|Idera|Clovis|Novartis|Hengrui|City of Hope|McNeel|Univers, description=Sponsor</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &lt;&lt; &#x27;PY&#x27; &gt; /tmp/write_outputs.py
+import json, os
+
+out = &quot;./outputs&quot;
+os.makedi, description=Write all 12 output files</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./outputs/ &amp;&amp; python3 -c &quot;
+import json, os
+from jsonschema import validat, description=Validate against schema</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>Study of Ribociclib With Everolimus + Exemestane in HR+ HER2</span>
+    <span class='filing-meta'>NCT02732119 · Study of Ribociclib With Everolimus + Exemestane in HR+ HER2</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>7/20</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>11/20</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>nct_id</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>brief_title</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>official_title</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>sponsor</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>study_type</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>phase</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>allocation</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>masking</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>intervention_model</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>enrollment_count</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>start_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>primary_completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>minimum_age</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>maximum_age</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>sex</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>healthy_volunteers</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>primary_outcome_measure</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>primary_outcome_time_frame</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>overall_status</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and ensure outputs dir exists</span></div>
+<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./schema.json &amp;&amp; echo &quot;---&quot; &amp;&amp; ls .claude/skills/llama-extract/scripts/extrac, description=Verify schema and CLI exist</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(11 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python .claude/skills/llama-extract/scripts/extract.py --input ./inputs/NCT04090, description=Extract NCT04090528, run_in_background=True</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=while [ $(ls ./outputs/*.json 2&gt;/dev/null | wc -l) -lt 12 ]; do sleep 10; done; , description=Wait for all 12 outputs, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=for f in ./outputs/*.json; do python -c &quot;import json; json.load(open(&#x27;$f&#x27;))&quot; &amp;&amp; , description=Validate all outputs are valid JSON</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50, description=List input and output directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; pdftotext -v 2&gt;&amp;1 | head -3, description=Check for pdftotext utility</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p /tmp/pdftxt &amp;&amp; for f in ./inputs/*.pdf; do base=$(basename &quot;$f&quot; .pdf); , description=Convert all PDFs to text</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(59 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=grep -n -i -E &quot;sponsor|Idera|Clovis|Novartis|Hengrui|City of Hope|McNeel|Univers, description=Sponsor</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &lt;&lt; &#x27;PY&#x27; &gt; /tmp/write_outputs.py
+import json, os
+
+out = &quot;./outputs&quot;
+os.makedi, description=Write all 12 output files</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./outputs/ &amp;&amp; python3 -c &quot;
+import json, os
+from jsonschema import validat, description=Validate against schema</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>A Phase 2 Study to Assess the Safety and Efficacy of IMO-212</span>
+    <span class='filing-meta'>NCT02644967 · A Phase 2 Study to Assess the Safety and Efficacy of IMO-212</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>5/20</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>7/20</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>nct_id</td><td class='cell cell-missing' title='missing'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>brief_title</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>official_title</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>sponsor</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>study_type</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>phase</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>allocation</td><td class='cell cell-missing' title='missing'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>masking</td><td class='cell cell-missing' title='missing'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>intervention_model</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>enrollment_count</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>start_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>primary_completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>minimum_age</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>maximum_age</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>sex</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>healthy_volunteers</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>primary_outcome_measure</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>primary_outcome_time_frame</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>overall_status</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and ensure outputs dir exists</span></div>
+<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./schema.json &amp;&amp; echo &quot;---&quot; &amp;&amp; ls .claude/skills/llama-extract/scripts/extrac, description=Verify schema and CLI exist</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(11 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python .claude/skills/llama-extract/scripts/extract.py --input ./inputs/NCT04090, description=Extract NCT04090528, run_in_background=True</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=while [ $(ls ./outputs/*.json 2&gt;/dev/null | wc -l) -lt 12 ]; do sleep 10; done; , description=Wait for all 12 outputs, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=for f in ./outputs/*.json; do python -c &quot;import json; json.load(open(&#x27;$f&#x27;))&quot; &amp;&amp; , description=Validate all outputs are valid JSON</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50, description=List input and output directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; pdftotext -v 2&gt;&amp;1 | head -3, description=Check for pdftotext utility</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p /tmp/pdftxt &amp;&amp; for f in ./inputs/*.pdf; do base=$(basename &quot;$f&quot; .pdf); , description=Convert all PDFs to text</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(59 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=grep -n -i -E &quot;sponsor|Idera|Clovis|Novartis|Hengrui|City of Hope|McNeel|Univers, description=Sponsor</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &lt;&lt; &#x27;PY&#x27; &gt; /tmp/write_outputs.py
+import json, os
+
+out = &quot;./outputs&quot;
+os.makedi, description=Write all 12 output files</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./outputs/ &amp;&amp; python3 -c &quot;
+import json, os
+from jsonschema import validat, description=Validate against schema</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>Phase Ib/II Study of MCS110 in Combination With PDR001 in Pa</span>
+    <span class='filing-meta'>NCT02807844 · Phase Ib/II Study of MCS110 in Combination With PDR001 in Pa</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>10/20</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>12/20</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>nct_id</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>brief_title</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>official_title</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>sponsor</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>study_type</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>phase</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>allocation</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>masking</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>intervention_model</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>enrollment_count</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>start_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>primary_completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>minimum_age</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>maximum_age</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>sex</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>healthy_volunteers</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>primary_outcome_measure</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>primary_outcome_time_frame</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>overall_status</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and ensure outputs dir exists</span></div>
+<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./schema.json &amp;&amp; echo &quot;---&quot; &amp;&amp; ls .claude/skills/llama-extract/scripts/extrac, description=Verify schema and CLI exist</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(11 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python .claude/skills/llama-extract/scripts/extract.py --input ./inputs/NCT04090, description=Extract NCT04090528, run_in_background=True</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=while [ $(ls ./outputs/*.json 2&gt;/dev/null | wc -l) -lt 12 ]; do sleep 10; done; , description=Wait for all 12 outputs, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=for f in ./outputs/*.json; do python -c &quot;import json; json.load(open(&#x27;$f&#x27;))&quot; &amp;&amp; , description=Validate all outputs are valid JSON</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50, description=List input and output directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; pdftotext -v 2&gt;&amp;1 | head -3, description=Check for pdftotext utility</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p /tmp/pdftxt &amp;&amp; for f in ./inputs/*.pdf; do base=$(basename &quot;$f&quot; .pdf); , description=Convert all PDFs to text</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(59 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=grep -n -i -E &quot;sponsor|Idera|Clovis|Novartis|Hengrui|City of Hope|McNeel|Univers, description=Sponsor</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &lt;&lt; &#x27;PY&#x27; &gt; /tmp/write_outputs.py
+import json, os
+
+out = &quot;./outputs&quot;
+os.makedi, description=Write all 12 output files</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./outputs/ &amp;&amp; python3 -c &quot;
+import json, os
+from jsonschema import validat, description=Validate against schema</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>ARIEL4: A Study of Rucaparib Versus Chemotherapy BRCA Mutant</span>
+    <span class='filing-meta'>NCT02855944 · ARIEL4: A Study of Rucaparib Versus Chemotherapy BRCA Mutant</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>8/20</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>10/20</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>nct_id</td><td class='cell cell-missing' title='missing'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>brief_title</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>official_title</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>sponsor</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>study_type</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>phase</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>allocation</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>masking</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>intervention_model</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>enrollment_count</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>start_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>primary_completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>minimum_age</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>maximum_age</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>sex</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>healthy_volunteers</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>primary_outcome_measure</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>primary_outcome_time_frame</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>overall_status</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and ensure outputs dir exists</span></div>
+<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./schema.json &amp;&amp; echo &quot;---&quot; &amp;&amp; ls .claude/skills/llama-extract/scripts/extrac, description=Verify schema and CLI exist</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(11 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python .claude/skills/llama-extract/scripts/extract.py --input ./inputs/NCT04090, description=Extract NCT04090528, run_in_background=True</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=while [ $(ls ./outputs/*.json 2&gt;/dev/null | wc -l) -lt 12 ]; do sleep 10; done; , description=Wait for all 12 outputs, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=for f in ./outputs/*.json; do python -c &quot;import json; json.load(open(&#x27;$f&#x27;))&quot; &amp;&amp; , description=Validate all outputs are valid JSON</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50, description=List input and output directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; pdftotext -v 2&gt;&amp;1 | head -3, description=Check for pdftotext utility</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p /tmp/pdftxt &amp;&amp; for f in ./inputs/*.pdf; do base=$(basename &quot;$f&quot; .pdf); , description=Convert all PDFs to text</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(59 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=grep -n -i -E &quot;sponsor|Idera|Clovis|Novartis|Hengrui|City of Hope|McNeel|Univers, description=Sponsor</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &lt;&lt; &#x27;PY&#x27; &gt; /tmp/write_outputs.py
+import json, os
+
+out = &quot;./outputs&quot;
+os.makedi, description=Write all 12 output files</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./outputs/ &amp;&amp; python3 -c &quot;
+import json, os
+from jsonschema import validat, description=Validate against schema</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>Targeted Fusion Biopsy of the Prostate</span>
+    <span class='filing-meta'>NCT02744534 · Targeted Fusion Biopsy of the Prostate</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>9/20</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>9/20</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>nct_id</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>brief_title</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>official_title</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>sponsor</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>study_type</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>phase</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>allocation</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>masking</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>intervention_model</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>enrollment_count</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>start_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>primary_completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>minimum_age</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>maximum_age</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>sex</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>healthy_volunteers</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>primary_outcome_measure</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>primary_outcome_time_frame</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>overall_status</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and ensure outputs dir exists</span></div>
+<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./schema.json &amp;&amp; echo &quot;---&quot; &amp;&amp; ls .claude/skills/llama-extract/scripts/extrac, description=Verify schema and CLI exist</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(11 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python .claude/skills/llama-extract/scripts/extract.py --input ./inputs/NCT04090, description=Extract NCT04090528, run_in_background=True</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=while [ $(ls ./outputs/*.json 2&gt;/dev/null | wc -l) -lt 12 ]; do sleep 10; done; , description=Wait for all 12 outputs, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=for f in ./outputs/*.json; do python -c &quot;import json; json.load(open(&#x27;$f&#x27;))&quot; &amp;&amp; , description=Validate all outputs are valid JSON</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50, description=List input and output directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; pdftotext -v 2&gt;&amp;1 | head -3, description=Check for pdftotext utility</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p /tmp/pdftxt &amp;&amp; for f in ./inputs/*.pdf; do base=$(basename &quot;$f&quot; .pdf); , description=Convert all PDFs to text</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(59 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=grep -n -i -E &quot;sponsor|Idera|Clovis|Novartis|Hengrui|City of Hope|McNeel|Univers, description=Sponsor</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &lt;&lt; &#x27;PY&#x27; &gt; /tmp/write_outputs.py
+import json, os
+
+out = &quot;./outputs&quot;
+os.makedi, description=Write all 12 output files</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./outputs/ &amp;&amp; python3 -c &quot;
+import json, os
+from jsonschema import validat, description=Validate against schema</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>Ceritinib (LDK378) for Patients Whose Tumors Have Aberration</span>
+    <span class='filing-meta'>NCT02186821 · Ceritinib (LDK378) for Patients Whose Tumors Have Aberration</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>7/20</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>9/20</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>nct_id</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>brief_title</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>official_title</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>sponsor</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>study_type</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>phase</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>allocation</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>masking</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>intervention_model</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>enrollment_count</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>start_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>primary_completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>minimum_age</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>maximum_age</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>sex</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>healthy_volunteers</td><td class='cell cell-missing' title='missing'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>primary_outcome_measure</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>primary_outcome_time_frame</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>overall_status</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and ensure outputs dir exists</span></div>
+<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./schema.json &amp;&amp; echo &quot;---&quot; &amp;&amp; ls .claude/skills/llama-extract/scripts/extrac, description=Verify schema and CLI exist</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(11 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python .claude/skills/llama-extract/scripts/extract.py --input ./inputs/NCT04090, description=Extract NCT04090528, run_in_background=True</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=while [ $(ls ./outputs/*.json 2&gt;/dev/null | wc -l) -lt 12 ]; do sleep 10; done; , description=Wait for all 12 outputs, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=for f in ./outputs/*.json; do python -c &quot;import json; json.load(open(&#x27;$f&#x27;))&quot; &amp;&amp; , description=Validate all outputs are valid JSON</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50, description=List input and output directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; pdftotext -v 2&gt;&amp;1 | head -3, description=Check for pdftotext utility</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p /tmp/pdftxt &amp;&amp; for f in ./inputs/*.pdf; do base=$(basename &quot;$f&quot; .pdf); , description=Convert all PDFs to text</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(59 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=grep -n -i -E &quot;sponsor|Idera|Clovis|Novartis|Hengrui|City of Hope|McNeel|Univers, description=Sponsor</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &lt;&lt; &#x27;PY&#x27; &gt; /tmp/write_outputs.py
+import json, os
+
+out = &quot;./outputs&quot;
+os.makedi, description=Write all 12 output files</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./outputs/ &amp;&amp; python3 -c &quot;
+import json, os
+from jsonschema import validat, description=Validate against schema</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>Durvalumab and Tremelimumab ± Platinum-Based Chemotherapy in</span>
+    <span class='filing-meta'>NCT03057106 · Durvalumab and Tremelimumab ± Platinum-Based Chemotherapy in</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>5/20</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>11/20</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>nct_id</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>brief_title</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>official_title</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>sponsor</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>study_type</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>phase</td><td class='cell cell-missing' title='missing'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>allocation</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>masking</td><td class='cell cell-missing' title='missing'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>intervention_model</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>enrollment_count</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>start_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>primary_completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>minimum_age</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>maximum_age</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>sex</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>healthy_volunteers</td><td class='cell cell-missing' title='missing'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>primary_outcome_measure</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>primary_outcome_time_frame</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>overall_status</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and ensure outputs dir exists</span></div>
+<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./schema.json &amp;&amp; echo &quot;---&quot; &amp;&amp; ls .claude/skills/llama-extract/scripts/extrac, description=Verify schema and CLI exist</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(11 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python .claude/skills/llama-extract/scripts/extract.py --input ./inputs/NCT04090, description=Extract NCT04090528, run_in_background=True</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=while [ $(ls ./outputs/*.json 2&gt;/dev/null | wc -l) -lt 12 ]; do sleep 10; done; , description=Wait for all 12 outputs, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=for f in ./outputs/*.json; do python -c &quot;import json; json.load(open(&#x27;$f&#x27;))&quot; &amp;&amp; , description=Validate all outputs are valid JSON</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50, description=List input and output directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; pdftotext -v 2&gt;&amp;1 | head -3, description=Check for pdftotext utility</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p /tmp/pdftxt &amp;&amp; for f in ./inputs/*.pdf; do base=$(basename &quot;$f&quot; .pdf); , description=Convert all PDFs to text</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(59 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=grep -n -i -E &quot;sponsor|Idera|Clovis|Novartis|Hengrui|City of Hope|McNeel|Univers, description=Sponsor</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &lt;&lt; &#x27;PY&#x27; &gt; /tmp/write_outputs.py
+import json, os
+
+out = &quot;./outputs&quot;
+os.makedi, description=Write all 12 output files</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./outputs/ &amp;&amp; python3 -c &quot;
+import json, os
+from jsonschema import validat, description=Validate against schema</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>Avelumab, Utomilumab, Anti-OX40 Antibody PF-04518600, and Ra</span>
+    <span class='filing-meta'>NCT03217747 · Avelumab, Utomilumab, Anti-OX40 Antibody PF-04518600, and Ra</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>7/20</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>10/20</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>nct_id</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>brief_title</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>official_title</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>sponsor</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>study_type</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>phase</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>allocation</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>masking</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>intervention_model</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>enrollment_count</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>start_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>primary_completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>minimum_age</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>maximum_age</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>sex</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>healthy_volunteers</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>primary_outcome_measure</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>primary_outcome_time_frame</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>overall_status</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and ensure outputs dir exists</span></div>
+<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./schema.json &amp;&amp; echo &quot;---&quot; &amp;&amp; ls .claude/skills/llama-extract/scripts/extrac, description=Verify schema and CLI exist</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(11 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python .claude/skills/llama-extract/scripts/extract.py --input ./inputs/NCT04090, description=Extract NCT04090528, run_in_background=True</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=while [ $(ls ./outputs/*.json 2&gt;/dev/null | wc -l) -lt 12 ]; do sleep 10; done; , description=Wait for all 12 outputs, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=for f in ./outputs/*.json; do python -c &quot;import json; json.load(open(&#x27;$f&#x27;))&quot; &amp;&amp; , description=Validate all outputs are valid JSON</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50, description=List input and output directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; pdftotext -v 2&gt;&amp;1 | head -3, description=Check for pdftotext utility</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p /tmp/pdftxt &amp;&amp; for f in ./inputs/*.pdf; do base=$(basename &quot;$f&quot; .pdf); , description=Convert all PDFs to text</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(59 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=grep -n -i -E &quot;sponsor|Idera|Clovis|Novartis|Hengrui|City of Hope|McNeel|Univers, description=Sponsor</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &lt;&lt; &#x27;PY&#x27; &gt; /tmp/write_outputs.py
+import json, os
+
+out = &quot;./outputs&quot;
+os.makedi, description=Write all 12 output files</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./outputs/ &amp;&amp; python3 -c &quot;
+import json, os
+from jsonschema import validat, description=Validate against schema</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>Memory and Attention Adaptation Training-Geriatrics (MAAT-G)</span>
+    <span class='filing-meta'>NCT04669301 · Memory and Attention Adaptation Training-Geriatrics (MAAT-G)</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>5/20</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>9/20</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>nct_id</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>brief_title</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>official_title</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>sponsor</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>study_type</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>phase</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>allocation</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>masking</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>intervention_model</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>enrollment_count</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>start_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>primary_completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>minimum_age</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>maximum_age</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>sex</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>healthy_volunteers</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>primary_outcome_measure</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>primary_outcome_time_frame</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>overall_status</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and ensure outputs dir exists</span></div>
+<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./schema.json &amp;&amp; echo &quot;---&quot; &amp;&amp; ls .claude/skills/llama-extract/scripts/extrac, description=Verify schema and CLI exist</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(11 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python .claude/skills/llama-extract/scripts/extract.py --input ./inputs/NCT04090, description=Extract NCT04090528, run_in_background=True</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=while [ $(ls ./outputs/*.json 2&gt;/dev/null | wc -l) -lt 12 ]; do sleep 10; done; , description=Wait for all 12 outputs, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=for f in ./outputs/*.json; do python -c &quot;import json; json.load(open(&#x27;$f&#x27;))&quot; &amp;&amp; , description=Validate all outputs are valid JSON</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50, description=List input and output directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; pdftotext -v 2&gt;&amp;1 | head -3, description=Check for pdftotext utility</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p /tmp/pdftxt &amp;&amp; for f in ./inputs/*.pdf; do base=$(basename &quot;$f&quot; .pdf); , description=Convert all PDFs to text</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(59 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=grep -n -i -E &quot;sponsor|Idera|Clovis|Novartis|Hengrui|City of Hope|McNeel|Univers, description=Sponsor</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &lt;&lt; &#x27;PY&#x27; &gt; /tmp/write_outputs.py
+import json, os
+
+out = &quot;./outputs&quot;
+os.makedi, description=Write all 12 output files</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./outputs/ &amp;&amp; python3 -c &quot;
+import json, os
+from jsonschema import validat, description=Validate against schema</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>Genetically Modified Neural Stem Cells, Flucytosine, and Leu</span>
+    <span class='filing-meta'>NCT02015819 · Genetically Modified Neural Stem Cells, Flucytosine, and Leu</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>4/20</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>9/20</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>nct_id</td><td class='cell cell-missing' title='missing'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>brief_title</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>official_title</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>sponsor</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>study_type</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>phase</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>allocation</td><td class='cell cell-missing' title='missing'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>masking</td><td class='cell cell-missing' title='missing'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>intervention_model</td><td class='cell cell-missing' title='missing'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>enrollment_count</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>start_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>primary_completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>minimum_age</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>maximum_age</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>sex</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>healthy_volunteers</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>primary_outcome_measure</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>primary_outcome_time_frame</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>overall_status</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and ensure outputs dir exists</span></div>
+<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./schema.json &amp;&amp; echo &quot;---&quot; &amp;&amp; ls .claude/skills/llama-extract/scripts/extrac, description=Verify schema and CLI exist</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(11 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python .claude/skills/llama-extract/scripts/extract.py --input ./inputs/NCT04090, description=Extract NCT04090528, run_in_background=True</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=while [ $(ls ./outputs/*.json 2&gt;/dev/null | wc -l) -lt 12 ]; do sleep 10; done; , description=Wait for all 12 outputs, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=for f in ./outputs/*.json; do python -c &quot;import json; json.load(open(&#x27;$f&#x27;))&quot; &amp;&amp; , description=Validate all outputs are valid JSON</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50, description=List input and output directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; pdftotext -v 2&gt;&amp;1 | head -3, description=Check for pdftotext utility</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p /tmp/pdftxt &amp;&amp; for f in ./inputs/*.pdf; do base=$(basename &quot;$f&quot; .pdf); , description=Convert all PDFs to text</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(59 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=grep -n -i -E &quot;sponsor|Idera|Clovis|Novartis|Hengrui|City of Hope|McNeel|Univers, description=Sponsor</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &lt;&lt; &#x27;PY&#x27; &gt; /tmp/write_outputs.py
+import json, os
+
+out = &quot;./outputs&quot;
+os.makedi, description=Write all 12 output files</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./outputs/ &amp;&amp; python3 -c &quot;
+import json, os
+from jsonschema import validat, description=Validate against schema</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>pTVG-HP DNA Vaccine With or Without pTVG-AR DNA Vaccine and </span>
+    <span class='filing-meta'>NCT04090528 · pTVG-HP DNA Vaccine With or Without pTVG-AR DNA Vaccine and </span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>9/20</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>11/20</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>nct_id</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>brief_title</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>official_title</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>sponsor</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>study_type</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>phase</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>allocation</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>masking</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>intervention_model</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>enrollment_count</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>start_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>primary_completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>minimum_age</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>maximum_age</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>sex</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>healthy_volunteers</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>primary_outcome_measure</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>primary_outcome_time_frame</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>overall_status</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and ensure outputs dir exists</span></div>
+<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./schema.json &amp;&amp; echo &quot;---&quot; &amp;&amp; ls .claude/skills/llama-extract/scripts/extrac, description=Verify schema and CLI exist</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(11 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python .claude/skills/llama-extract/scripts/extract.py --input ./inputs/NCT04090, description=Extract NCT04090528, run_in_background=True</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=while [ $(ls ./outputs/*.json 2&gt;/dev/null | wc -l) -lt 12 ]; do sleep 10; done; , description=Wait for all 12 outputs, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=for f in ./outputs/*.json; do python -c &quot;import json; json.load(open(&#x27;$f&#x27;))&quot; &amp;&amp; , description=Validate all outputs are valid JSON</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50, description=List input and output directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; pdftotext -v 2&gt;&amp;1 | head -3, description=Check for pdftotext utility</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p /tmp/pdftxt &amp;&amp; for f in ./inputs/*.pdf; do base=$(basename &quot;$f&quot; .pdf); , description=Convert all PDFs to text</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(59 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=grep -n -i -E &quot;sponsor|Idera|Clovis|Novartis|Hengrui|City of Hope|McNeel|Univers, description=Sponsor</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &lt;&lt; &#x27;PY&#x27; &gt; /tmp/write_outputs.py
+import json, os
+
+out = &quot;./outputs&quot;
+os.makedi, description=Write all 12 output files</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./outputs/ &amp;&amp; python3 -c &quot;
+import json, os
+from jsonschema import validat, description=Validate against schema</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+</div>
+
+<footer>
+  Generated for dataset <code>ctgov_protocols</code> ·
+  model <code>claude-opus-4-7</code> · with-skill loads <code>llama-extract</code> as a project skill,
+  no-skill runs with <code>--bare</code>
+</footer>
+
+</body>
+</html>

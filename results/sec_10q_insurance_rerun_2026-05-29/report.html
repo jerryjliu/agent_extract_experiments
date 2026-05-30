@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SEC 10-Q (insurance segment) Extraction — Claude Code vs Claude Code + LlamaExtract Skill</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/fontsource/fonts/overused-grotesk@latest/latin.css" rel="stylesheet">
+<style>
+:root {
+  --bg: #FFFFFF; --bg-alt: #F5F5F5; --surface: #FFFFFF; --surface2: #F5F5F5;
+  --border: #E7E7E7; --text: #000000; --text-dim: #737373;
+  --purple: #3E18F9; --blue: #37D7FA; --pink: #FF8DF2; --orange: #FF8705;
+  --gradient-stroke: linear-gradient(180deg, #37D7FA 0%, #4B72FE 40%, #FF8DF2 68%, #FF8705 100%);
+  --success: #1FA853; --danger: #E0344C; --missing: #FFBD74; --neutral: #C8C8C8;
+}
+* { margin:0; padding:0; box-sizing: border-box; }
+body { font-family: 'Overused Grotesk', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.55; }
+.hero { text-align:center; padding: 2.5rem 2rem 2rem;
+  background: linear-gradient(180deg, rgba(150,231,249,0.08), rgba(146,174,255,0.06) 30%, rgba(255,191,248,0.04) 60%, transparent 85%);
+  border-bottom: 1px solid var(--border); position: relative;
+}
+.hero::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background: var(--gradient-stroke); }
+.hero h1 { font-size: 2.1rem; font-weight: 500; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 0.4rem; }
+.hero h1 .accent { background: var(--gradient-stroke); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.hero .subtitle { color: var(--text-dim); font-size: 0.95rem; max-width: 720px; margin: 0.3rem auto 0; }
+.stats-bar { display:grid; grid-template-columns: repeat(4, 1fr); max-width: 800px; margin: 1.5rem auto 0;
+  gap: 1px; background: var(--border); border-radius: 12px; overflow: hidden; position: relative; }
+.stats-bar::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background: var(--gradient-stroke); z-index:1; }
+.stat { background: var(--bg); padding: 0.9rem 0.6rem; text-align: center; }
+.stat .val { font-size: 1.35rem; font-weight: 500; font-variant-numeric: tabular-nums; letter-spacing: -0.03em; }
+.stat .lbl { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 0.15rem; }
+.delta-pos { color: var(--success); }
+.delta-neg { color: var(--danger); }
+.container { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+.section-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; font-weight: 500; color: var(--text-dim);
+  text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.9rem;
+  padding-bottom: 0.4rem; border-bottom: 2px solid transparent; border-image: var(--gradient-stroke) 1; }
+.cmp-table { width:100%; border-collapse: collapse; font-variant-numeric: tabular-nums; margin-bottom: 2.5rem; }
+.cmp-table th, .cmp-table td { padding: 0.55rem 0.7rem; text-align: left; border-bottom: 1px solid var(--border); }
+.cmp-table th { font-family: 'IBM Plex Mono', monospace; font-weight: 500; font-size: 0.75rem; text-transform: uppercase; color: var(--text-dim); }
+.cmp-table tbody tr:hover { background: var(--bg-alt); }
+.cond-with { color: var(--purple); font-weight: 500; }
+.cond-with-v1 { color: var(--text-dim); font-weight: 400; font-style: italic; }
+.cond-no { color: var(--orange); font-weight: 500; }
+.filing-card { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 0.75rem; overflow: hidden; }
+.filing-card[open] { box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+.filing-card summary { list-style: none; padding: 0.85rem 1rem; cursor: pointer; display: grid;
+  grid-template-columns: minmax(180px, 0.3fr) minmax(200px, 0.3fr) minmax(200px, 0.5fr); align-items: center; gap: 1rem; }
+.filing-card summary::-webkit-details-marker { display: none; }
+.filing-name { font-weight: 500; font-size: 1rem; }
+.filing-meta { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--text-dim); }
+.filing-scores { display: flex; gap: 1.1rem; justify-content: flex-end; flex-wrap: wrap; font-variant-numeric: tabular-nums; }
+.score-pair .label { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; }
+.score-pair .val { font-weight: 500; font-size: 0.9rem; margin-left: 0.2rem; }
+.filing-body { padding: 1rem 1.4rem 1.4rem; border-top: 1px solid var(--border); display: grid; grid-template-columns: 1fr 1.2fr; gap: 1.5rem; }
+.heatmap-wrap h4, .excerpts-col h4 { font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; text-transform: uppercase;
+  color: var(--text-dim); letter-spacing: 0.04em; margin-bottom: 0.5rem; font-weight: 500; }
+.heatmap { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+.heatmap th { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--text-dim); text-align: left; padding: 0.2rem 0.4rem;
+  font-weight: 500; text-transform: uppercase; }
+.heatmap td { padding: 0.18rem 0.4rem; vertical-align: middle; }
+.field-name { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; color: var(--text); }
+.cell { width: 14px; height: 14px; border-radius: 3px; display: inline-block; }
+.cell-correct { background: var(--success); }
+.cell-wrong { background: var(--danger); }
+.cell-missing { background: var(--missing); }
+.cell-format_error { background: var(--danger); border: 1px dashed #000; }
+.cell-na { background: var(--neutral); }
+.excerpts { display: flex; flex-direction: column; gap: 1rem; }
+.excerpts-col { background: var(--bg-alt); border-radius: 8px; padding: 0.7rem 0.9rem; }
+.tool-event { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; padding: 0.2rem 0; border-bottom: 1px dashed var(--border); }
+.tool-event:last-child { border-bottom: none; }
+.tool-name { background: var(--purple); color: white; padding: 0.05rem 0.35rem; border-radius: 3px; font-size: 0.65rem; font-weight: 500; }
+.tool-input { color: var(--text-dim); margin-left: 0.5rem; }
+.warn-callout { background: rgba(255, 135, 5, 0.08); border-left: 3px solid var(--orange); padding: 0.6rem 0.9rem; border-radius: 4px;
+  font-size: 0.85rem; margin-bottom: 1rem; }
+.warn-callout code { background: var(--bg-alt); padding: 0.05rem 0.3rem; border-radius: 3px; font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; }
+.discipline-note { font-size: 0.85rem; color: var(--text); margin: 0.5rem 0 0.3rem; }
+.caveat { font-size: 0.75rem; color: var(--text-dim); font-style: italic; margin-bottom: 2.5rem; }
+footer { text-align: center; padding: 2rem 1rem; color: var(--text-dim); font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; }
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>Claude Code <span class="accent">vs</span> Claude Code + LlamaExtract Skill</h1>
+  <div class="subtitle">SEC 10-Q (insurance segment) structured extraction — 12 documents, ~17 fields each.</div>
+  <div class="stats-bar">
+    <div class="stat"><div class="val delta-pos">1/1</div><div class="lbl">skill invoked (batch with_skill)</div></div>
+    <div class="stat"><div class="val">-18.2pp</div><div class="lbl">accuracy Δ (with−no)</div></div>
+    <div class="stat"><div class="val">$-1.69</div><div class="lbl">total cost Δ (with−no)</div></div>
+    <div class="stat"><div class="val">12</div><div class="lbl">documents</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="section-label">Aggregate comparison · with_skill vs no_skill</div>
+  <table class="cmp-table">
+    <thead><tr><th>condition</th><th>accuracy</th><th>correct</th><th>wrong</th><th>missing</th><th>total cost</th><th>total/session duration</th></tr></thead>
+    <tbody>
+      
+      <tr><td class="cond-with">with_skill</td><td>79.0%</td><td>139</td><td>37</td><td>0</td><td>$0.49</td><td>64.2s</td></tr>
+      <tr><td class="cond-no">no_skill</td><td>97.2%</td><td>171</td><td>5</td><td>0</td><td>$2.18</td><td>280.9s</td></tr>
+    </tbody>
+  </table>
+
+  
+
+  <div class="section-label">Per-document comparison · click to expand</div>
+  
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>Progressive</span>
+    <span class='filing-meta'>CIK 80661 · PGR · 2026-03-31</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>4/17</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>15/17</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>issuer_name</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>period_end_date</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_revenues</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_investment_income</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>net_income</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income_per_share_basic</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income_per_share_diluted</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_investments</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>stockholders_equity</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>insurance_reserves</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>deferred_policy_acquisition_costs</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_operations</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_investing</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_financing</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>common_shares_outstanding</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory contents</span></div>
+<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List input PDFs</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(12 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=Check outputs status</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=while [ &quot;$(ls ~/Programming/other/jerry-exp/2026_05_24_extract_exp, description=Wait for all 12 outputs, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Validate all output JSON files</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and ensure outputs directory exists</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; which python3, description=Check for PDF tools</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ./inputs &amp;&amp; for f in *.pdf; do pdftotext -layout &quot;$f&quot; &quot;../${f%.pdf}.txt&quot;; don, description=Convert all PDFs to text</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(42 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=head -80 ~/Programming/other/jerry-exp/2026_05_24_extract_experime, description=Verify Henry Schein period</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; /tmp/write_outputs.py &lt;&lt;&#x27;EOF&#x27;
+import json
+import os
+
+outputs_dir = &quot;/Users, description=Write all JSON outputs</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; python3 -c &quot;
+import json, os
+for f in sorted(os.listdir(&#x27;outputs&#x27;, description=Verify all JSON outputs</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>MetLife</span>
+    <span class='filing-meta'>CIK 1099219 · MET · 2026-03-31</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>11/17</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>14/17</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>issuer_name</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>period_end_date</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_revenues</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_investment_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income_per_share_basic</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income_per_share_diluted</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_investments</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>stockholders_equity</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>insurance_reserves</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>deferred_policy_acquisition_costs</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>cash_from_operations</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_investing</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_financing</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>common_shares_outstanding</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory contents</span></div>
+<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List input PDFs</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(12 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=Check outputs status</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=while [ &quot;$(ls ~/Programming/other/jerry-exp/2026_05_24_extract_exp, description=Wait for all 12 outputs, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Validate all output JSON files</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and ensure outputs directory exists</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; which python3, description=Check for PDF tools</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ./inputs &amp;&amp; for f in *.pdf; do pdftotext -layout &quot;$f&quot; &quot;../${f%.pdf}.txt&quot;; don, description=Convert all PDFs to text</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(42 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=head -80 ~/Programming/other/jerry-exp/2026_05_24_extract_experime, description=Verify Henry Schein period</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; /tmp/write_outputs.py &lt;&lt;&#x27;EOF&#x27;
+import json
+import os
+
+outputs_dir = &quot;/Users, description=Write all JSON outputs</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; python3 -c &quot;
+import json, os
+for f in sorted(os.listdir(&#x27;outputs&#x27;, description=Verify all JSON outputs</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>Allstate</span>
+    <span class='filing-meta'>CIK 899051 · ALL · 2026-03-31</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>14/17</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>15/17</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>issuer_name</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>period_end_date</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_revenues</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_investment_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income_per_share_basic</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income_per_share_diluted</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_investments</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>stockholders_equity</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>insurance_reserves</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>deferred_policy_acquisition_costs</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>cash_from_operations</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_investing</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_financing</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>common_shares_outstanding</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory contents</span></div>
+<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List input PDFs</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(12 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=Check outputs status</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=while [ &quot;$(ls ~/Programming/other/jerry-exp/2026_05_24_extract_exp, description=Wait for all 12 outputs, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Validate all output JSON files</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and ensure outputs directory exists</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; which python3, description=Check for PDF tools</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ./inputs &amp;&amp; for f in *.pdf; do pdftotext -layout &quot;$f&quot; &quot;../${f%.pdf}.txt&quot;; don, description=Convert all PDFs to text</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(42 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=head -80 ~/Programming/other/jerry-exp/2026_05_24_extract_experime, description=Verify Henry Schein period</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; /tmp/write_outputs.py &lt;&lt;&#x27;EOF&#x27;
+import json
+import os
+
+outputs_dir = &quot;/Users, description=Write all JSON outputs</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; python3 -c &quot;
+import json, os
+for f in sorted(os.listdir(&#x27;outputs&#x27;, description=Verify all JSON outputs</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>Travelers</span>
+    <span class='filing-meta'>CIK 86312 · TRV · 2026-03-31</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>8/17</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>16/17</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>issuer_name</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>period_end_date</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_revenues</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_investment_income</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income_per_share_basic</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income_per_share_diluted</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_investments</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>stockholders_equity</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>insurance_reserves</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>deferred_policy_acquisition_costs</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_operations</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_investing</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_financing</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>common_shares_outstanding</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory contents</span></div>
+<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List input PDFs</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(12 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=Check outputs status</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=while [ &quot;$(ls ~/Programming/other/jerry-exp/2026_05_24_extract_exp, description=Wait for all 12 outputs, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Validate all output JSON files</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and ensure outputs directory exists</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; which python3, description=Check for PDF tools</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ./inputs &amp;&amp; for f in *.pdf; do pdftotext -layout &quot;$f&quot; &quot;../${f%.pdf}.txt&quot;; don, description=Convert all PDFs to text</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(42 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=head -80 ~/Programming/other/jerry-exp/2026_05_24_extract_experime, description=Verify Henry Schein period</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; /tmp/write_outputs.py &lt;&lt;&#x27;EOF&#x27;
+import json
+import os
+
+outputs_dir = &quot;/Users, description=Write all JSON outputs</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; python3 -c &quot;
+import json, os
+for f in sorted(os.listdir(&#x27;outputs&#x27;, description=Verify all JSON outputs</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>American International Group</span>
+    <span class='filing-meta'>CIK 5272 · AIG · 2026-03-31</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>14/17</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>15/17</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>issuer_name</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>period_end_date</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_revenues</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_investment_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income_per_share_basic</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income_per_share_diluted</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_investments</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>stockholders_equity</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>insurance_reserves</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>deferred_policy_acquisition_costs</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_operations</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_investing</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_financing</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>common_shares_outstanding</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory contents</span></div>
+<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List input PDFs</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(12 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=Check outputs status</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=while [ &quot;$(ls ~/Programming/other/jerry-exp/2026_05_24_extract_exp, description=Wait for all 12 outputs, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Validate all output JSON files</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and ensure outputs directory exists</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; which python3, description=Check for PDF tools</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ./inputs &amp;&amp; for f in *.pdf; do pdftotext -layout &quot;$f&quot; &quot;../${f%.pdf}.txt&quot;; don, description=Convert all PDFs to text</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(42 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=head -80 ~/Programming/other/jerry-exp/2026_05_24_extract_experime, description=Verify Henry Schein period</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; /tmp/write_outputs.py &lt;&lt;&#x27;EOF&#x27;
+import json
+import os
+
+outputs_dir = &quot;/Users, description=Write all JSON outputs</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; python3 -c &quot;
+import json, os
+for f in sorted(os.listdir(&#x27;outputs&#x27;, description=Verify all JSON outputs</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>Hartford Financial</span>
+    <span class='filing-meta'>CIK 874766 · HIG · 2026-03-31</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>15/17</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>15/17</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>issuer_name</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>period_end_date</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_revenues</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_investment_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income_per_share_basic</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income_per_share_diluted</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_investments</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>stockholders_equity</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>insurance_reserves</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>deferred_policy_acquisition_costs</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>cash_from_operations</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_investing</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_financing</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>common_shares_outstanding</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory contents</span></div>
+<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List input PDFs</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(12 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=Check outputs status</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=while [ &quot;$(ls ~/Programming/other/jerry-exp/2026_05_24_extract_exp, description=Wait for all 12 outputs, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Validate all output JSON files</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and ensure outputs directory exists</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; which python3, description=Check for PDF tools</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ./inputs &amp;&amp; for f in *.pdf; do pdftotext -layout &quot;$f&quot; &quot;../${f%.pdf}.txt&quot;; don, description=Convert all PDFs to text</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(42 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=head -80 ~/Programming/other/jerry-exp/2026_05_24_extract_experime, description=Verify Henry Schein period</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; /tmp/write_outputs.py &lt;&lt;&#x27;EOF&#x27;
+import json
+import os
+
+outputs_dir = &quot;/Users, description=Write all JSON outputs</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; python3 -c &quot;
+import json, os
+for f in sorted(os.listdir(&#x27;outputs&#x27;, description=Verify all JSON outputs</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>Prudential Financial</span>
+    <span class='filing-meta'>CIK 1137774 · PRU · 2026-03-31</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>15/17</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>15/17</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>issuer_name</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>period_end_date</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_revenues</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_investment_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income_per_share_basic</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income_per_share_diluted</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_investments</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>stockholders_equity</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>insurance_reserves</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>deferred_policy_acquisition_costs</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_operations</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_investing</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_financing</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>common_shares_outstanding</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory contents</span></div>
+<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List input PDFs</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(12 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=Check outputs status</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=while [ &quot;$(ls ~/Programming/other/jerry-exp/2026_05_24_extract_exp, description=Wait for all 12 outputs, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Validate all output JSON files</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and ensure outputs directory exists</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; which python3, description=Check for PDF tools</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ./inputs &amp;&amp; for f in *.pdf; do pdftotext -layout &quot;$f&quot; &quot;../${f%.pdf}.txt&quot;; don, description=Convert all PDFs to text</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(42 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=head -80 ~/Programming/other/jerry-exp/2026_05_24_extract_experime, description=Verify Henry Schein period</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; /tmp/write_outputs.py &lt;&lt;&#x27;EOF&#x27;
+import json
+import os
+
+outputs_dir = &quot;/Users, description=Write all JSON outputs</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; python3 -c &quot;
+import json, os
+for f in sorted(os.listdir(&#x27;outputs&#x27;, description=Verify all JSON outputs</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>Lincoln National</span>
+    <span class='filing-meta'>CIK 59558 · LNC · 2026-03-31</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>14/17</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>14/17</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>issuer_name</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>period_end_date</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_revenues</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_investment_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income_per_share_basic</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income_per_share_diluted</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_investments</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>stockholders_equity</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>insurance_reserves</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>deferred_policy_acquisition_costs</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>cash_from_operations</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_investing</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_financing</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>common_shares_outstanding</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory contents</span></div>
+<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List input PDFs</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(12 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=Check outputs status</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=while [ &quot;$(ls ~/Programming/other/jerry-exp/2026_05_24_extract_exp, description=Wait for all 12 outputs, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Validate all output JSON files</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and ensure outputs directory exists</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; which python3, description=Check for PDF tools</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ./inputs &amp;&amp; for f in *.pdf; do pdftotext -layout &quot;$f&quot; &quot;../${f%.pdf}.txt&quot;; don, description=Convert all PDFs to text</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(42 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=head -80 ~/Programming/other/jerry-exp/2026_05_24_extract_experime, description=Verify Henry Schein period</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; /tmp/write_outputs.py &lt;&lt;&#x27;EOF&#x27;
+import json
+import os
+
+outputs_dir = &quot;/Users, description=Write all JSON outputs</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; python3 -c &quot;
+import json, os
+for f in sorted(os.listdir(&#x27;outputs&#x27;, description=Verify all JSON outputs</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>Aflac</span>
+    <span class='filing-meta'>CIK 4977 · AFL · 2026-03-31</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>14/17</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>14/17</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>issuer_name</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>period_end_date</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_revenues</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_investment_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income_per_share_basic</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income_per_share_diluted</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_investments</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>stockholders_equity</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>insurance_reserves</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>deferred_policy_acquisition_costs</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_operations</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_investing</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_financing</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>common_shares_outstanding</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory contents</span></div>
+<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List input PDFs</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(12 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=Check outputs status</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=while [ &quot;$(ls ~/Programming/other/jerry-exp/2026_05_24_extract_exp, description=Wait for all 12 outputs, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Validate all output JSON files</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and ensure outputs directory exists</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; which python3, description=Check for PDF tools</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ./inputs &amp;&amp; for f in *.pdf; do pdftotext -layout &quot;$f&quot; &quot;../${f%.pdf}.txt&quot;; don, description=Convert all PDFs to text</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(42 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=head -80 ~/Programming/other/jerry-exp/2026_05_24_extract_experime, description=Verify Henry Schein period</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; /tmp/write_outputs.py &lt;&lt;&#x27;EOF&#x27;
+import json
+import os
+
+outputs_dir = &quot;/Users, description=Write all JSON outputs</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; python3 -c &quot;
+import json, os
+for f in sorted(os.listdir(&#x27;outputs&#x27;, description=Verify all JSON outputs</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>Cincinnati Financial</span>
+    <span class='filing-meta'>CIK 20286 · CINF · 2026-03-31</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>15/17</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>16/17</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>issuer_name</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>period_end_date</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_revenues</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_investment_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income_per_share_basic</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income_per_share_diluted</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_investments</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>stockholders_equity</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>insurance_reserves</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>deferred_policy_acquisition_costs</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_operations</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_investing</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_financing</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>common_shares_outstanding</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory contents</span></div>
+<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List input PDFs</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(12 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=Check outputs status</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=while [ &quot;$(ls ~/Programming/other/jerry-exp/2026_05_24_extract_exp, description=Wait for all 12 outputs, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Validate all output JSON files</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and ensure outputs directory exists</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; which python3, description=Check for PDF tools</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ./inputs &amp;&amp; for f in *.pdf; do pdftotext -layout &quot;$f&quot; &quot;../${f%.pdf}.txt&quot;; don, description=Convert all PDFs to text</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(42 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=head -80 ~/Programming/other/jerry-exp/2026_05_24_extract_experime, description=Verify Henry Schein period</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; /tmp/write_outputs.py &lt;&lt;&#x27;EOF&#x27;
+import json
+import os
+
+outputs_dir = &quot;/Users, description=Write all JSON outputs</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; python3 -c &quot;
+import json, os
+for f in sorted(os.listdir(&#x27;outputs&#x27;, description=Verify all JSON outputs</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>Principal Financial</span>
+    <span class='filing-meta'>CIK 1000228 · PFG · 2026-03-28</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>11/17</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>11/17</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>issuer_name</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>period_end_date</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_revenues</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>net_investment_income</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income_per_share_basic</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income_per_share_diluted</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_investments</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>stockholders_equity</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>insurance_reserves</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>deferred_policy_acquisition_costs</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>cash_from_operations</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_investing</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_financing</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>common_shares_outstanding</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory contents</span></div>
+<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List input PDFs</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(12 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=Check outputs status</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=while [ &quot;$(ls ~/Programming/other/jerry-exp/2026_05_24_extract_exp, description=Wait for all 12 outputs, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Validate all output JSON files</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and ensure outputs directory exists</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; which python3, description=Check for PDF tools</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ./inputs &amp;&amp; for f in *.pdf; do pdftotext -layout &quot;$f&quot; &quot;../${f%.pdf}.txt&quot;; don, description=Convert all PDFs to text</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(42 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=head -80 ~/Programming/other/jerry-exp/2026_05_24_extract_experime, description=Verify Henry Schein period</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; /tmp/write_outputs.py &lt;&lt;&#x27;EOF&#x27;
+import json
+import os
+
+outputs_dir = &quot;/Users, description=Write all JSON outputs</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; python3 -c &quot;
+import json, os
+for f in sorted(os.listdir(&#x27;outputs&#x27;, description=Verify all JSON outputs</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>Unum Group</span>
+    <span class='filing-meta'>CIK 914208 · UNM · 2026-03-31</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>4/17</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>11/17</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>issuer_name</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>period_end_date</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_revenues</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>net_investment_income</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>net_income</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>net_income_per_share_basic</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income_per_share_diluted</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_investments</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>stockholders_equity</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>insurance_reserves</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>deferred_policy_acquisition_costs</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>cash_from_operations</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_investing</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_financing</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>common_shares_outstanding</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory contents</span></div>
+<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List input PDFs</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(12 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=Check outputs status</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=while [ &quot;$(ls ~/Programming/other/jerry-exp/2026_05_24_extract_exp, description=Wait for all 12 outputs, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Validate all output JSON files</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and ensure outputs directory exists</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; which python3, description=Check for PDF tools</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ./inputs &amp;&amp; for f in *.pdf; do pdftotext -layout &quot;$f&quot; &quot;../${f%.pdf}.txt&quot;; don, description=Convert all PDFs to text</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(42 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=head -80 ~/Programming/other/jerry-exp/2026_05_24_extract_experime, description=Verify Henry Schein period</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; /tmp/write_outputs.py &lt;&lt;&#x27;EOF&#x27;
+import json
+import os
+
+outputs_dir = &quot;/Users, description=Write all JSON outputs</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; python3 -c &quot;
+import json, os
+for f in sorted(os.listdir(&#x27;outputs&#x27;, description=Verify all JSON outputs</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+</div>
+
+<footer>
+  Generated for dataset <code>sec_10q_insurance</code> ·
+  model <code>claude-opus-4-7</code> · with-skill loads <code>llama-extract</code> as a project skill,
+  no-skill runs with <code>--bare</code>
+</footer>
+
+</body>
+</html>

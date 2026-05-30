@@ -1,0 +1,29 @@
+{
+  "cik": "5272",
+  "accession": "0000005272-26-000052",
+  "ticker": "AIG",
+  "name": "American International Group",
+  "form": "10-Q",
+  "period": "2026-03-31",
+  "values": {
+    "issuer_name": "American International Group, Inc.",
+    "period_end_date": "2026-03-31",
+    "total_revenues": 6650000000,
+    "net_investment_income": 712000000,
+    "net_income": 763000000,
+    "net_income_per_share_basic": 1.42,
+    "net_income_per_share_diluted": 1.41,
+    "total_assets": 161543000000,
+    "total_investments": 90845000000,
+    "total_liabilities": 121114000000,
+    "stockholders_equity": 40405000000,
+    "insurance_reserves": 69963000000,
+    "deferred_policy_acquisition_costs": 2128000000,
+    "cash_from_operations": 155000000,
+    "cash_from_investing": 833000000,
+    "cash_from_financing": -799000000,
+    "common_shares_outstanding": 532900000
+  },
+  "populated_count": 17,
+  "total_fields": 17
+}

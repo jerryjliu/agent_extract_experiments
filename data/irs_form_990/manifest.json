@@ -1,0 +1,79 @@
+[
+  {
+    "ein": "200097189",
+    "tax_year": 2023,
+    "name": "Mozilla Foundation",
+    "pdf_url": "https://assets.mozilla.net/annualreport/2024/b200-mozilla-foundation-form-990-public-disclosure-ty23.pdf",
+    "gt_tax_year": 2023
+  },
+  {
+    "ein": "261544963",
+    "tax_year": 2021,
+    "name": "Khan Academy, Inc.",
+    "pdf_url": "https://s3.amazonaws.com/KA-share/annualreport/2021+Khan+Academy,+Inc.+PUB+DISC+Client.pdf",
+    "gt_tax_year": 2021
+  },
+  {
+    "ein": "530196605",
+    "tax_year": 2021,
+    "name": "American National Red Cross",
+    "pdf_url": "https://www.redcross.org/content/dam/redcross/about-us/publications/2022-publications/ARC_FY22_990_Final_Version.pdf",
+    "gt_tax_year": 2022
+  },
+  {
+    "ein": "043091431",
+    "tax_year": 2017,
+    "name": "Electronic Frontier Foundation",
+    "pdf_url": "https://www.eff.org/files/2019/09/05/electronic_frontier_foundation_tax_return_990_fy18_-_public_disclosure.pdf",
+    "gt_tax_year": 2018
+  },
+  {
+    "ein": "530242652",
+    "tax_year": 2018,
+    "name": "The Nature Conservancy",
+    "pdf_url": "https://www.nature.org/content/dam/tnc/nature/en/documents/form-990-tax-return-fy19.pdf",
+    "gt_tax_year": 2019
+  },
+  {
+    "ein": "521693387",
+    "tax_year": 2020,
+    "name": "World Wildlife Fund, Inc.",
+    "pdf_url": "https://files.worldwildlife.org/wwfcmsprod/files/FinancialReport/file/9dc2euuef2_FY21_990.pdf",
+    "gt_tax_year": 2021
+  },
+  {
+    "ein": "363673599",
+    "tax_year": 2019,
+    "name": "Feeding America",
+    "pdf_url": "https://www.feedingamerica.org/sites/default/files/2021-03/Feeding%20America%20FY%202020%20Form%20990.PDF",
+    "gt_tax_year": 2020
+  },
+  {
+    "ein": "136213516",
+    "tax_year": 2022,
+    "name": "American Civil Liberties Union Foundation, Inc.",
+    "pdf_url": "https://assets.aclu.org/live/uploads/2024/06/990-ACLUF-FY23-3.31.23.pdf",
+    "gt_tax_year": 2023
+  },
+  {
+    "ein": "910511770",
+    "tax_year": 2015,
+    "name": "Group Health Cooperative",
+    "pdf_url": "https://wa.kaiserpermanente.org/static/pdf/public/about/990-2015.pdf",
+    "gt_tax_year": 2015
+  },
+  {
+    "ein": "941156365",
+    "tax_year": 2022,
+    "name": "Leland Stanford Junior University",
+    "pdf_url": "https://bondholder-information.stanford.edu/sites/g/files/sbiybj21416/files/media/file/stanford_fy23_form_990.pdf",
+    "gt_tax_year": 2023
+  },
+  {
+    "ein": "340714585",
+    "tax_year": 2019,
+    "name": "The Cleveland Clinic Foundation",
+    "pdf_url": "https://my.clevelandclinic.org/-/scassets/files/org/about/financial-statements/form-990-ccf.pdf?la=en",
+    "gt_tax_year": 2019
+  }
+]

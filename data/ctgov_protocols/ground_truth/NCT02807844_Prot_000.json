@@ -1,0 +1,29 @@
+{
+  "nct_id": "NCT02807844",
+  "doc_id": "Prot_000",
+  "label": "Phase Ib/II Study of MCS110 in Combination With PDR001 in Pa",
+  "values": {
+    "nct_id": "NCT02807844",
+    "brief_title": "Phase Ib/II Study of MCS110 in Combination With PDR001 in Patients With Advanced Malignancies",
+    "official_title": "A Phase Ib/II, Open Label, Multicenter Study of MCS110 in Combination With PDR001 in Patients With Advanced Malignancies",
+    "sponsor": "Novartis Pharmaceuticals",
+    "study_type": "INTERVENTIONAL",
+    "phase": "PHASE1|PHASE2",
+    "allocation": "NON_RANDOMIZED",
+    "masking": "NONE",
+    "intervention_model": "PARALLEL",
+    "enrollment_count": 141,
+    "start_date": "2016-06-29",
+    "primary_completion_date": "2020-06-04",
+    "completion_date": "2020-06-04",
+    "minimum_age": "18 Years",
+    "maximum_age": null,
+    "sex": "ALL",
+    "healthy_volunteers": false,
+    "primary_outcome_measure": "Phase Ib: Percentage of Participants With Adverse Events, as a Measure of Safety",
+    "primary_outcome_time_frame": "From start of treatment to a maximum timeframe of 116.4 weeks for phase Ib",
+    "overall_status": "COMPLETED"
+  },
+  "populated_count": 19,
+  "total_fields": 20
+}

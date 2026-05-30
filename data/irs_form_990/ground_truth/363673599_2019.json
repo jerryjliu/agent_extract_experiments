@@ -1,0 +1,24 @@
+{
+  "ein": "363673599",
+  "tax_year": 2019,
+  "name": "Feeding America",
+  "values": {
+    "ein": "363673599",
+    "legal_name": "Feeding America",
+    "tax_year": 2019,
+    "total_revenue": 3571430346.0,
+    "contributions_grants": 3478482753.0,
+    "program_service_revenue": 20326823.0,
+    "investment_income": 1930894.0,
+    "total_expenses": 3309075710.0,
+    "compensation_current_officers": 4398170.0,
+    "other_salaries_wages": 28973099.0,
+    "professional_fundraising_fees": 2674356.0,
+    "total_assets_eoy": 432594156.0,
+    "total_liabilities_eoy": 32638854.0,
+    "net_assets_eoy": 399955302.0,
+    "revenue_less_expenses": 262354636.0
+  },
+  "populated_count": 15,
+  "total_fields": 15
+}

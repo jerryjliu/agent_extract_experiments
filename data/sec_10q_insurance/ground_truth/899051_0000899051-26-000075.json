@@ -1,0 +1,29 @@
+{
+  "cik": "899051",
+  "accession": "0000899051-26-000075",
+  "ticker": "ALL",
+  "name": "Allstate",
+  "form": "10-Q",
+  "period": "2026-03-31",
+  "values": {
+    "issuer_name": "ALLSTATE CORP",
+    "period_end_date": "2026-03-31",
+    "total_revenues": 16941000000,
+    "net_investment_income": 938000000,
+    "net_income": 2457000000,
+    "net_income_per_share_basic": 9.36,
+    "net_income_per_share_diluted": 9.25,
+    "total_assets": 123972000000,
+    "total_investments": 85160000000,
+    "total_liabilities": 92385000000,
+    "stockholders_equity": 31607000000,
+    "insurance_reserves": 41320000000,
+    "deferred_policy_acquisition_costs": null,
+    "cash_from_operations": 3562000000,
+    "cash_from_investing": -2627000000,
+    "cash_from_financing": -916000000,
+    "common_shares_outstanding": 258000000
+  },
+  "populated_count": 16,
+  "total_fields": 17
+}

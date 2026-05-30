@@ -1,0 +1,10 @@
+# Core: schema definitions for every dataset (Pydantic v2 — model_json_schema, model_validate)
+pydantic>=2
+
+# The llama-extract skill's bundled CLI (llama-extract/scripts/extract.py)
+llama-cloud>=2.7
+
+# Optional: only used to auto-render SEC 10-Q PDFs from iXBRL HTML.
+# The sec_10q_insurance dataset falls back to manual download instructions if absent.
+# Requires `playwright install chromium` after install.
+playwright>=1.40

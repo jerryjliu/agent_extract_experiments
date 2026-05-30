@@ -1,0 +1,29 @@
+{
+  "cik": "914208",
+  "accession": "0000914208-26-000106",
+  "ticker": "UNM",
+  "name": "Unum Group",
+  "form": "10-Q",
+  "period": "2026-03-31",
+  "values": {
+    "issuer_name": "Invesco Ltd.",
+    "period_end_date": "2026-03-31",
+    "total_revenues": null,
+    "net_investment_income": null,
+    "net_income": 219100000,
+    "net_income_per_share_basic": 0.51,
+    "net_income_per_share_diluted": 0.51,
+    "total_assets": 26834600000,
+    "total_investments": 1320900000,
+    "total_liabilities": 13572300000,
+    "stockholders_equity": 12255000000,
+    "insurance_reserves": null,
+    "deferred_policy_acquisition_costs": null,
+    "cash_from_operations": 212600000,
+    "cash_from_investing": -733200000,
+    "cash_from_financing": 271300000,
+    "common_shares_outstanding": 443300000
+  },
+  "populated_count": 13,
+  "total_fields": 17
+}

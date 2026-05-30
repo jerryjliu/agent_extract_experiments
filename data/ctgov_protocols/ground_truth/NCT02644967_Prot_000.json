@@ -1,0 +1,29 @@
+{
+  "nct_id": "NCT02644967",
+  "doc_id": "Prot_000",
+  "label": "A Phase 2 Study to Assess the Safety and Efficacy of IMO-212",
+  "values": {
+    "nct_id": "NCT02644967",
+    "brief_title": "A Phase 2 Study to Assess the Safety and Efficacy of IMO-2125 With 8 mg Ipilimumab in Patients With Metastatic Melanoma",
+    "official_title": "A Phase 1/2 Study to Assess the Safety and Efficacy of Intratumoral IMO-2125 in Combination With Ipilimumab or Pembrolizumab in Patients With Metastatic Melanoma (ILLUMINATE-204)",
+    "sponsor": "Idera Pharmaceuticals, Inc.",
+    "study_type": "INTERVENTIONAL",
+    "phase": "PHASE2",
+    "allocation": "NA",
+    "masking": "NONE",
+    "intervention_model": "SINGLE_GROUP",
+    "enrollment_count": 53,
+    "start_date": "2015-12-01",
+    "primary_completion_date": "2020-02-01",
+    "completion_date": "2021-05-01",
+    "minimum_age": "18 Years",
+    "maximum_age": null,
+    "sex": "ALL",
+    "healthy_volunteers": false,
+    "primary_outcome_measure": "Phase 2: Number of Participants With Objective Response Rate (ORR) Using RECIST v1.1",
+    "primary_outcome_time_frame": "33 weeks (29 weeks of treatment, 4 weeks follow up)",
+    "overall_status": "COMPLETED"
+  },
+  "populated_count": 19,
+  "total_fields": 20
+}

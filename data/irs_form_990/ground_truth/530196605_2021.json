@@ -1,0 +1,24 @@
+{
+  "ein": "530196605",
+  "tax_year": 2021,
+  "name": "American National Red Cross",
+  "values": {
+    "ein": "530196605",
+    "legal_name": "American National Red Cross",
+    "tax_year": 2021,
+    "total_revenue": 3182229338.0,
+    "contributions_grants": 1060031161.0,
+    "program_service_revenue": 2018755758.0,
+    "investment_income": 48466117.0,
+    "total_expenses": 3048182336.0,
+    "compensation_current_officers": 5758532.0,
+    "other_salaries_wages": 1119398026.0,
+    "professional_fundraising_fees": 301063.0,
+    "total_assets_eoy": 3872181875.0,
+    "total_liabilities_eoy": 1171891777.0,
+    "net_assets_eoy": 2700290098.0,
+    "revenue_less_expenses": 134047002.0
+  },
+  "populated_count": 15,
+  "total_fields": 15
+}
