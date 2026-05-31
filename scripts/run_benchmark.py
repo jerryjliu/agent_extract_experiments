@@ -142,10 +142,11 @@ def _skill_tiers(condition: str, extract_tier: str, parse_tier: str) -> tuple[st
 
 def resolve_command(dataset: DatasetConfig, condition: str,
                     extract_tier: str = DEFAULT_EXTRACT_TIER,
-                    parse_tier: str = DEFAULT_PARSE_TIER) -> list[str]:
+                    parse_tier: str = DEFAULT_PARSE_TIER,
+                    no_skill_agent: str = "bare") -> list[str]:
     """Build the claude -p invocation flags for a given (per-file) condition."""
     et, pt = _skill_tiers(condition, extract_tier, parse_tier)
-    cmd = _common_flags(condition, SYSTEM_PROMPT_APPEND)
+    cmd = _common_flags(condition, SYSTEM_PROMPT_APPEND, no_skill_agent=no_skill_agent)
     cmd.append(build_extraction_prompt(dataset, extract_tier=et, parse_tier=pt))
     return cmd
 
@@ -249,25 +250,35 @@ def verify_ab(init_event: dict[str, Any] | None, condition: str) -> str | None:
 def run_one(dataset: DatasetConfig, record: dict[str, Any], condition: str,
             dry_run: bool = False,
             extract_tier: str = DEFAULT_EXTRACT_TIER,
-            parse_tier: str = DEFAULT_PARSE_TIER) -> dict[str, Any]:
-    """Execute one (record, condition) run; return a summary dict."""
+            parse_tier: str = DEFAULT_PARSE_TIER,
+            no_skill_agent: str = "bare") -> dict[str, Any]:
+    """Execute one (record, condition) run; return a summary dict.
+
+    no_skill_agent: "bare" (3-tool agent) or "full" (27-tool agent, skill unstaged)
+        — only affects the no_skill condition (mirrors run_batch).
+    """
     doc_key = dataset.doc_key_fn(record)
     pdf_path = dataset.pdf_path(record)
     if not pdf_path.exists():
         return {"doc_key": doc_key, "condition": condition, "error": f"PDF not found: {pdf_path}"}
 
     run_dir = dataset.run_dir(record, condition)
-    cmd = resolve_command(dataset, condition, extract_tier, parse_tier)
+    cmd = resolve_command(dataset, condition, extract_tier, parse_tier,
+                          no_skill_agent=no_skill_agent)
     # Tiers only apply to the skill (with_skill); no_skill reads PDFs directly.
     tiers = {"extract_tier": extract_tier, "parse_tier": parse_tier} if condition == "with_skill" else {}
+    # Record the no_skill agent mode for traceability (only meaningful for no_skill).
+    agent_meta = {"no_skill_agent": no_skill_agent} if condition == "no_skill" else {}
 
     if dry_run:
         # Do NOT call stage_run_dir in dry-run — staging is destructive (rmtree).
         print(f"[DRY] {doc_key} {condition} cwd={run_dir}")
+        if agent_meta:
+            print(f"      no_skill_agent={no_skill_agent}")
         if tiers:
             print(f"      tiers: extract={extract_tier} parse={parse_tier}")
         print(f"      cmd={' '.join(cmd[:8])} ... (prompt length {len(cmd[-1])} chars)")
-        return {"doc_key": doc_key, "condition": condition, "dry_run": True, **tiers}
+        return {"doc_key": doc_key, "condition": condition, "dry_run": True, **tiers, **agent_meta}
 
     stage_run_dir(run_dir, pdf_path, condition)
 
@@ -292,6 +303,7 @@ def run_one(dataset: DatasetConfig, record: dict[str, Any], condition: str,
         "output_present": (run_dir / "output.json").exists(),
         "skills_loaded": init_event.get("skills") if init_event else None,
         **tiers,
+        **agent_meta,
     }
     if condition == "with_skill":
         summary["tier_verification"] = verify_tiers_in_trace(trace_path, extract_tier, parse_tier)
@@ -463,7 +475,7 @@ def main() -> None:
                              "parsing stage can be tuned independently. Ignored by no_skill.")
     parser.add_argument("--no-skill-agent", dest="no_skill_agent",
                         choices=["bare", "full"], default="full",
-                        help="Agent harness for no_skill (batch mode). 'full' (default, "
+                        help="Agent harness for no_skill (per_file and batch modes). 'full' (default, "
                              "canonical) = the same 27-tool agent as with_skill but with the "
                              "llama-extract skill not staged, i.e. 'full Claude Code without the "
                              "skill' — the realistic skill-less baseline. 'bare' = stripped "
@@ -509,9 +521,11 @@ def main() -> None:
     if args.mode == "per_file":
         for record in records:
             for cond in conditions:
-                print(f"=== {record.get('name', dataset.doc_key_fn(record))} | {cond} ===")
+                agent_note = f" [no_skill_agent={args.no_skill_agent}]" if cond == "no_skill" and args.no_skill_agent != "bare" else ""
+                print(f"=== {record.get('name', dataset.doc_key_fn(record))} | {cond}{agent_note} ===")
                 s = run_one(dataset, record, cond, dry_run=args.dry_run,
-                            extract_tier=args.extract_tier, parse_tier=args.parse_tier)
+                            extract_tier=args.extract_tier, parse_tier=args.parse_tier,
+                            no_skill_agent=args.no_skill_agent)
                 summaries.append(s)
                 if "error" in s:
                     print(f"  ERROR: {s['error']}")

@@ -44,15 +44,15 @@ footer{text-align:center;padding:2rem 1rem;color:var(--text-dim);font-family:'IB
 <body>
 <div class="hero">
   <h1>Claude Code <span class="accent">vs</span> Claude Code + LlamaExtract Skill</h1>
-  <div class="subtitle">Cross-dataset batch-mode structured extraction — 4 document corpora, one session per condition.</div>
+  <div class="subtitle">Cross-dataset structured extraction — 4 document corpora, in batch (one session per corpus) and per-file (one session per document) modes.</div>
 </div>
 <div class="container">
-  <p class="intro">Claude Code extracts a structured schema from a corpus of PDFs, one batch session per condition.
+  <p class="intro">Claude Code extracts a structured schema from a corpus of PDFs.
   <span class="with">with_skill</span> loads the <code>llama-extract</code> skill (delegates extraction to a LlamaCloud
-  parse+extract job); <span class="no">no_skill</span> runs <code>--bare</code> (Claude reads the PDFs directly).
+  parse+extract job); <span class="no">no_skill</span> is the full agent without the <code>llama-extract</code> skill (Claude reads the PDFs directly).
   Model <code>claude-opus-4-7</code>. Numbers use the latest run per dataset (rerun where present).</p>
 
-  <div class="section-label">Accuracy</div>
+  <div class="section-label">Batch mode · accuracy</div>
   <table>
     <thead><tr><th>Dataset</th><th>N</th><th class="with">Acc (with)</th><th class="no">Acc (no)</th><th>Δ (with−no)</th><th>Why</th></tr></thead>
     <tbody>
@@ -63,7 +63,7 @@ footer{text-align:center;padding:2rem 1rem;color:var(--text-dim);font-family:'IB
     </tbody>
   </table>
 
-  <div class="section-label">Cost &amp; latency</div>
+  <div class="section-label">Batch mode · cost &amp; latency</div>
   <p class="intro" style="margin-bottom:0.6rem">Total cost = <span class="with">Claude tokens</span> + LlamaCloud <b>credits</b>
   (parse + extract, billed per page at $0.00125/credit). <span class="no">no_skill</span> never calls LlamaCloud, so its credit cost is $0 and its total equals its token cost.</p>
   <table>
@@ -93,6 +93,48 @@ footer{text-align:center;padding:2rem 1rem;color:var(--text-dim);font-family:'IB
     </tbody>
   </table>
 
+  <div class="section-label">Per-file mode · accuracy</div>
+  <p class="intro" style="margin-bottom:0.6rem">One claude session <b>per document</b> (vs one session over the
+  whole corpus in batch mode). Same conditions: <span class="with">with_skill</span> delegates to LlamaCloud;
+  <span class="no">no_skill</span> is the full agent without the <code>llama-extract</code> skill.</p>
+  <table>
+    <thead><tr><th>Dataset</th><th>N</th><th class="with">Acc (with)</th><th class="no">Acc (no)</th><th>Δ (with−no)</th></tr></thead>
+    <tbody>
+<tr><td class='name'>FFIEC Call Report</td><td>15</td><td class='with'>84.9%</td><td class='no'>89.6%</td><td><span class="neg">-4.7pp</span></td></tr>
+<tr><td class='name'>ClinicalTrials.gov protocol</td><td>12</td><td class='with'>65.5%</td><td class='no'>75.2%</td><td><span class="neg">-9.7pp</span></td></tr>
+<tr><td class='name'>IRS Form 990</td><td>11</td><td class='with'>94.8%</td><td class='no'>94.8%</td><td><span class="pos">+0.0pp</span></td></tr>
+<tr><td class='name'>SEC 10-Q (insurance segment)</td><td>12</td><td class='with'>93.2%</td><td class='no'>97.2%</td><td><span class="neg">-4.0pp</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-label">Per-file mode · cost</div>
+  <p class="intro" style="margin-bottom:0.6rem">Per-file <span class="no">no_skill</span> loses the batch session's cross-document
+  prompt-cache amortization but also avoids its growing single-session context, so its token cost can land on either side of the
+  batch no_skill arm (higher on FFIEC/ctgov, lower/flat on IRS/SEC). Credit cost (<span class="with">with_skill</span>) is billed
+  per page and is unchanged by mode.</p>
+  <table>
+    <thead><tr><th>Dataset</th><th class="with">Token (with)</th><th class="with">Credit (with)</th><th class="with">Total (with)</th><th class="no">Total (no)</th><th>Total vs no</th><th>Pages</th><th class="with">Wall (with)</th><th class="no">Wall (no)</th></tr></thead>
+    <tbody>
+<tr><td class='name'>FFIEC Call Report</td><td class='with'>$5.83</td><td class='with'>$32.16</td><td class='with'><b>$37.99</b></td><td class='no'>$13.96</td><td><span class="neg">2.7× pricier</span></td><td>1,029</td><td class='with'>1260s</td><td class='no'>2021s</td></tr>
+<tr><td class='name'>ClinicalTrials.gov protocol</td><td class='with'>$3.63</td><td class='with'>$40.09</td><td class='with'><b>$43.73</b></td><td class='no'>$7.15</td><td><span class="neg">6.1× pricier</span></td><td>1,283</td><td class='with'>772s</td><td class='no'>810s</td></tr>
+<tr><td class='name'>IRS Form 990</td><td class='with'>$2.89</td><td class='with'>$37.34</td><td class='with'><b>$40.23</b></td><td class='no'>$3.51</td><td><span class="neg">11.4× pricier</span></td><td>1,195</td><td class='with'>890s</td><td class='no'>380s</td></tr>
+<tr><td class='name'>SEC 10-Q (insurance segment)</td><td class='with'>$4.11</td><td class='with'>$48.94</td><td class='with'><b>$53.05</b></td><td class='no'>$3.53</td><td><span class="neg">15.0× pricier</span></td><td>1,566</td><td class='with'>988s</td><td class='no'>399s</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-label">Batch vs per-file</div>
+  <p class="intro" style="margin-bottom:0.6rem">Headline numbers for the same dataset under the two execution modes
+  (batch = one session per corpus → per-file = one session per document).</p>
+  <table>
+    <thead><tr><th>Dataset</th><th class="with">Acc with (batch→file)</th><th class="no">Acc no (batch→file)</th><th class="with">Total with (batch→file)</th><th class="no">Total no (batch→file)</th></tr></thead>
+    <tbody>
+<tr><td class='name'>FFIEC Call Report</td><td class='with'>85.1% → 84.9%</td><td class='no'>85.6% → 89.6%</td><td class='with'>$32.73 → $37.99</td><td class='no'>$3.77 → $13.96</td></tr>
+<tr><td class='name'>ClinicalTrials.gov protocol</td><td class='with'>59.3% → 65.5%</td><td class='no'>73.8% → 75.2%</td><td class='with'>$40.69 → $43.73</td><td class='no'>$5.21 → $7.15</td></tr>
+<tr><td class='name'>IRS Form 990</td><td class='with'>93.5% → 94.8%</td><td class='no'>92.9% → 94.8%</td><td class='with'>$37.97 → $40.23</td><td class='no'>$4.35 → $3.51</td></tr>
+<tr><td class='name'>SEC 10-Q (insurance segment)</td><td class='with'>87.5% → 93.2%</td><td class='no'>96.6% → 97.2%</td><td class='with'>$49.56 → $53.05</td><td class='no'>$3.54 → $3.53</td></tr>
+    </tbody>
+  </table>
+
   <div class="section-label">What holds across every dataset</div>
   <ul class="findings">
     <li><b>Cost: total = Claude tokens + LlamaCloud credits.</b> On Claude tokens alone, with_skill is 5.7–8.8× cheaper (it offloads document reading to LlamaCloud). But LlamaExtract bills per page — ~$0.03125/page at agentic parse+extract ($0.00125/credit) — so credit cost scales with corpus pages, not Claude work. Across all 4 corpora those credits more than offset the token saving: with_skill total cost runs 7.8–14.0× higher than no_skill. Token, credit, and total are shown as separate line items above.</li>
@@ -108,5 +150,5 @@ footer{text-align:center;padding:2rem 1rem;color:var(--text-dim);font-family:'IB
 <li><b>SEC 10-Q (insurance segment)</b> <span class='dim'>(2026-05-30 (rerun))</span> — <a href='sec_10q_insurance_rerun_2026-05-30/report.html'>report.html</a></li>
   </ul>
 </div>
-<footer>Generated 2026-05-30 · generated by <code>scripts/render_cross_dataset_summary.py</code> · with-skill loads <code>llama-extract</code> as a project skill, no-skill runs <code>--bare</code></footer>
+<footer>Generated 2026-05-31 · generated by <code>scripts/render_cross_dataset_summary.py</code> · with-skill loads <code>llama-extract</code> as a project skill, no-skill is the full agent without it</footer>
 </body></html>

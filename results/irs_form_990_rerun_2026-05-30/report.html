@@ -89,8 +89,8 @@ footer { text-align: center; padding: 2rem 1rem; color: var(--text-dim); font-fa
   <div class="subtitle">IRS Form 990 structured extraction — 11 documents, ~15 fields each.</div>
   <div class="stats-bar">
     <div class="stat"><div class="val delta-pos">0/1</div><div class="lbl">skill invoked (batch with_skill)</div></div>
-    <div class="stat"><div class="val">+0.6pp</div><div class="lbl">accuracy Δ (with−no)</div></div>
-    <div class="stat"><div class="val">+$33.62</div><div class="lbl">total cost Δ (with−no)</div></div>
+    <div class="stat"><div class="val">0.0pp</div><div class="lbl">accuracy Δ (with−no)</div></div>
+    <div class="stat"><div class="val">+$36.72</div><div class="lbl">total cost Δ (with−no)</div></div>
     <div class="stat"><div class="val">11</div><div class="lbl">documents</div></div>
   </div>
 </div>
@@ -104,7 +104,7 @@ footer { text-align: center; padding: 2rem 1rem; color: var(--text-dim); font-fa
       
       <tr><td class="cond-with">with_skill (cold)</td><td>93.5%</td><td>144</td><td>10</td><td>0</td><td>$0.82</td><td>$37.34</td><td><b>$38.16</b></td><td>753.9s</td></tr>
       <tr><td class="cond-with">with_skill (warm)</td><td>93.5%</td><td>144</td><td>10</td><td>0</td><td>$0.63</td><td>$37.34</td><td><b>$37.97</b></td><td>137.3s</td></tr>
-      <tr><td class="cond-no">no_skill</td><td>92.9%</td><td>143</td><td>11</td><td>0</td><td>$4.35</td><td>$0.00</td><td><b>$4.35</b></td><td>400.5s</td></tr>
+      <tr><td class="cond-no">no_skill</td><td>94.8%</td><td>146</td><td>8</td><td>0</td><td>$3.51</td><td>$0.00</td><td><b>$3.51</b></td><td>380.0s</td></tr>
     </tbody>
   </table>
   <p class="caveat">with_skill split by LlamaCloud parse-cache state (cold = first parse / new content hash; warm = cache hit). Accuracy and credit cost are cache-invariant — same parsed content, same per-page billing; only latency (and Claude token cost) vary.</p>
@@ -130,6 +130,64 @@ footer { text-align: center; padding: 2rem 1rem; color: var(--text-dim); font-fa
 
 
   
+  <div class="section-label">Per-file vs batch session · same 15 PDFs, v2 skill</div>
+  
+  <table class="cmp-table">
+    <thead><tr><th></th><th>per-file (15 sessions)</th><th>batch (1 session)</th><th>delta (per-file − batch)</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="cond-with">with_skill · total cost</td>
+        <td>$40.23</td>
+        <td>$37.97</td>
+        <td><span class='delta-pos'>+$2.26</span></td>
+      </tr>
+      <tr>
+        <td class="cond-with">with_skill · wall time</td>
+        <td>889.9s</td>
+        <td>137.3s</td>
+        <td><span class='delta-pos'>+752.6s</span></td>
+      </tr>
+      <tr>
+        <td class="cond-no">no_skill · total cost</td>
+        <td>$3.51</td>
+        <td>$4.35</td>
+        <td><span class='delta-neg'>$-0.83</span></td>
+      </tr>
+      <tr>
+        <td class="cond-no">no_skill · wall time</td>
+        <td>380.0s</td>
+        <td>400.5s</td>
+        <td><span class='delta-neg'>-20.5s</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="cmp-table">
+    <thead><tr><th>condition · mode</th><th>Skill fires</th><th>extract.py calls</th><th>Task subagents</th><th>py writes</th><th>parallel turns</th><th>max parallel in turn</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="cond-with">with_skill · batch</td>
+        <td>0/1</td>
+        <td>12</td>
+        <td><b>12</b></td>
+        <td>0</td>
+        <td>0</td>
+        <td>1</td>
+      </tr>
+      <tr>
+        <td class="cond-no">no_skill · batch</td>
+        <td>—</td>
+        <td>—</td>
+        <td>3</td>
+        <td>0</td>
+        <td>0</td>
+        <td>1</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="discipline-note">Batch with_skill invocation pattern: <b>Background-parallel via Task tool</b>: launched <b>12</b> Task subagents (one per extract.py call), running concurrently in the background while the main agent's turns themselves stayed sequential. This is where the wall-time win comes from.</p>
+  <p class="caveat">Batch wall time is end-to-end session duration; per-file wall time is the sum of 15 independent session durations. Both measure "time to extract the corpus."</p>
+
 
   <div class="section-label">Per-document comparison · click to expand</div>
   
@@ -140,7 +198,7 @@ footer { text-align: center; padding: 2rem 1rem; color: var(--text-dim); font-fa
     <span class='filing-scores'>
       <span class='score-pair'><span class='label'>with</span> <span class='val'>14/15</span></span>
       <span class='score-pair'><span class='label'>no</span> <span class='val'>14/15</span></span>
-      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>$0.26 vs $0.25</span></span>
     </span>
   </summary>
   <div class='filing-body'>
@@ -169,30 +227,23 @@ footer { text-align: center; padding: 2rem 1rem; color: var(--text-dim); font-fa
     <div class='excerpts'>
       <div class='excerpts-col'>
         <h4>with_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List working directory</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ll, description=List extract scripts</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List inputs/outputs</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(17 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python ../../../llama-extract/scripts/extract.py --input ./inputs/910511770_2015, description=Retry 910511770_2015 with page restriction</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./outputs/*.json 2&gt;/dev/null | grep -v usage, description=Final output check</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
-import json, pathlib
-for p in sorted(pathlib.Path(&#x27;./outputs&#x27;).glob(, description=Validate all JSON files</span></div>
+        <div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs/, content={
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;title&quot;: &quot;Form990Extraction&quot;,
+  &quot;description&quot;: &quot;~15 fiel</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python ./.claude/skills/llama-extract/scripts/extract.py --input ./input.pdf --s, description=Run llama-extract on Form 990 PDF, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/</span></div>
+<div class='tool-event'><code class='tool-name'>Edit</code><span class='tool-input'>replace_all=False, file_path=runs/, old_string=  &quot;tax_year&quot;: 2023.0,</span></div>
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory contents</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List input PDFs</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import pypdf; print(pypdf.__version__)&quot;, description=Check pypdf availability</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(64 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
-  &quot;ein&quot;: &quot;530242652&quot;,
-  &quot;legal_name&quot;: &quot;NATURE CONSERVANCY&quot;,
-  &quot;tax_year&quot;: 2018</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Validate JSON files</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; python3 &lt;&lt;&#x27;PY&#x27;
-import json, os, glob
-expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist and have correct keys</span></div>
+        <div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf, pages=1-12</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=./output.json, content={
+  &quot;ein&quot;: &quot;200097189&quot;,
+  &quot;legal_name&quot;: &quot;MOZILLA FOUNDATION&quot;,
+  &quot;tax_year&quot;: 2023</span></div>
       </div>
     </div>
   </div>
@@ -205,7 +256,7 @@ expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist 
     <span class='filing-scores'>
       <span class='score-pair'><span class='label'>with</span> <span class='val'>14/15</span></span>
       <span class='score-pair'><span class='label'>no</span> <span class='val'>14/15</span></span>
-      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>$0.26 vs $0.25</span></span>
     </span>
   </summary>
   <div class='filing-body'>
@@ -234,30 +285,24 @@ expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist 
     <div class='excerpts'>
       <div class='excerpts-col'>
         <h4>with_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List working directory</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ll, description=List extract scripts</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List inputs/outputs</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(17 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python ../../../llama-extract/scripts/extract.py --input ./inputs/910511770_2015, description=Retry 910511770_2015 with page restriction</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./outputs/*.json 2&gt;/dev/null | grep -v usage, description=Final output check</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
-import json, pathlib
-for p in sorted(pathlib.Path(&#x27;./outputs&#x27;).glob(, description=Validate all JSON files</span></div>
+        <div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs/, content={
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;title&quot;: &quot;Form990Extraction&quot;,
+  &quot;description&quot;: &quot;~15 fiel</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python &quot;.claude/skills/llama-extract/scripts/extract.py&quot; --input ./input.pdf --s, description=Run llama-extract on Form 990 PDF, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/</span></div>
+<div class='tool-event'><code class='tool-name'>Edit</code><span class='tool-input'>replace_all=False, file_path=runs/, old_string=  &quot;tax_year&quot;: 2021.0,</span></div>
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory contents</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List input PDFs</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import pypdf; print(pypdf.__version__)&quot;, description=Check pypdf availability</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(64 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
-  &quot;ein&quot;: &quot;530242652&quot;,
-  &quot;legal_name&quot;: &quot;NATURE CONSERVANCY&quot;,
-  &quot;tax_year&quot;: 2018</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Validate JSON files</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; python3 &lt;&lt;&#x27;PY&#x27;
-import json, os, glob
-expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist and have correct keys</span></div>
+        <div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf, pages=1-5</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf, pages=10-13</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=./output.json, content={
+  &quot;ein&quot;: &quot;261544963&quot;,
+  &quot;legal_name&quot;: &quot;KHAN ACADEMY, INC.&quot;,
+  &quot;tax_year&quot;: 2021</span></div>
       </div>
     </div>
   </div>
@@ -270,7 +315,7 @@ expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist 
     <span class='filing-scores'>
       <span class='score-pair'><span class='label'>with</span> <span class='val'>13/15</span></span>
       <span class='score-pair'><span class='label'>no</span> <span class='val'>13/15</span></span>
-      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>$0.26 vs $0.31</span></span>
     </span>
   </summary>
   <div class='filing-body'>
@@ -299,30 +344,23 @@ expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist 
     <div class='excerpts'>
       <div class='excerpts-col'>
         <h4>with_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List working directory</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ll, description=List extract scripts</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List inputs/outputs</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(17 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python ../../../llama-extract/scripts/extract.py --input ./inputs/910511770_2015, description=Retry 910511770_2015 with page restriction</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./outputs/*.json 2&gt;/dev/null | grep -v usage, description=Final output check</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
-import json, pathlib
-for p in sorted(pathlib.Path(&#x27;./outputs&#x27;).glob(, description=Validate all JSON files</span></div>
+        <div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs/, content={
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;title&quot;: &quot;Form990Extraction&quot;,
+  &quot;description&quot;: &quot;~15 fiel</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python &quot;~/Programming/other/jerry-exp/2026_05_24_extract_experimen, description=Run llama-extract on Form 990 PDF, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/</span></div>
+<div class='tool-event'><code class='tool-name'>Edit</code><span class='tool-input'>replace_all=False, file_path=runs/, old_string=  &quot;tax_year&quot;: 2021.0,</span></div>
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory contents</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List input PDFs</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import pypdf; print(pypdf.__version__)&quot;, description=Check pypdf availability</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(64 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
-  &quot;ein&quot;: &quot;530242652&quot;,
-  &quot;legal_name&quot;: &quot;NATURE CONSERVANCY&quot;,
-  &quot;tax_year&quot;: 2018</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Validate JSON files</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; python3 &lt;&lt;&#x27;PY&#x27;
-import json, os, glob
-expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist and have correct keys</span></div>
+        <div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf, pages=1-10</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf, pages=11-15</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=./output.json, content={
+  &quot;ein&quot;: &quot;530196605&quot;,
+  &quot;legal_name&quot;: &quot;AMERICAN NATIONAL RED CROSS &amp; ITS CONST</span></div>
       </div>
     </div>
   </div>
@@ -335,7 +373,7 @@ expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist 
     <span class='filing-scores'>
       <span class='score-pair'><span class='label'>with</span> <span class='val'>14/15</span></span>
       <span class='score-pair'><span class='label'>no</span> <span class='val'>14/15</span></span>
-      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>$0.26 vs $0.24</span></span>
     </span>
   </summary>
   <div class='filing-body'>
@@ -364,30 +402,23 @@ expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist 
     <div class='excerpts'>
       <div class='excerpts-col'>
         <h4>with_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List working directory</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ll, description=List extract scripts</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List inputs/outputs</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(17 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python ../../../llama-extract/scripts/extract.py --input ./inputs/910511770_2015, description=Retry 910511770_2015 with page restriction</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./outputs/*.json 2&gt;/dev/null | grep -v usage, description=Final output check</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
-import json, pathlib
-for p in sorted(pathlib.Path(&#x27;./outputs&#x27;).glob(, description=Validate all JSON files</span></div>
+        <div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs/, content={
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;title&quot;: &quot;Form990Extraction&quot;,
+  &quot;description&quot;: &quot;~15 fiel</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python &quot;.claude/skills/llama-extract/scripts/extract.py&quot; --input ./input.pdf --s, description=Run llama-extract on Form 990 PDF, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/</span></div>
+<div class='tool-event'><code class='tool-name'>Edit</code><span class='tool-input'>replace_all=False, file_path=runs/, old_string=  &quot;tax_year&quot;: 2017.0,</span></div>
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory contents</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List input PDFs</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import pypdf; print(pypdf.__version__)&quot;, description=Check pypdf availability</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(64 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
-  &quot;ein&quot;: &quot;530242652&quot;,
-  &quot;legal_name&quot;: &quot;NATURE CONSERVANCY&quot;,
-  &quot;tax_year&quot;: 2018</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Validate JSON files</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; python3 &lt;&lt;&#x27;PY&#x27;
-import json, os, glob
-expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist and have correct keys</span></div>
+        <div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf, pages=1-10</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=./output.json, content={
+  &quot;ein&quot;: &quot;043091431&quot;,
+  &quot;legal_name&quot;: &quot;Electronic Frontier Foundation, Inc.&quot;,
+</span></div>
       </div>
     </div>
   </div>
@@ -400,7 +431,7 @@ expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist 
     <span class='filing-scores'>
       <span class='score-pair'><span class='label'>with</span> <span class='val'>13/15</span></span>
       <span class='score-pair'><span class='label'>no</span> <span class='val'>13/15</span></span>
-      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>$0.26 vs $0.31</span></span>
     </span>
   </summary>
   <div class='filing-body'>
@@ -429,30 +460,24 @@ expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist 
     <div class='excerpts'>
       <div class='excerpts-col'>
         <h4>with_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List working directory</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ll, description=List extract scripts</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List inputs/outputs</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(17 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python ../../../llama-extract/scripts/extract.py --input ./inputs/910511770_2015, description=Retry 910511770_2015 with page restriction</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./outputs/*.json 2&gt;/dev/null | grep -v usage, description=Final output check</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
-import json, pathlib
-for p in sorted(pathlib.Path(&#x27;./outputs&#x27;).glob(, description=Validate all JSON files</span></div>
+        <div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs/, content={
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;title&quot;: &quot;Form990Extraction&quot;,
+  &quot;description&quot;: &quot;~15 fiel</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python ./.claude/skills/llama-extract/scripts/extract.py --input ./input.pdf --s, description=Run llama-extract on Form 990 PDF, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/</span></div>
+<div class='tool-event'><code class='tool-name'>Edit</code><span class='tool-input'>replace_all=False, file_path=runs/, old_string=  &quot;tax_year&quot;: 2018.0,</span></div>
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory contents</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List input PDFs</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import pypdf; print(pypdf.__version__)&quot;, description=Check pypdf availability</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(64 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+        <div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf, pages=1-10</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf, pages=11-15</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=./output.json, content={
   &quot;ein&quot;: &quot;530242652&quot;,
   &quot;legal_name&quot;: &quot;NATURE CONSERVANCY&quot;,
   &quot;tax_year&quot;: 2018</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Validate JSON files</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; python3 &lt;&lt;&#x27;PY&#x27;
-import json, os, glob
-expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist and have correct keys</span></div>
       </div>
     </div>
   </div>
@@ -463,9 +488,9 @@ expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist 
     <span class='filing-name'>World Wildlife Fund, Inc.</span>
     <span class='filing-meta'>EIN 521693387 · TY 2020</span>
     <span class='filing-scores'>
-      <span class='score-pair'><span class='label'>with</span> <span class='val'>12/15</span></span>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>13/15</span></span>
       <span class='score-pair'><span class='label'>no</span> <span class='val'>13/15</span></span>
-      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>$0.26 vs $0.28</span></span>
     </span>
   </summary>
   <div class='filing-body'>
@@ -483,7 +508,7 @@ expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist 
 <tr><td class='field-name'>investment_income</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>total_expenses</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>revenue_less_expenses</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>compensation_current_officers</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>compensation_current_officers</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>other_salaries_wages</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>professional_fundraising_fees</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_assets_eoy</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
@@ -494,30 +519,24 @@ expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist 
     <div class='excerpts'>
       <div class='excerpts-col'>
         <h4>with_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List working directory</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ll, description=List extract scripts</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List inputs/outputs</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(17 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python ../../../llama-extract/scripts/extract.py --input ./inputs/910511770_2015, description=Retry 910511770_2015 with page restriction</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./outputs/*.json 2&gt;/dev/null | grep -v usage, description=Final output check</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
-import json, pathlib
-for p in sorted(pathlib.Path(&#x27;./outputs&#x27;).glob(, description=Validate all JSON files</span></div>
+        <div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs/, content={
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;title&quot;: &quot;Form990Extraction&quot;,
+  &quot;description&quot;: &quot;~15 fiel</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python ./.claude/skills/llama-extract/scripts/extract.py --input ./input.pdf --s, description=Run llama-extract on Form 990 PDF, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/</span></div>
+<div class='tool-event'><code class='tool-name'>Edit</code><span class='tool-input'>replace_all=False, file_path=runs/, old_string=  &quot;tax_year&quot;: 2020.0,</span></div>
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory contents</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List input PDFs</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import pypdf; print(pypdf.__version__)&quot;, description=Check pypdf availability</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(64 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
-  &quot;ein&quot;: &quot;530242652&quot;,
-  &quot;legal_name&quot;: &quot;NATURE CONSERVANCY&quot;,
-  &quot;tax_year&quot;: 2018</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Validate JSON files</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; python3 &lt;&lt;&#x27;PY&#x27;
-import json, os, glob
-expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist and have correct keys</span></div>
+        <div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf, pages=1-10</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf, pages=11-13</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=./output.json, content={
+  &quot;ein&quot;: &quot;521693387&quot;,
+  &quot;legal_name&quot;: &quot;WORLD WILDLIFE FUND INC&quot;,
+  &quot;tax_year&quot;:</span></div>
       </div>
     </div>
   </div>
@@ -528,9 +547,9 @@ expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist 
     <span class='filing-name'>Feeding America</span>
     <span class='filing-meta'>EIN 363673599 · TY 2019</span>
     <span class='filing-scores'>
-      <span class='score-pair'><span class='label'>with</span> <span class='val'>12/15</span></span>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>13/15</span></span>
       <span class='score-pair'><span class='label'>no</span> <span class='val'>13/15</span></span>
-      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>$0.26 vs $0.68</span></span>
     </span>
   </summary>
   <div class='filing-body'>
@@ -548,7 +567,7 @@ expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist 
 <tr><td class='field-name'>investment_income</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>total_expenses</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>revenue_less_expenses</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>compensation_current_officers</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>compensation_current_officers</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>other_salaries_wages</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>professional_fundraising_fees</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_assets_eoy</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
@@ -559,30 +578,34 @@ expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist 
     <div class='excerpts'>
       <div class='excerpts-col'>
         <h4>with_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List working directory</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ll, description=List extract scripts</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List inputs/outputs</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(17 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python ../../../llama-extract/scripts/extract.py --input ./inputs/910511770_2015, description=Retry 910511770_2015 with page restriction</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./outputs/*.json 2&gt;/dev/null | grep -v usage, description=Final output check</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
-import json, pathlib
-for p in sorted(pathlib.Path(&#x27;./outputs&#x27;).glob(, description=Validate all JSON files</span></div>
+        <div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs/, content={
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;title&quot;: &quot;Form990Extraction&quot;,
+  &quot;description&quot;: &quot;~15 fiel</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python .claude/skills/llama-extract/scripts/extract.py --input ./input.pdf --sch, description=Run llama-extract on Form 990 PDF, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/</span></div>
+<div class='tool-event'><code class='tool-name'>Edit</code><span class='tool-input'>replace_all=False, file_path=runs/, old_string=  &quot;tax_year&quot;: 2019.0,</span></div>
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory contents</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List input PDFs</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import pypdf; print(pypdf.__version__)&quot;, description=Check pypdf availability</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(64 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
-  &quot;ein&quot;: &quot;530242652&quot;,
-  &quot;legal_name&quot;: &quot;NATURE CONSERVANCY&quot;,
-  &quot;tax_year&quot;: 2018</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Validate JSON files</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; python3 &lt;&lt;&#x27;PY&#x27;
-import json, os, glob
-expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist and have correct keys</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./input.pdf &amp;&amp; python3 -c &quot;import pypdf; r = pypdf.PdfReader(&#x27;./input.pdf, description=Check PDF file and page count</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
+import pypdf
+r = pypdf.PdfReader(&#x27;./input.pdf&#x27;)
+for i in range(min(, description=Extract text from first 15 pages</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat ~/.claude/projects/-Users-jerryliu-Programming-other-jerry-exp, description=View extracted text</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(4 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
+import pdfplumber
+with pdfplumber.open(&#x27;./input.pdf&#x27;) as pdf:
+ , description=Find Part IX page</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs/, content={
+  &quot;ein&quot;: &quot;363673599&quot;,
+  &quot;legal_name&quot;: &quot;Feeding America&quot;,
+  &quot;tax_year&quot;: 2019,
+ </span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import json; d=json.load(open(&#x27;./output.json&#x27;)); print(json.dumps(d,, description=Validate JSON output</span></div>
       </div>
     </div>
   </div>
@@ -595,7 +618,7 @@ expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist 
     <span class='filing-scores'>
       <span class='score-pair'><span class='label'>with</span> <span class='val'>13/15</span></span>
       <span class='score-pair'><span class='label'>no</span> <span class='val'>13/15</span></span>
-      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>$0.26 vs $0.30</span></span>
     </span>
   </summary>
   <div class='filing-body'>
@@ -624,30 +647,23 @@ expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist 
     <div class='excerpts'>
       <div class='excerpts-col'>
         <h4>with_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List working directory</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ll, description=List extract scripts</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List inputs/outputs</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(17 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python ../../../llama-extract/scripts/extract.py --input ./inputs/910511770_2015, description=Retry 910511770_2015 with page restriction</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./outputs/*.json 2&gt;/dev/null | grep -v usage, description=Final output check</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
-import json, pathlib
-for p in sorted(pathlib.Path(&#x27;./outputs&#x27;).glob(, description=Validate all JSON files</span></div>
+        <div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs/, content={
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;title&quot;: &quot;Form990Extraction&quot;,
+  &quot;description&quot;: &quot;~15 fiel</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python ./.claude/skills/llama-extract/scripts/extract.py --input ./input.pdf --s, description=Run llama-extract on Form 990 PDF, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/</span></div>
+<div class='tool-event'><code class='tool-name'>Edit</code><span class='tool-input'>replace_all=False, file_path=runs/, old_string=  &quot;tax_year&quot;: 2022.0,</span></div>
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory contents</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List input PDFs</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import pypdf; print(pypdf.__version__)&quot;, description=Check pypdf availability</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(64 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
-  &quot;ein&quot;: &quot;530242652&quot;,
-  &quot;legal_name&quot;: &quot;NATURE CONSERVANCY&quot;,
-  &quot;tax_year&quot;: 2018</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Validate JSON files</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; python3 &lt;&lt;&#x27;PY&#x27;
-import json, os, glob
-expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist and have correct keys</span></div>
+        <div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf, pages=1-10</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf, pages=11-12</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=./output.json, content={
+  &quot;ein&quot;: &quot;136213516&quot;,
+  &quot;legal_name&quot;: &quot;AMERICAN CIVIL LIBERTIES UNION FOUNDATI</span></div>
       </div>
     </div>
   </div>
@@ -660,7 +676,7 @@ expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist 
     <span class='filing-scores'>
       <span class='score-pair'><span class='label'>with</span> <span class='val'>13/15</span></span>
       <span class='score-pair'><span class='label'>no</span> <span class='val'>13/15</span></span>
-      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>$0.29 vs $0.24</span></span>
     </span>
   </summary>
   <div class='filing-body'>
@@ -689,30 +705,25 @@ expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist 
     <div class='excerpts'>
       <div class='excerpts-col'>
         <h4>with_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List working directory</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ll, description=List extract scripts</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List inputs/outputs</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(17 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python ../../../llama-extract/scripts/extract.py --input ./inputs/910511770_2015, description=Retry 910511770_2015 with page restriction</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./outputs/*.json 2&gt;/dev/null | grep -v usage, description=Final output check</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
-import json, pathlib
-for p in sorted(pathlib.Path(&#x27;./outputs&#x27;).glob(, description=Validate all JSON files</span></div>
+        <div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs/, content={
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;title&quot;: &quot;Form990Extraction&quot;,
+  &quot;description&quot;: &quot;~15 fiel</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python ./.claude/skills/llama-extract/scripts/extract.py --input ./input.pdf --s, description=Run llama-extract on Form 990 PDF, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;import pypdf; r = pypdf.PdfReader(&#x27;./input.pdf&#x27;); print(&#x27;pages:&#x27;, len, description=Count PDF pages</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python ./.claude/skills/llama-extract/scripts/extract.py --input ./input.pdf --s, description=Run llama-extract on core Form 990 pages, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/</span></div>
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory contents</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List input PDFs</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import pypdf; print(pypdf.__version__)&quot;, description=Check pypdf availability</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(64 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
-  &quot;ein&quot;: &quot;530242652&quot;,
-  &quot;legal_name&quot;: &quot;NATURE CONSERVANCY&quot;,
-  &quot;tax_year&quot;: 2018</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Validate JSON files</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; python3 &lt;&lt;&#x27;PY&#x27;
-import json, os, glob
-expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist and have correct keys</span></div>
+        <div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf, pages=1-5</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf, pages=10-12</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=./output.json, content={
+  &quot;ein&quot;: &quot;910511770&quot;,
+  &quot;legal_name&quot;: &quot;GROUP HEALTH COOPERATIVE&quot;,
+  &quot;tax_year&quot;</span></div>
       </div>
     </div>
   </div>
@@ -724,8 +735,8 @@ expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist 
     <span class='filing-meta'>EIN 941156365 · TY 2022</span>
     <span class='filing-scores'>
       <span class='score-pair'><span class='label'>with</span> <span class='val'>13/15</span></span>
-      <span class='score-pair'><span class='label'>no</span> <span class='val'>11/15</span></span>
-      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>13/15</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>$0.26 vs $0.36</span></span>
     </span>
   </summary>
   <div class='filing-body'>
@@ -743,8 +754,8 @@ expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist 
 <tr><td class='field-name'>investment_income</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>total_expenses</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>revenue_less_expenses</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>compensation_current_officers</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-wrong' title='wrong'></td></tr>
-<tr><td class='field-name'>other_salaries_wages</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>compensation_current_officers</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>other_salaries_wages</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>professional_fundraising_fees</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_assets_eoy</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_liabilities_eoy</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
@@ -754,30 +765,24 @@ expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist 
     <div class='excerpts'>
       <div class='excerpts-col'>
         <h4>with_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List working directory</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ll, description=List extract scripts</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List inputs/outputs</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(17 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python ../../../llama-extract/scripts/extract.py --input ./inputs/910511770_2015, description=Retry 910511770_2015 with page restriction</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./outputs/*.json 2&gt;/dev/null | grep -v usage, description=Final output check</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
-import json, pathlib
-for p in sorted(pathlib.Path(&#x27;./outputs&#x27;).glob(, description=Validate all JSON files</span></div>
+        <div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs/, content={
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;title&quot;: &quot;Form990Extraction&quot;,
+  &quot;description&quot;: &quot;~15 fiel</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python &quot;.claude/skills/llama-extract/scripts/extract.py&quot; --input ./input.pdf --s, description=Run llama-extract on Form 990 PDF, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/</span></div>
+<div class='tool-event'><code class='tool-name'>Edit</code><span class='tool-input'>replace_all=False, file_path=runs/, old_string=  &quot;tax_year&quot;: 2022.0,</span></div>
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory contents</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List input PDFs</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import pypdf; print(pypdf.__version__)&quot;, description=Check pypdf availability</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(64 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
-  &quot;ein&quot;: &quot;530242652&quot;,
-  &quot;legal_name&quot;: &quot;NATURE CONSERVANCY&quot;,
-  &quot;tax_year&quot;: 2018</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Validate JSON files</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; python3 &lt;&lt;&#x27;PY&#x27;
-import json, os, glob
-expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist and have correct keys</span></div>
+        <div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf, pages=1-12</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf, pages=10-12</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf, pages=13-14</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=./output.json, content={
+  &quot;ein&quot;: &quot;941156365&quot;,
+  &quot;legal_name&quot;: &quot;THE BOARD OF TRUSTEES OF THE LELAND STA</span></div>
       </div>
     </div>
   </div>
@@ -789,8 +794,8 @@ expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist 
     <span class='filing-meta'>EIN 340714585 · TY 2019</span>
     <span class='filing-scores'>
       <span class='score-pair'><span class='label'>with</span> <span class='val'>13/15</span></span>
-      <span class='score-pair'><span class='label'>no</span> <span class='val'>12/15</span></span>
-      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>13/15</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>$0.26 vs $0.29</span></span>
     </span>
   </summary>
   <div class='filing-body'>
@@ -808,7 +813,7 @@ expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist 
 <tr><td class='field-name'>investment_income</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>total_expenses</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>revenue_less_expenses</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>compensation_current_officers</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>compensation_current_officers</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>other_salaries_wages</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>professional_fundraising_fees</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_assets_eoy</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
@@ -819,30 +824,25 @@ expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist 
     <div class='excerpts'>
       <div class='excerpts-col'>
         <h4>with_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List working directory</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ll, description=List extract scripts</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List inputs/outputs</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(17 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python ../../../llama-extract/scripts/extract.py --input ./inputs/910511770_2015, description=Retry 910511770_2015 with page restriction</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./outputs/*.json 2&gt;/dev/null | grep -v usage, description=Final output check</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
-import json, pathlib
-for p in sorted(pathlib.Path(&#x27;./outputs&#x27;).glob(, description=Validate all JSON files</span></div>
+        <div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs/, content={
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;title&quot;: &quot;Form990Extraction&quot;,
+  &quot;description&quot;: &quot;~15 fiel</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python &quot;.claude/skills/llama-extract/scripts/extract.py&quot; --input ./input.pdf --s, description=Run llama-extract CLI on Form 990 PDF, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=runs/</span></div>
+<div class='tool-event'><code class='tool-name'>Edit</code><span class='tool-input'>replace_all=False, file_path=runs/, old_string=  &quot;tax_year&quot;: 2019.0,</span></div>
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory contents</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List input PDFs</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import pypdf; print(pypdf.__version__)&quot;, description=Check pypdf availability</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(64 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
-  &quot;ein&quot;: &quot;530242652&quot;,
-  &quot;legal_name&quot;: &quot;NATURE CONSERVANCY&quot;,
-  &quot;tax_year&quot;: 2018</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Validate JSON files</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; python3 &lt;&lt;&#x27;PY&#x27;
-import json, os, glob
-expected = [&quot;200097189_2023&quot;, description=Verify all 11 outputs exist and have correct keys</span></div>
+        <div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf, pages=1-5</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf, pages=10-12</span></div>
+<div class='tool-event'><code class='tool-name'>Read</code><span class='tool-input'>file_path=./input.pdf, pages=12-14</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=./output.json, content={
+  &quot;ein&quot;: &quot;340714585&quot;,
+  &quot;legal_name&quot;: &quot;THE CLEVELAND CLINIC FOUNDATION&quot;,
+  &quot;ta</span></div>
       </div>
     </div>
   </div>

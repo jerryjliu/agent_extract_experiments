@@ -1,0 +1,841 @@
+doc_key,name,condition,field,extracted,truth,status,abs_error,rel_error
+2745426_2024-09-30,Legends Bank,with_skill,form_version,041,,na,,
+2745426_2024-09-30,Legends Bank,with_skill,total_assets,853110000.0,853110000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,with_skill,total_deposits,749996000.0,749996000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,with_skill,total_loans_net,572222000.0,574390000.0,correct,2168000.0,0.003774438970037779
+2745426_2024-09-30,Legends Bank,with_skill,allowance_credit_losses_loans,5047000.0,5047000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,with_skill,total_liabilities,772584000.0,772584000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,with_skill,total_equity_capital,80526000.0,80526000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,with_skill,total_securities,135438000.0,199748000.0,wrong,64310000.0,0.32195566413681237
+2745426_2024-09-30,Legends Bank,with_skill,trading_assets,0.0,0.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,with_skill,intangible_assets,0.0,0.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,with_skill,oreo,0.0,0.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,with_skill,total_real_estate_loans,485955000.0,501955000.0,wrong,16000000.0,0.03187536731380303
+2745426_2024-09-30,Legends Bank,with_skill,ci_loans,56829000.0,56829000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,with_skill,total_interest_income,34637000.0,34637000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,with_skill,total_interest_expense,14349000.0,14349000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,with_skill,net_interest_income,20288000.0,20288000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,with_skill,provision_credit_losses,65000.0,65000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,with_skill,total_noninterest_income,4419000.0,4419000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,with_skill,total_noninterest_expense,17569000.0,17569000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,with_skill,net_income,5765000.0,5765000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,with_skill,net_chargeoffs_loans_leases,3000.0,3000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,with_skill,nonaccrual_loans_total,175000.0,316000.0,wrong,141000.0,0.4462025316455696
+2745426_2024-09-30,Legends Bank,with_skill,past_due_30_89_days_loans,2629000.0,2629000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,with_skill,past_due_90_plus_days_loans,141000.0,141000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,with_skill,tier1_capital_ratio,0.126134,0.1261,correct,3.400000000000625e-05,3.400000000000625e-05
+2745426_2024-09-30,Legends Bank,with_skill,cet1_capital_ratio,0.126134,0.1261,correct,3.400000000000625e-05,3.400000000000625e-05
+2745426_2024-09-30,Legends Bank,with_skill,leverage_ratio,0.100301,0.10030096028472318,correct,3.9715276817231526e-08,3.9715276817231526e-08
+2745426_2024-09-30,Legends Bank,with_skill,total_risk_based_capital_ratio,0.134306,0.1343058639115235,correct,1.3608847651558342e-07,1.3608847651558342e-07
+2745426_2024-09-30,Legends Bank,no_skill,form_version,041,,na,,
+2745426_2024-09-30,Legends Bank,no_skill,total_assets,853110000.0,853110000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,no_skill,total_deposits,749996000.0,749996000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,no_skill,total_loans_net,579437000.0,574390000.0,wrong,5047000.0,0.00878671286059994
+2745426_2024-09-30,Legends Bank,no_skill,allowance_credit_losses_loans,5047000.0,5047000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,no_skill,total_liabilities,772584000.0,772584000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,no_skill,total_equity_capital,80526000.0,80526000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,no_skill,total_securities,199748000.0,199748000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,no_skill,trading_assets,0.0,0.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,no_skill,intangible_assets,0.0,0.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,no_skill,oreo,0.0,0.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,no_skill,total_real_estate_loans,501955000.0,501955000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,no_skill,ci_loans,56829000.0,56829000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,no_skill,total_interest_income,34637000.0,34637000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,no_skill,total_interest_expense,14349000.0,14349000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,no_skill,net_interest_income,20288000.0,20288000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,no_skill,provision_credit_losses,65000.0,65000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,no_skill,total_noninterest_income,4419000.0,4419000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,no_skill,total_noninterest_expense,17569000.0,17569000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,no_skill,net_income,5765000.0,5765000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,no_skill,net_chargeoffs_loans_leases,3000.0,3000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,no_skill,nonaccrual_loans_total,175000.0,316000.0,wrong,141000.0,0.4462025316455696
+2745426_2024-09-30,Legends Bank,no_skill,past_due_30_89_days_loans,2629000.0,2629000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,no_skill,past_due_90_plus_days_loans,141000.0,141000.0,correct,0.0,0.0
+2745426_2024-09-30,Legends Bank,no_skill,tier1_capital_ratio,0.126134,0.1261,correct,3.400000000000625e-05,3.400000000000625e-05
+2745426_2024-09-30,Legends Bank,no_skill,cet1_capital_ratio,0.126134,0.1261,correct,3.400000000000625e-05,3.400000000000625e-05
+2745426_2024-09-30,Legends Bank,no_skill,leverage_ratio,0.100301,0.10030096028472318,correct,3.9715276817231526e-08,3.9715276817231526e-08
+2745426_2024-09-30,Legends Bank,no_skill,total_risk_based_capital_ratio,0.134306,0.1343058639115235,correct,1.3608847651558342e-07,1.3608847651558342e-07
+805755_2024-09-30,First National Bank North,with_skill,form_version,041,,na,,
+805755_2024-09-30,First National Bank North,with_skill,total_assets,787296000.0,787296000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,with_skill,total_deposits,692615000.0,692615000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,with_skill,total_loans_net,552949000.0,544057000.0,wrong,8892000.0,0.016343875733608796
+805755_2024-09-30,First National Bank North,with_skill,allowance_credit_losses_loans,9172000.0,9172000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,with_skill,total_liabilities,700006000.0,700006000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,with_skill,total_equity_capital,87290000.0,87290000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,with_skill,total_securities,92899000.0,92899000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,with_skill,trading_assets,0.0,0.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,with_skill,intangible_assets,2415000.0,2415000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,with_skill,oreo,266000.0,266000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,with_skill,total_real_estate_loans,450097000.0,450097000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,with_skill,ci_loans,41645000.0,41645000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,with_skill,total_interest_income,33063000.0,33063000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,with_skill,total_interest_expense,9584000.0,9584000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,with_skill,net_interest_income,23479000.0,23479000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,with_skill,provision_credit_losses,420000.0,458000.0,wrong,38000.0,0.08296943231441048
+805755_2024-09-30,First National Bank North,with_skill,total_noninterest_income,4023000.0,4023000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,with_skill,total_noninterest_expense,13923000.0,13923000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,with_skill,net_income,13121000.0,13121000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,with_skill,net_chargeoffs_loans_leases,111000.0,111000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,with_skill,nonaccrual_loans_total,271000.0,374000.0,wrong,103000.0,0.27540106951871657
+805755_2024-09-30,First National Bank North,with_skill,past_due_30_89_days_loans,2026000.0,2026000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,with_skill,past_due_90_plus_days_loans,103000.0,103000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,with_skill,tier1_capital_ratio,0.181731,0.18170000000000003,correct,3.099999999997549e-05,3.099999999997549e-05
+805755_2024-09-30,First National Bank North,with_skill,cet1_capital_ratio,0.181731,0.18170000000000003,correct,3.099999999997549e-05,3.099999999997549e-05
+805755_2024-09-30,First National Bank North,with_skill,leverage_ratio,0.114618,0.11461814516705134,correct,1.4516705133804653e-07,1.4516705133804653e-07
+805755_2024-09-30,First National Bank North,with_skill,total_risk_based_capital_ratio,0.194312,0.19431161524426158,correct,3.8475573843621547e-07,3.8475573843621547e-07
+805755_2024-09-30,First National Bank North,no_skill,form_version,041,,na,,
+805755_2024-09-30,First National Bank North,no_skill,total_assets,787296000.0,787296000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,no_skill,total_deposits,692615000.0,692615000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,no_skill,total_loans_net,553229000.0,544057000.0,wrong,9172000.0,0.016858527691032372
+805755_2024-09-30,First National Bank North,no_skill,allowance_credit_losses_loans,9172000.0,9172000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,no_skill,total_liabilities,700006000.0,700006000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,no_skill,total_equity_capital,87290000.0,87290000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,no_skill,total_securities,92899000.0,92899000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,no_skill,trading_assets,0.0,0.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,no_skill,intangible_assets,2415000.0,2415000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,no_skill,oreo,266000.0,266000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,no_skill,total_real_estate_loans,450097000.0,450097000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,no_skill,ci_loans,41645000.0,41645000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,no_skill,total_interest_income,33063000.0,33063000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,no_skill,total_interest_expense,9584000.0,9584000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,no_skill,net_interest_income,23479000.0,23479000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,no_skill,provision_credit_losses,458000.0,458000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,no_skill,total_noninterest_income,4023000.0,4023000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,no_skill,total_noninterest_expense,13923000.0,13923000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,no_skill,net_income,13121000.0,13121000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,no_skill,net_chargeoffs_loans_leases,111000.0,111000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,no_skill,nonaccrual_loans_total,271000.0,374000.0,wrong,103000.0,0.27540106951871657
+805755_2024-09-30,First National Bank North,no_skill,past_due_30_89_days_loans,2026000.0,2026000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,no_skill,past_due_90_plus_days_loans,103000.0,103000.0,correct,0.0,0.0
+805755_2024-09-30,First National Bank North,no_skill,tier1_capital_ratio,0.181731,0.18170000000000003,correct,3.099999999997549e-05,3.099999999997549e-05
+805755_2024-09-30,First National Bank North,no_skill,cet1_capital_ratio,0.181731,0.18170000000000003,correct,3.099999999997549e-05,3.099999999997549e-05
+805755_2024-09-30,First National Bank North,no_skill,leverage_ratio,0.114618,0.11461814516705134,correct,1.4516705133804653e-07,1.4516705133804653e-07
+805755_2024-09-30,First National Bank North,no_skill,total_risk_based_capital_ratio,0.194312,0.19431161524426158,correct,3.8475573843621547e-07,3.8475573843621547e-07
+507152_2024-09-30,Quail Creek Bank,with_skill,form_version,051,,na,,
+507152_2024-09-30,Quail Creek Bank,with_skill,total_assets,781782000.0,781782000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,with_skill,total_deposits,707179000.0,707179000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,with_skill,total_loans_net,608119000.0,601116000.0,wrong,7003000.0,0.01164999767099861
+507152_2024-09-30,Quail Creek Bank,with_skill,allowance_credit_losses_loans,7003000.0,7003000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,with_skill,total_liabilities,710417000.0,710417000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,with_skill,total_equity_capital,71365000.0,71365000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,with_skill,total_securities,122657000.0,122821000.0,correct,164000.0,0.001335276540656728
+507152_2024-09-30,Quail Creek Bank,with_skill,trading_assets,0.0,0.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,with_skill,intangible_assets,0.0,0.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,with_skill,oreo,0.0,0.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,with_skill,total_real_estate_loans,0.0,560312000.0,wrong,560312000.0,1.0
+507152_2024-09-30,Quail Creek Bank,with_skill,ci_loans,40385000.0,40385000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,with_skill,total_interest_income,37392000.0,37392000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,with_skill,total_interest_expense,12412000.0,12412000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,with_skill,net_interest_income,24980000.0,24980000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,with_skill,provision_credit_losses,600000.0,600000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,with_skill,total_noninterest_income,1770000.0,1770000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,with_skill,total_noninterest_expense,14019000.0,14019000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,with_skill,net_income,11645000.0,11645000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,with_skill,net_chargeoffs_loans_leases,20000.0,20000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,with_skill,nonaccrual_loans_total,1382000.0,1676000.0,wrong,294000.0,0.17541766109785203
+507152_2024-09-30,Quail Creek Bank,with_skill,past_due_30_89_days_loans,4396000.0,4396000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,with_skill,past_due_90_plus_days_loans,294000.0,294000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,with_skill,tier1_capital_ratio,0.133136,0.1331,correct,3.600000000000825e-05,3.600000000000825e-05
+507152_2024-09-30,Quail Creek Bank,with_skill,cet1_capital_ratio,0.133136,0.1331,correct,3.600000000000825e-05,3.600000000000825e-05
+507152_2024-09-30,Quail Creek Bank,with_skill,leverage_ratio,0.093052,0.09305195951325496,correct,4.0486745039869376e-08,4.0486745039869376e-08
+507152_2024-09-30,Quail Creek Bank,with_skill,total_risk_based_capital_ratio,0.145639,0.14563919951309467,correct,1.9951309468413392e-07,1.9951309468413392e-07
+507152_2024-09-30,Quail Creek Bank,no_skill,form_version,051,,na,,
+507152_2024-09-30,Quail Creek Bank,no_skill,total_assets,781782000.0,781782000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,no_skill,total_deposits,707179000.0,707179000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,no_skill,total_loans_net,608119000.0,601116000.0,wrong,7003000.0,0.01164999767099861
+507152_2024-09-30,Quail Creek Bank,no_skill,allowance_credit_losses_loans,7003000.0,7003000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,no_skill,total_liabilities,710417000.0,710417000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,no_skill,total_equity_capital,71365000.0,71365000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,no_skill,total_securities,122657000.0,122821000.0,correct,164000.0,0.001335276540656728
+507152_2024-09-30,Quail Creek Bank,no_skill,trading_assets,0.0,0.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,no_skill,intangible_assets,0.0,0.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,no_skill,oreo,0.0,0.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,no_skill,total_real_estate_loans,560312000.0,560312000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,no_skill,ci_loans,40385000.0,40385000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,no_skill,total_interest_income,37392000.0,37392000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,no_skill,total_interest_expense,12412000.0,12412000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,no_skill,net_interest_income,24980000.0,24980000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,no_skill,provision_credit_losses,600000.0,600000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,no_skill,total_noninterest_income,1770000.0,1770000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,no_skill,total_noninterest_expense,14019000.0,14019000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,no_skill,net_income,11645000.0,11645000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,no_skill,net_chargeoffs_loans_leases,20000.0,20000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,no_skill,nonaccrual_loans_total,1382000.0,1676000.0,wrong,294000.0,0.17541766109785203
+507152_2024-09-30,Quail Creek Bank,no_skill,past_due_30_89_days_loans,4396000.0,4396000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,no_skill,past_due_90_plus_days_loans,294000.0,294000.0,correct,0.0,0.0
+507152_2024-09-30,Quail Creek Bank,no_skill,tier1_capital_ratio,0.133136,0.1331,correct,3.600000000000825e-05,3.600000000000825e-05
+507152_2024-09-30,Quail Creek Bank,no_skill,cet1_capital_ratio,0.133136,0.1331,correct,3.600000000000825e-05,3.600000000000825e-05
+507152_2024-09-30,Quail Creek Bank,no_skill,leverage_ratio,0.093052,0.09305195951325496,correct,4.0486745039869376e-08,4.0486745039869376e-08
+507152_2024-09-30,Quail Creek Bank,no_skill,total_risk_based_capital_ratio,0.145639,0.14563919951309467,correct,1.9951309468413392e-07,1.9951309468413392e-07
+207872_2024-09-30,First Utah Bank,with_skill,form_version,051,,na,,
+207872_2024-09-30,First Utah Bank,with_skill,total_assets,789008000.0,789008000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,with_skill,total_deposits,688802000.0,688802000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,with_skill,total_loans_net,593523000.0,586391000.0,wrong,7132000.0,0.012162533190311584
+207872_2024-09-30,First Utah Bank,with_skill,allowance_credit_losses_loans,7133000.0,7133000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,with_skill,total_liabilities,714527000.0,714527000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,with_skill,total_equity_capital,74481000.0,74481000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,with_skill,total_securities,42881000.0,121403000.0,wrong,78522000.0,0.6467879706432296
+207872_2024-09-30,First Utah Bank,with_skill,trading_assets,0.0,0.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,with_skill,intangible_assets,1705000.0,1705000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,with_skill,oreo,4195000.0,4195000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,with_skill,total_real_estate_loans,438443000.0,438543000.0,correct,100000.0,0.00022802781027174074
+207872_2024-09-30,First Utah Bank,with_skill,ci_loans,98510000.0,98510000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,with_skill,total_interest_income,39258000.0,39258000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,with_skill,total_interest_expense,14238000.0,14238000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,with_skill,net_interest_income,25020000.0,25020000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,with_skill,provision_credit_losses,2950000.0,2950000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,with_skill,total_noninterest_income,3253000.0,3253000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,with_skill,total_noninterest_expense,18240000.0,18240000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,with_skill,net_income,5326000.0,5326000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,with_skill,net_chargeoffs_loans_leases,2346000.0,2346000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,with_skill,nonaccrual_loans_total,5214000.0,5214000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,with_skill,past_due_30_89_days_loans,6506000.0,6506000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,with_skill,past_due_90_plus_days_loans,0.0,0.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,with_skill,tier1_capital_ratio,0.115155,0.1152,correct,4.500000000000337e-05,4.500000000000337e-05
+207872_2024-09-30,First Utah Bank,with_skill,cet1_capital_ratio,0.115155,0.1152,correct,4.500000000000337e-05,4.500000000000337e-05
+207872_2024-09-30,First Utah Bank,with_skill,leverage_ratio,0.094809,0.09480850953565506,correct,4.904643449432644e-07,4.904643449432644e-07
+207872_2024-09-30,First Utah Bank,with_skill,total_risk_based_capital_ratio,0.126379,0.12637929840684345,correct,2.9840684345749935e-07,2.9840684345749935e-07
+207872_2024-09-30,First Utah Bank,no_skill,form_version,051,,na,,
+207872_2024-09-30,First Utah Bank,no_skill,total_assets,789008000.0,789008000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,no_skill,total_deposits,688802000.0,688802000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,no_skill,total_loans_net,593524000.0,586391000.0,wrong,7133000.0,0.012164238537085323
+207872_2024-09-30,First Utah Bank,no_skill,allowance_credit_losses_loans,7133000.0,7133000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,no_skill,total_liabilities,714527000.0,714527000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,no_skill,total_equity_capital,74481000.0,74481000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,no_skill,total_securities,42881000.0,121403000.0,wrong,78522000.0,0.6467879706432296
+207872_2024-09-30,First Utah Bank,no_skill,trading_assets,0.0,0.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,no_skill,intangible_assets,1705000.0,1705000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,no_skill,oreo,4195000.0,4195000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,no_skill,total_real_estate_loans,438543000.0,438543000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,no_skill,ci_loans,98510000.0,98510000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,no_skill,total_interest_income,39258000.0,39258000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,no_skill,total_interest_expense,14238000.0,14238000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,no_skill,net_interest_income,25020000.0,25020000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,no_skill,provision_credit_losses,2950000.0,2950000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,no_skill,total_noninterest_income,3253000.0,3253000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,no_skill,total_noninterest_expense,18240000.0,18240000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,no_skill,net_income,5326000.0,5326000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,no_skill,net_chargeoffs_loans_leases,2346000.0,2346000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,no_skill,nonaccrual_loans_total,5214000.0,5214000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,no_skill,past_due_30_89_days_loans,6506000.0,6506000.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,no_skill,past_due_90_plus_days_loans,0.0,0.0,correct,0.0,0.0
+207872_2024-09-30,First Utah Bank,no_skill,tier1_capital_ratio,0.115155,0.1152,correct,4.500000000000337e-05,4.500000000000337e-05
+207872_2024-09-30,First Utah Bank,no_skill,cet1_capital_ratio,0.115155,0.1152,correct,4.500000000000337e-05,4.500000000000337e-05
+207872_2024-09-30,First Utah Bank,no_skill,leverage_ratio,0.094809,0.09480850953565506,correct,4.904643449432644e-07,4.904643449432644e-07
+207872_2024-09-30,First Utah Bank,no_skill,total_risk_based_capital_ratio,0.126379,0.12637929840684345,correct,2.9840684345749935e-07,2.9840684345749935e-07
+2667957_2024-09-30,Nebraskaland Bank,with_skill,form_version,041,,na,,
+2667957_2024-09-30,Nebraskaland Bank,with_skill,total_assets,976880000.0,976880000.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,with_skill,total_deposits,751363000.0,751363000.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,with_skill,total_loans_net,0.0,625414000.0,wrong,625414000.0,1.0
+2667957_2024-09-30,Nebraskaland Bank,with_skill,allowance_credit_losses_loans,6452000.0,6452000.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,with_skill,total_liabilities,889839000.0,889839000.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,with_skill,total_equity_capital,87041000.0,87041000.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,with_skill,total_securities,133416000.0,198448000.0,wrong,65032000.0,0.32770297508667257
+2667957_2024-09-30,Nebraskaland Bank,with_skill,trading_assets,0.0,0.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,with_skill,intangible_assets,0.0,0.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,with_skill,oreo,0.0,0.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,with_skill,total_real_estate_loans,493487000.0,493487000.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,with_skill,ci_loans,83586000.0,83586000.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,with_skill,total_interest_income,31077000.0,31077000.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,with_skill,total_interest_expense,15816000.0,15816000.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,with_skill,net_interest_income,15261000.0,15261000.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,with_skill,provision_credit_losses,-65000.0,0.0,wrong,65000.0,65000.0
+2667957_2024-09-30,Nebraskaland Bank,with_skill,total_noninterest_income,1189000.0,1189000.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,with_skill,total_noninterest_expense,13824000.0,13824000.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,with_skill,net_income,2093000.0,2093000.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,with_skill,net_chargeoffs_loans_leases,-1000.0,-1000.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,with_skill,nonaccrual_loans_total,0.0,0.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,with_skill,past_due_30_89_days_loans,0.0,0.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,with_skill,past_due_90_plus_days_loans,0.0,0.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,with_skill,tier1_capital_ratio,,,na,,
+2667957_2024-09-30,Nebraskaland Bank,with_skill,cet1_capital_ratio,,,na,,
+2667957_2024-09-30,Nebraskaland Bank,with_skill,leverage_ratio,0.095642,0.0956416990976588,correct,3.0090234121038506e-07,3.0090234121038506e-07
+2667957_2024-09-30,Nebraskaland Bank,with_skill,total_risk_based_capital_ratio,,0.0,missing,,
+2667957_2024-09-30,Nebraskaland Bank,no_skill,form_version,041,,na,,
+2667957_2024-09-30,Nebraskaland Bank,no_skill,total_assets,976880000.0,976880000.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,no_skill,total_deposits,751363000.0,751363000.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,no_skill,total_loans_net,631865000.0,625414000.0,wrong,6451000.0,0.010314767498009319
+2667957_2024-09-30,Nebraskaland Bank,no_skill,allowance_credit_losses_loans,6452000.0,6452000.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,no_skill,total_liabilities,889839000.0,889839000.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,no_skill,total_equity_capital,87041000.0,87041000.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,no_skill,total_securities,198448000.0,198448000.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,no_skill,trading_assets,0.0,0.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,no_skill,intangible_assets,0.0,0.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,no_skill,oreo,0.0,0.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,no_skill,total_real_estate_loans,493487000.0,493487000.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,no_skill,ci_loans,83586000.0,83586000.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,no_skill,total_interest_income,31077000.0,31077000.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,no_skill,total_interest_expense,15816000.0,15816000.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,no_skill,net_interest_income,15261000.0,15261000.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,no_skill,provision_credit_losses,0.0,0.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,no_skill,total_noninterest_income,1189000.0,1189000.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,no_skill,total_noninterest_expense,13824000.0,13824000.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,no_skill,net_income,2093000.0,2093000.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,no_skill,net_chargeoffs_loans_leases,1000.0,-1000.0,wrong,2000.0,2.0
+2667957_2024-09-30,Nebraskaland Bank,no_skill,nonaccrual_loans_total,0.0,0.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,no_skill,past_due_30_89_days_loans,0.0,0.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,no_skill,past_due_90_plus_days_loans,0.0,0.0,correct,0.0,0.0
+2667957_2024-09-30,Nebraskaland Bank,no_skill,tier1_capital_ratio,,,na,,
+2667957_2024-09-30,Nebraskaland Bank,no_skill,cet1_capital_ratio,,,na,,
+2667957_2024-09-30,Nebraskaland Bank,no_skill,leverage_ratio,0.095642,0.0956416990976588,correct,3.0090234121038506e-07,3.0090234121038506e-07
+2667957_2024-09-30,Nebraskaland Bank,no_skill,total_risk_based_capital_ratio,,0.0,missing,,
+456045_2024-09-30,Centennial Bank,with_skill,form_version,041,,na,,
+456045_2024-09-30,Centennial Bank,with_skill,total_assets,22747374000.0,22747374000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,with_skill,total_deposits,17216508000.0,17216508000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,with_skill,total_loans_net,14737055000.0,14511405000.0,wrong,225650000.0,0.015549838213460378
+456045_2024-09-30,Centennial Bank,with_skill,allowance_credit_losses_loans,312574000.0,312574000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,with_skill,total_liabilities,18935204000.0,18935204000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,with_skill,total_equity_capital,3812170000.0,3812170000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,with_skill,total_securities,3268452000.0,4545543000.0,wrong,1277091000.0,0.28095455262440594
+456045_2024-09-30,Centennial Bank,with_skill,trading_assets,0.0,0.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,with_skill,intangible_assets,1440648000.0,1440648000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,with_skill,oreo,43041000.0,43041000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,with_skill,total_real_estate_loans,0.0,10988921000.0,wrong,10988921000.0,1.0
+456045_2024-09-30,Centennial Bank,with_skill,ci_loans,2084667000.0,2084667000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,with_skill,total_interest_income,982831000.0,982831000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,with_skill,total_interest_expense,333092000.0,333092000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,with_skill,net_interest_income,649739000.0,649739000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,with_skill,provision_credit_losses,31370000.0,31370000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,with_skill,total_noninterest_income,109887000.0,109887000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,with_skill,total_noninterest_expense,319891000.0,319891000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,with_skill,net_income,313795000.0,313795000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,with_skill,net_chargeoffs_loans_leases,7361000.0,7361000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,with_skill,nonaccrual_loans_total,95746000.0,101102000.0,wrong,5356000.0,0.052976202251191866
+456045_2024-09-30,Centennial Bank,with_skill,past_due_30_89_days_loans,42464000.0,42464000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,with_skill,past_due_90_plus_days_loans,5356000.0,5356000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,with_skill,tier1_capital_ratio,0.139129,0.1391,correct,2.9000000000001247e-05,2.9000000000001247e-05
+456045_2024-09-30,Centennial Bank,with_skill,cet1_capital_ratio,0.139129,0.1391,correct,2.9000000000001247e-05,2.9000000000001247e-05
+456045_2024-09-30,Centennial Bank,with_skill,leverage_ratio,0.11897,0.11896966550998679,correct,3.344900132151718e-07,3.344900132151718e-07
+456045_2024-09-30,Centennial Bank,with_skill,total_risk_based_capital_ratio,0.151709,0.15170943992385474,correct,4.3992385473368145e-07,4.3992385473368145e-07
+456045_2024-09-30,Centennial Bank,no_skill,form_version,041,,na,,
+456045_2024-09-30,Centennial Bank,no_skill,total_assets,22747374000.0,22747374000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,no_skill,total_deposits,17216508000.0,17216508000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,no_skill,total_loans_net,14823980000.0,14511405000.0,wrong,312575000.0,0.02153995426356028
+456045_2024-09-30,Centennial Bank,no_skill,allowance_credit_losses_loans,312574000.0,312574000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,no_skill,total_liabilities,18935204000.0,18935204000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,no_skill,total_equity_capital,3812170000.0,3812170000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,no_skill,total_securities,4545543000.0,4545543000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,no_skill,trading_assets,0.0,0.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,no_skill,intangible_assets,1440648000.0,1440648000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,no_skill,oreo,43041000.0,43041000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,no_skill,total_real_estate_loans,10988921000.0,10988921000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,no_skill,ci_loans,2084667000.0,2084667000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,no_skill,total_interest_income,982831000.0,982831000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,no_skill,total_interest_expense,333092000.0,333092000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,no_skill,net_interest_income,649739000.0,649739000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,no_skill,provision_credit_losses,31370000.0,31370000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,no_skill,total_noninterest_income,109887000.0,109887000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,no_skill,total_noninterest_expense,319891000.0,319891000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,no_skill,net_income,313795000.0,313795000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,no_skill,net_chargeoffs_loans_leases,7361000.0,7361000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,no_skill,nonaccrual_loans_total,95746000.0,101102000.0,wrong,5356000.0,0.052976202251191866
+456045_2024-09-30,Centennial Bank,no_skill,past_due_30_89_days_loans,42464000.0,42464000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,no_skill,past_due_90_plus_days_loans,5356000.0,5356000.0,correct,0.0,0.0
+456045_2024-09-30,Centennial Bank,no_skill,tier1_capital_ratio,0.139129,0.1391,correct,2.9000000000001247e-05,2.9000000000001247e-05
+456045_2024-09-30,Centennial Bank,no_skill,cet1_capital_ratio,0.139129,0.1391,correct,2.9000000000001247e-05,2.9000000000001247e-05
+456045_2024-09-30,Centennial Bank,no_skill,leverage_ratio,0.11897,0.11896966550998679,correct,3.344900132151718e-07,3.344900132151718e-07
+456045_2024-09-30,Centennial Bank,no_skill,total_risk_based_capital_ratio,0.151709,0.15170943992385474,correct,4.3992385473368145e-07,4.3992385473368145e-07
+264772_2024-09-30,"LendingClub Bank, National Association",with_skill,form_version,041,,na,,
+264772_2024-09-30,"LendingClub Bank, National Association",with_skill,total_assets,10848251000.0,10848251000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",with_skill,total_deposits,9532342000.0,9532342000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",with_skill,total_loans_net,0.0,6018951000.0,wrong,6018951000.0,1.0
+264772_2024-09-30,"LendingClub Bank, National Association",with_skill,allowance_credit_losses_loans,220564000.0,220564000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",with_skill,total_liabilities,9708094000.0,9708094000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",with_skill,total_equity_capital,1140157000.0,1140157000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",with_skill,total_securities,3311418000.0,3311418000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",with_skill,trading_assets,0.0,0.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",with_skill,intangible_assets,89592000.0,89592000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",with_skill,oreo,0.0,0.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",with_skill,total_real_estate_loans,547141000.0,547141000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",with_skill,ci_loans,179230000.0,179230000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",with_skill,total_interest_income,662501000.0,662501000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",with_skill,total_interest_expense,275016000.0,275016000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",with_skill,net_interest_income,387485000.0,387485000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",with_skill,provision_credit_losses,115029000.0,115029000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",with_skill,total_noninterest_income,159648000.0,159648000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",with_skill,total_noninterest_expense,383038000.0,383038000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",with_skill,net_income,37964000.0,37964000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",with_skill,net_chargeoffs_loans_leases,203106000.0,203106000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",with_skill,nonaccrual_loans_total,68682000.0,70617000.0,wrong,1935000.0,0.02740133395641276
+264772_2024-09-30,"LendingClub Bank, National Association",with_skill,past_due_30_89_days_loans,64189000.0,64189000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",with_skill,past_due_90_plus_days_loans,1935000.0,1935000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",with_skill,tier1_capital_ratio,0.145243,0.1452,correct,4.300000000001525e-05,4.300000000001525e-05
+264772_2024-09-30,"LendingClub Bank, National Association",with_skill,cet1_capital_ratio,0.145243,0.1452,correct,4.300000000001525e-05,4.300000000001525e-05
+264772_2024-09-30,"LendingClub Bank, National Association",with_skill,leverage_ratio,0.103074,0.10307386293025259,correct,1.3706974741345412e-07,1.3706974741345412e-07
+264772_2024-09-30,"LendingClub Bank, National Association",with_skill,total_risk_based_capital_ratio,0.157953,0.15795279467118023,correct,2.0532881978008177e-07,2.0532881978008177e-07
+264772_2024-09-30,"LendingClub Bank, National Association",no_skill,form_version,041,,na,,
+264772_2024-09-30,"LendingClub Bank, National Association",no_skill,total_assets,10848251000.0,10848251000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",no_skill,total_deposits,9532342000.0,9532342000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",no_skill,total_loans_net,6239515000.0,6018951000.0,wrong,220564000.0,0.036644923675238424
+264772_2024-09-30,"LendingClub Bank, National Association",no_skill,allowance_credit_losses_loans,220564000.0,220564000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",no_skill,total_liabilities,9708094000.0,9708094000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",no_skill,total_equity_capital,1140157000.0,1140157000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",no_skill,total_securities,3311418000.0,3311418000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",no_skill,trading_assets,0.0,0.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",no_skill,intangible_assets,89592000.0,89592000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",no_skill,oreo,0.0,0.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",no_skill,total_real_estate_loans,547141000.0,547141000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",no_skill,ci_loans,179230000.0,179230000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",no_skill,total_interest_income,662501000.0,662501000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",no_skill,total_interest_expense,275016000.0,275016000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",no_skill,net_interest_income,387485000.0,387485000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",no_skill,provision_credit_losses,115029000.0,115029000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",no_skill,total_noninterest_income,159648000.0,159648000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",no_skill,total_noninterest_expense,383038000.0,383038000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",no_skill,net_income,37964000.0,37964000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",no_skill,net_chargeoffs_loans_leases,203106000.0,203106000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",no_skill,nonaccrual_loans_total,64189000.0,70617000.0,wrong,6428000.0,0.09102624014047608
+264772_2024-09-30,"LendingClub Bank, National Association",no_skill,past_due_30_89_days_loans,68682000.0,64189000.0,wrong,4493000.0,0.06999641683154434
+264772_2024-09-30,"LendingClub Bank, National Association",no_skill,past_due_90_plus_days_loans,1935000.0,1935000.0,correct,0.0,0.0
+264772_2024-09-30,"LendingClub Bank, National Association",no_skill,tier1_capital_ratio,0.145243,0.1452,correct,4.300000000001525e-05,4.300000000001525e-05
+264772_2024-09-30,"LendingClub Bank, National Association",no_skill,cet1_capital_ratio,0.145243,0.1452,correct,4.300000000001525e-05,4.300000000001525e-05
+264772_2024-09-30,"LendingClub Bank, National Association",no_skill,leverage_ratio,0.103074,0.10307386293025259,correct,1.3706974741345412e-07,1.3706974741345412e-07
+264772_2024-09-30,"LendingClub Bank, National Association",no_skill,total_risk_based_capital_ratio,0.157953,0.15795279467118023,correct,2.0532881978008177e-07,2.0532881978008177e-07
+3076248_2024-09-30,Stifel Bank and Trust,with_skill,form_version,041,,na,,
+3076248_2024-09-30,Stifel Bank and Trust,with_skill,total_assets,18849304000.0,18849304000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,with_skill,total_deposits,17349098000.0,17349098000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,with_skill,total_loans_net,14061232000.0,13951491000.0,wrong,109741000.0,0.007865897630582996
+3076248_2024-09-30,Stifel Bank and Trust,with_skill,allowance_credit_losses_loans,109741000.0,109741000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,with_skill,total_liabilities,17541050000.0,17541050000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,with_skill,total_equity_capital,1308254000.0,1308254000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,with_skill,total_securities,327003000.0,4087785000.0,wrong,3760782000.0,0.9200048436989714
+3076248_2024-09-30,Stifel Bank and Trust,with_skill,trading_assets,5449000.0,5449000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,with_skill,intangible_assets,20796000.0,20796000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,with_skill,oreo,0.0,0.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,with_skill,total_real_estate_loans,9051887000.0,9051887000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,with_skill,ci_loans,4096140000.0,4096140000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,with_skill,total_interest_income,825674000.0,825674000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,with_skill,total_interest_expense,361260000.0,361260000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,with_skill,net_interest_income,464414000.0,464414000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,with_skill,provision_credit_losses,0.0,12860000.0,wrong,12860000.0,1.0
+3076248_2024-09-30,Stifel Bank and Trust,with_skill,total_noninterest_income,38090000.0,38090000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,with_skill,total_noninterest_expense,123591000.0,123591000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,with_skill,net_income,276759000.0,276759000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,with_skill,net_chargeoffs_loans_leases,11380000.0,11380000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,with_skill,nonaccrual_loans_total,144071000.0,145382000.0,wrong,1311000.0,0.009017622539241446
+3076248_2024-09-30,Stifel Bank and Trust,with_skill,past_due_30_89_days_loans,73803000.0,73803000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,with_skill,past_due_90_plus_days_loans,1311000.0,1311000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,with_skill,tier1_capital_ratio,0.106971,0.107,correct,2.9000000000001247e-05,2.9000000000001247e-05
+3076248_2024-09-30,Stifel Bank and Trust,with_skill,cet1_capital_ratio,0.106971,0.107,correct,2.9000000000001247e-05,2.9000000000001247e-05
+3076248_2024-09-30,Stifel Bank and Trust,with_skill,leverage_ratio,0.071013,0.07101319233563065,correct,1.92335630644358e-07,1.92335630644358e-07
+3076248_2024-09-30,Stifel Bank and Trust,with_skill,total_risk_based_capital_ratio,0.117016,0.11701607997163756,correct,7.997163756212622e-08,7.997163756212622e-08
+3076248_2024-09-30,Stifel Bank and Trust,no_skill,form_version,041,,na,,
+3076248_2024-09-30,Stifel Bank and Trust,no_skill,total_assets,18849304000.0,18849304000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,no_skill,total_deposits,17349098000.0,17349098000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,no_skill,total_loans_net,13595493000.0,13951491000.0,wrong,355998000.0,0.025516842608435186
+3076248_2024-09-30,Stifel Bank and Trust,no_skill,allowance_credit_losses_loans,109741000.0,109741000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,no_skill,total_liabilities,17541050000.0,17541050000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,no_skill,total_equity_capital,1308254000.0,1308254000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,no_skill,total_securities,4087785000.0,4087785000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,no_skill,trading_assets,5449000.0,5449000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,no_skill,intangible_assets,20796000.0,20796000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,no_skill,oreo,0.0,0.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,no_skill,total_real_estate_loans,9051887000.0,9051887000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,no_skill,ci_loans,4096140000.0,4096140000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,no_skill,total_interest_income,825674000.0,825674000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,no_skill,total_interest_expense,361260000.0,361260000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,no_skill,net_interest_income,464414000.0,464414000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,no_skill,provision_credit_losses,12860000.0,12860000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,no_skill,total_noninterest_income,38090000.0,38090000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,no_skill,total_noninterest_expense,123591000.0,123591000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,no_skill,net_income,276759000.0,276759000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,no_skill,net_chargeoffs_loans_leases,11380000.0,11380000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,no_skill,nonaccrual_loans_total,144071000.0,145382000.0,wrong,1311000.0,0.009017622539241446
+3076248_2024-09-30,Stifel Bank and Trust,no_skill,past_due_30_89_days_loans,73803000.0,73803000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,no_skill,past_due_90_plus_days_loans,1311000.0,1311000.0,correct,0.0,0.0
+3076248_2024-09-30,Stifel Bank and Trust,no_skill,tier1_capital_ratio,0.106971,0.107,correct,2.9000000000001247e-05,2.9000000000001247e-05
+3076248_2024-09-30,Stifel Bank and Trust,no_skill,cet1_capital_ratio,0.106971,0.107,correct,2.9000000000001247e-05,2.9000000000001247e-05
+3076248_2024-09-30,Stifel Bank and Trust,no_skill,leverage_ratio,0.071013,0.07101319233563065,correct,1.92335630644358e-07,1.92335630644358e-07
+3076248_2024-09-30,Stifel Bank and Trust,no_skill,total_risk_based_capital_ratio,0.117016,0.11701607997163756,correct,7.997163756212622e-08,7.997163756212622e-08
+3317932_2024-09-30,ConnectOne Bank,with_skill,form_version,041,,na,,
+3317932_2024-09-30,ConnectOne Bank,with_skill,total_assets,9630812000.0,9630812000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,with_skill,total_deposits,7560480000.0,7560480000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,with_skill,total_loans_net,8111976000.0,8029482000.0,wrong,82494000.0,0.010273888153681644
+3317932_2024-09-30,ConnectOne Bank,with_skill,allowance_credit_losses_loans,82494000.0,82494000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,with_skill,total_liabilities,8355094000.0,8355094000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,with_skill,total_equity_capital,1275718000.0,1275718000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,with_skill,total_securities,646713000.0,658481000.0,wrong,11768000.0,0.017871434407370903
+3317932_2024-09-30,ConnectOne Bank,with_skill,trading_assets,0.0,0.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,with_skill,intangible_assets,213308000.0,213308000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,with_skill,oreo,0.0,0.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,with_skill,total_real_estate_loans,124456000.0,6757600000.0,wrong,6633144000.0,0.981582810465254
+3317932_2024-09-30,ConnectOne Bank,with_skill,ci_loans,1026047000.0,1026047000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,with_skill,total_interest_income,389856000.0,389856000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,with_skill,total_interest_expense,203296000.0,203296000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,with_skill,net_interest_income,186560000.0,186560000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,with_skill,provision_credit_losses,10300000.0,10300000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,with_skill,total_noninterest_income,12675000.0,12675000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,with_skill,total_noninterest_expense,113212000.0,113212000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,with_skill,net_income,57302000.0,57302000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,with_skill,net_chargeoffs_loans_leases,9939000.0,9939000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,with_skill,nonaccrual_loans_total,51300000.0,54465000.0,wrong,3165000.0,0.05811071330212063
+3317932_2024-09-30,ConnectOne Bank,with_skill,past_due_30_89_days_loans,12989000.0,12989000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,with_skill,past_due_90_plus_days_loans,3165000.0,3165000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,with_skill,tier1_capital_ratio,0.127855,0.12789999999999999,correct,4.499999999998949e-05,4.499999999998949e-05
+3317932_2024-09-30,ConnectOne Bank,with_skill,cet1_capital_ratio,0.127855,0.12789999999999999,correct,4.499999999998949e-05,4.499999999998949e-05
+3317932_2024-09-30,ConnectOne Bank,with_skill,leverage_ratio,0.114303,0.11430309658854014,correct,9.6588540138276e-08,9.6588540138276e-08
+3317932_2024-09-30,ConnectOne Bank,with_skill,total_risk_based_capital_ratio,0.137741,0.13774149208654474,correct,4.920865447344269e-07,4.920865447344269e-07
+3317932_2024-09-30,ConnectOne Bank,no_skill,form_version,041,,na,,
+3317932_2024-09-30,ConnectOne Bank,no_skill,total_assets,9630812000.0,9630812000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,no_skill,total_deposits,7560480000.0,7560480000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,no_skill,total_loans_net,8111976000.0,8029482000.0,wrong,82494000.0,0.010273888153681644
+3317932_2024-09-30,ConnectOne Bank,no_skill,allowance_credit_losses_loans,82494000.0,82494000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,no_skill,total_liabilities,8355094000.0,8355094000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,no_skill,total_equity_capital,1275718000.0,1275718000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,no_skill,total_securities,646713000.0,658481000.0,wrong,11768000.0,0.017871434407370903
+3317932_2024-09-30,ConnectOne Bank,no_skill,trading_assets,0.0,0.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,no_skill,intangible_assets,213308000.0,213308000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,no_skill,oreo,0.0,0.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,no_skill,total_real_estate_loans,6757600000.0,6757600000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,no_skill,ci_loans,1026047000.0,1026047000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,no_skill,total_interest_income,389856000.0,389856000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,no_skill,total_interest_expense,203296000.0,203296000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,no_skill,net_interest_income,186560000.0,186560000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,no_skill,provision_credit_losses,10300000.0,10300000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,no_skill,total_noninterest_income,12675000.0,12675000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,no_skill,total_noninterest_expense,113212000.0,113212000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,no_skill,net_income,57302000.0,57302000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,no_skill,net_chargeoffs_loans_leases,9939000.0,9939000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,no_skill,nonaccrual_loans_total,12989000.0,54465000.0,wrong,41476000.0,0.7615165702744882
+3317932_2024-09-30,ConnectOne Bank,no_skill,past_due_30_89_days_loans,51300000.0,12989000.0,wrong,38311000.0,2.9494957271537454
+3317932_2024-09-30,ConnectOne Bank,no_skill,past_due_90_plus_days_loans,3165000.0,3165000.0,correct,0.0,0.0
+3317932_2024-09-30,ConnectOne Bank,no_skill,tier1_capital_ratio,0.127855,0.12789999999999999,correct,4.499999999998949e-05,4.499999999998949e-05
+3317932_2024-09-30,ConnectOne Bank,no_skill,cet1_capital_ratio,0.127855,0.12789999999999999,correct,4.499999999998949e-05,4.499999999998949e-05
+3317932_2024-09-30,ConnectOne Bank,no_skill,leverage_ratio,0.114303,0.11430309658854014,correct,9.6588540138276e-08,9.6588540138276e-08
+3317932_2024-09-30,ConnectOne Bank,no_skill,total_risk_based_capital_ratio,0.137741,0.13774149208654474,correct,4.920865447344269e-07,4.920865447344269e-07
+317342_2024-09-30,Stock Yards Bank & Trust Company,with_skill,form_version,041,,na,,
+317342_2024-09-30,Stock Yards Bank & Trust Company,with_skill,total_assets,8435083000.0,8435083000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,with_skill,total_deposits,6726823000.0,6726823000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,with_skill,total_loans_net,6278133000.0,6197612000.0,wrong,80521000.0,0.012992262180981965
+317342_2024-09-30,Stock Yards Bank & Trust Company,with_skill,allowance_credit_losses_loans,85343000.0,85343000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,with_skill,total_liabilities,7497467000.0,7497467000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,with_skill,total_equity_capital,937616000.0,937616000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,with_skill,total_securities,861832000.0,1236744000.0,wrong,374912000.0,0.3031443855802009
+317342_2024-09-30,Stock Yards Bank & Trust Company,with_skill,trading_assets,0.0,0.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,with_skill,intangible_assets,223131000.0,223131000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,with_skill,oreo,10000.0,10000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,with_skill,total_real_estate_loans,4685794000.0,4685794000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,with_skill,ci_loans,1327094000.0,1327094000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,with_skill,total_interest_income,302571000.0,302571000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,with_skill,total_interest_expense,113989000.0,113989000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,with_skill,net_interest_income,188582000.0,188582000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,with_skill,provision_credit_losses,0.0,7049000.0,wrong,7049000.0,1.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,with_skill,total_noninterest_income,72562000.0,72562000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,with_skill,total_noninterest_expense,143960000.0,143960000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,with_skill,net_income,85777000.0,85777000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,with_skill,net_chargeoffs_loans_leases,605000.0,605000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,with_skill,nonaccrual_loans_total,16288000.0,17158000.0,wrong,870000.0,0.05070521039748222
+317342_2024-09-30,Stock Yards Bank & Trust Company,with_skill,past_due_30_89_days_loans,16337000.0,16337000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,with_skill,past_due_90_plus_days_loans,870000.0,870000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,with_skill,tier1_capital_ratio,0.112423,0.1124,correct,2.2999999999995246e-05,2.2999999999995246e-05
+317342_2024-09-30,Stock Yards Bank & Trust Company,with_skill,cet1_capital_ratio,0.112423,0.1124,correct,2.2999999999995246e-05,2.2999999999995246e-05
+317342_2024-09-30,Stock Yards Bank & Trust Company,with_skill,leverage_ratio,0.09785,0.09785034054436516,correct,3.4054436515162934e-07,3.4054436515162934e-07
+317342_2024-09-30,Stock Yards Bank & Trust Company,with_skill,total_risk_based_capital_ratio,0.124559,0.12455903676235765,correct,3.6762357644160026e-08,3.6762357644160026e-08
+317342_2024-09-30,Stock Yards Bank & Trust Company,no_skill,form_version,041,,na,,
+317342_2024-09-30,Stock Yards Bank & Trust Company,no_skill,total_assets,8435083000.0,8435083000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,no_skill,total_deposits,6726823000.0,6726823000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,no_skill,total_loans_net,6282955000.0,6197612000.0,wrong,85343000.0,0.01377030378797511
+317342_2024-09-30,Stock Yards Bank & Trust Company,no_skill,allowance_credit_losses_loans,85343000.0,85343000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,no_skill,total_liabilities,7497467000.0,7497467000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,no_skill,total_equity_capital,937616000.0,937616000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,no_skill,total_securities,1236744000.0,1236744000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,no_skill,trading_assets,0.0,0.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,no_skill,intangible_assets,223131000.0,223131000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,no_skill,oreo,10000.0,10000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,no_skill,total_real_estate_loans,4685794000.0,4685794000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,no_skill,ci_loans,1327094000.0,1327094000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,no_skill,total_interest_income,302571000.0,302571000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,no_skill,total_interest_expense,113989000.0,113989000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,no_skill,net_interest_income,188582000.0,188582000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,no_skill,provision_credit_losses,7049000.0,7049000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,no_skill,total_noninterest_income,72562000.0,72562000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,no_skill,total_noninterest_expense,143960000.0,143960000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,no_skill,net_income,85777000.0,85777000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,no_skill,net_chargeoffs_loans_leases,605000.0,605000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,no_skill,nonaccrual_loans_total,16288000.0,17158000.0,wrong,870000.0,0.05070521039748222
+317342_2024-09-30,Stock Yards Bank & Trust Company,no_skill,past_due_30_89_days_loans,16337000.0,16337000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,no_skill,past_due_90_plus_days_loans,870000.0,870000.0,correct,0.0,0.0
+317342_2024-09-30,Stock Yards Bank & Trust Company,no_skill,tier1_capital_ratio,0.112423,0.1124,correct,2.2999999999995246e-05,2.2999999999995246e-05
+317342_2024-09-30,Stock Yards Bank & Trust Company,no_skill,cet1_capital_ratio,0.112423,0.1124,correct,2.2999999999995246e-05,2.2999999999995246e-05
+317342_2024-09-30,Stock Yards Bank & Trust Company,no_skill,leverage_ratio,0.09785,0.09785034054436516,correct,3.4054436515162934e-07,3.4054436515162934e-07
+317342_2024-09-30,Stock Yards Bank & Trust Company,no_skill,total_risk_based_capital_ratio,0.124559,0.12455903676235765,correct,3.6762357644160026e-08,3.6762357644160026e-08
+233031_2024-09-30,Regions Bank,with_skill,form_version,031,,na,,
+233031_2024-09-30,Regions Bank,with_skill,total_assets,156385000000.0,156385000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,with_skill,total_deposits,128575000000.0,128575000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,with_skill,total_loans_net,97305000000.0,95698000000.0,wrong,1607000000.0,0.016792409454743046
+233031_2024-09-30,Regions Bank,with_skill,allowance_credit_losses_loans,1607000000.0,1607000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,with_skill,total_liabilities,138692000000.0,138692000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,with_skill,total_equity_capital,17642000000.0,17642000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,with_skill,total_securities,28679000000.0,32070000000.0,wrong,3391000000.0,0.10573744932959152
+233031_2024-09-30,Regions Bank,with_skill,trading_assets,7000000.0,7000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,with_skill,intangible_assets,6438000000.0,6438000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,with_skill,oreo,16000000.0,16000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,with_skill,total_real_estate_loans,0.0,40561000000.0,wrong,40561000000.0,1.0
+233031_2024-09-30,Regions Bank,with_skill,ci_loans,30854000000.0,30854000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,with_skill,total_interest_income,5294000000.0,5294000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,with_skill,total_interest_expense,1613000000.0,1613000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,with_skill,net_interest_income,3681000000.0,3681000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,with_skill,provision_credit_losses,367000000.0,367000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,with_skill,total_noninterest_income,1728000000.0,1728000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,with_skill,total_noninterest_expense,3028000000.0,3028000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,with_skill,net_income,1487000000.0,1487000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,with_skill,net_chargeoffs_loans_leases,339000000.0,339000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,with_skill,nonaccrual_loans_total,828000000.0,1057000000.0,wrong,229000000.0,0.21665089877010407
+233031_2024-09-30,Regions Bank,with_skill,past_due_30_89_days_loans,422000000.0,422000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,with_skill,past_due_90_plus_days_loans,229000000.0,229000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,with_skill,tier1_capital_ratio,0.116328,0.11630000000000001,correct,2.799999999998637e-05,2.799999999998637e-05
+233031_2024-09-30,Regions Bank,with_skill,cet1_capital_ratio,0.116328,0.11630000000000001,correct,2.799999999998637e-05,2.799999999998637e-05
+233031_2024-09-30,Regions Bank,with_skill,leverage_ratio,0.095779,0.0957787906089353,correct,2.0939106470940771e-07,2.0939106470940771e-07
+233031_2024-09-30,Regions Bank,with_skill,total_risk_based_capital_ratio,0.132823,0.1328226831662456,correct,3.168337543990596e-07,3.168337543990596e-07
+233031_2024-09-30,Regions Bank,no_skill,form_version,031,,na,,
+233031_2024-09-30,Regions Bank,no_skill,total_assets,156385000000.0,156385000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,no_skill,total_deposits,128575000000.0,128575000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,no_skill,total_loans_net,97305000000.0,95698000000.0,wrong,1607000000.0,0.016792409454743046
+233031_2024-09-30,Regions Bank,no_skill,allowance_credit_losses_loans,1607000000.0,1607000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,no_skill,total_liabilities,138692000000.0,138692000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,no_skill,total_equity_capital,17693000000.0,17642000000.0,correct,51000000.0,0.0028908287042285455
+233031_2024-09-30,Regions Bank,no_skill,total_securities,31466000000.0,32070000000.0,wrong,604000000.0,0.018833801060180854
+233031_2024-09-30,Regions Bank,no_skill,trading_assets,7000000.0,7000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,no_skill,intangible_assets,6438000000.0,6438000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,no_skill,oreo,16000000.0,16000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,no_skill,total_real_estate_loans,40561000000.0,40561000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,no_skill,ci_loans,30854000000.0,30854000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,no_skill,total_interest_income,5294000000.0,5294000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,no_skill,total_interest_expense,1613000000.0,1613000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,no_skill,net_interest_income,3681000000.0,3681000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,no_skill,provision_credit_losses,367000000.0,367000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,no_skill,total_noninterest_income,1728000000.0,1728000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,no_skill,total_noninterest_expense,3028000000.0,3028000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,no_skill,net_income,1487000000.0,1487000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,no_skill,net_chargeoffs_loans_leases,339000000.0,339000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,no_skill,nonaccrual_loans_total,828000000.0,1057000000.0,wrong,229000000.0,0.21665089877010407
+233031_2024-09-30,Regions Bank,no_skill,past_due_30_89_days_loans,422000000.0,422000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,no_skill,past_due_90_plus_days_loans,229000000.0,229000000.0,correct,0.0,0.0
+233031_2024-09-30,Regions Bank,no_skill,tier1_capital_ratio,0.116328,0.11630000000000001,correct,2.799999999998637e-05,2.799999999998637e-05
+233031_2024-09-30,Regions Bank,no_skill,cet1_capital_ratio,0.116328,0.11630000000000001,correct,2.799999999998637e-05,2.799999999998637e-05
+233031_2024-09-30,Regions Bank,no_skill,leverage_ratio,0.095779,0.0957787906089353,correct,2.0939106470940771e-07,2.0939106470940771e-07
+233031_2024-09-30,Regions Bank,no_skill,total_risk_based_capital_ratio,0.132823,0.1328226831662456,correct,3.168337543990596e-07,3.168337543990596e-07
+722777_2024-09-30,"Santander Bank, N.A.",with_skill,form_version,031,,na,,
+722777_2024-09-30,"Santander Bank, N.A.",with_skill,total_assets,101732667000.0,101732667000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",with_skill,total_deposits,76638547000.0,76638547000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",with_skill,total_loans_net,53188030000.0,51858762000.0,wrong,1329268000.0,0.025632466891515843
+722777_2024-09-30,"Santander Bank, N.A.",with_skill,allowance_credit_losses_loans,1329268000.0,1329268000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",with_skill,total_liabilities,89165232000.0,89165232000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",with_skill,total_equity_capital,12567435000.0,12567435000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",with_skill,total_securities,6947854000.0,15967045000.0,wrong,9019191000.0,0.5648628785100812
+722777_2024-09-30,"Santander Bank, N.A.",with_skill,trading_assets,986355000.0,986355000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",with_skill,intangible_assets,1642386000.0,1642386000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",with_skill,oreo,19482000.0,19482000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",with_skill,total_real_estate_loans,0.0,25722976000.0,wrong,25722976000.0,1.0
+722777_2024-09-30,"Santander Bank, N.A.",with_skill,ci_loans,8560733000.0,8560733000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",with_skill,total_interest_income,3424127000.0,3424127000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",with_skill,total_interest_expense,1917065000.0,1917065000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",with_skill,net_interest_income,1507062000.0,1507062000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",with_skill,provision_credit_losses,73685000.0,73685000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",with_skill,total_noninterest_income,1121401000.0,1121401000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",with_skill,total_noninterest_expense,2077141000.0,2077141000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",with_skill,net_income,509374000.0,509374000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",with_skill,net_chargeoffs_loans_leases,380941000.0,380941000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",with_skill,nonaccrual_loans_total,887746000.0,899360000.0,wrong,11614000.0,0.01291362746842199
+722777_2024-09-30,"Santander Bank, N.A.",with_skill,past_due_30_89_days_loans,482973000.0,482973000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",with_skill,past_due_90_plus_days_loans,11614000.0,11614000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",with_skill,tier1_capital_ratio,0.169145,0.1691,correct,4.499999999998949e-05,4.499999999998949e-05
+722777_2024-09-30,"Santander Bank, N.A.",with_skill,cet1_capital_ratio,0.169145,0.1691,correct,4.499999999998949e-05,4.499999999998949e-05
+722777_2024-09-30,"Santander Bank, N.A.",with_skill,leverage_ratio,0.119648,0.11964823597752641,correct,2.3597752640824865e-07,2.3597752640824865e-07
+722777_2024-09-30,"Santander Bank, N.A.",with_skill,total_risk_based_capital_ratio,0.181711,0.1817114190484002,correct,4.190484002020156e-07,4.190484002020156e-07
+722777_2024-09-30,"Santander Bank, N.A.",no_skill,form_version,031,,na,,
+722777_2024-09-30,"Santander Bank, N.A.",no_skill,total_assets,101732667000.0,101732667000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",no_skill,total_deposits,76638547000.0,76638547000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",no_skill,total_loans_net,53188030000.0,51858762000.0,wrong,1329268000.0,0.025632466891515843
+722777_2024-09-30,"Santander Bank, N.A.",no_skill,allowance_credit_losses_loans,1329268000.0,1329268000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",no_skill,total_liabilities,89165232000.0,89165232000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",no_skill,total_equity_capital,12567435000.0,12567435000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",no_skill,total_securities,15966756000.0,15967045000.0,correct,289000.0,1.8099779890392992e-05
+722777_2024-09-30,"Santander Bank, N.A.",no_skill,trading_assets,986355000.0,986355000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",no_skill,intangible_assets,1642386000.0,1642386000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",no_skill,oreo,19482000.0,19482000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",no_skill,total_real_estate_loans,25722976000.0,25722976000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",no_skill,ci_loans,8560733000.0,8560733000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",no_skill,total_interest_income,3424127000.0,3424127000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",no_skill,total_interest_expense,1917065000.0,1917065000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",no_skill,net_interest_income,1507062000.0,1507062000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",no_skill,provision_credit_losses,73685000.0,73685000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",no_skill,total_noninterest_income,1121401000.0,1121401000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",no_skill,total_noninterest_expense,2077141000.0,2077141000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",no_skill,net_income,509374000.0,509374000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",no_skill,net_chargeoffs_loans_leases,380941000.0,380941000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",no_skill,nonaccrual_loans_total,887746000.0,899360000.0,wrong,11614000.0,0.01291362746842199
+722777_2024-09-30,"Santander Bank, N.A.",no_skill,past_due_30_89_days_loans,482973000.0,482973000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",no_skill,past_due_90_plus_days_loans,11614000.0,11614000.0,correct,0.0,0.0
+722777_2024-09-30,"Santander Bank, N.A.",no_skill,tier1_capital_ratio,0.169145,0.1691,correct,4.499999999998949e-05,4.499999999998949e-05
+722777_2024-09-30,"Santander Bank, N.A.",no_skill,cet1_capital_ratio,0.169145,0.1691,correct,4.499999999998949e-05,4.499999999998949e-05
+722777_2024-09-30,"Santander Bank, N.A.",no_skill,leverage_ratio,0.119648,0.11964823597752641,correct,2.3597752640824865e-07,2.3597752640824865e-07
+722777_2024-09-30,"Santander Bank, N.A.",no_skill,total_risk_based_capital_ratio,0.181711,0.1817114190484002,correct,4.190484002020156e-07,4.190484002020156e-07
+3138146_2024-09-30,Western Alliance Bank,with_skill,form_version,041,,na,,
+3138146_2024-09-30,Western Alliance Bank,with_skill,total_assets,79937723000.0,79937723000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,with_skill,total_deposits,68361131000.0,68361131000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,with_skill,total_loans_net,53346223000.0,55648596000.0,wrong,2302373000.0,0.041373424767086664
+3138146_2024-09-30,Western Alliance Bank,with_skill,allowance_credit_losses_loans,356542000.0,356542000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,with_skill,total_liabilities,73056732000.0,73056732000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,with_skill,total_equity_capital,6880991000.0,6880991000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,with_skill,total_securities,14722306000.0,16323338000.0,wrong,1601032000.0,0.09808238976611279
+3138146_2024-09-30,Western Alliance Bank,with_skill,trading_assets,0.0,0.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,with_skill,intangible_assets,1672211000.0,1672211000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,with_skill,oreo,8481000.0,8481000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,with_skill,total_real_estate_loans,33103139000.0,33103139000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,with_skill,ci_loans,10059406000.0,10059406000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,with_skill,total_interest_income,3396809000.0,3396809000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,with_skill,total_interest_expense,1435235000.0,1435235000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,with_skill,net_interest_income,1961574000.0,1961574000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,with_skill,provision_credit_losses,79100000.0,85900000.0,wrong,6800000.0,0.07916181606519208
+3138146_2024-09-30,Western Alliance Bank,with_skill,total_noninterest_income,341079000.0,341079000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,with_skill,total_noninterest_expense,1523459000.0,1523459000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,with_skill,net_income,551903000.0,551903000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,with_skill,net_chargeoffs_loans_leases,59236000.0,59236000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,with_skill,nonaccrual_loans_total,349579000.0,948170000.0,wrong,598591000.0,0.6313118955461573
+3138146_2024-09-30,Western Alliance Bank,with_skill,past_due_30_89_days_loans,316084000.0,316084000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,with_skill,past_due_90_plus_days_loans,598591000.0,598591000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,with_skill,tier1_capital_ratio,0.121201,0.12119999999999999,correct,1.0000000000148779e-06,1.0000000000148779e-06
+3138146_2024-09-30,Western Alliance Bank,with_skill,cet1_capital_ratio,0.121201,0.12119999999999999,correct,1.0000000000148779e-06,1.0000000000148779e-06
+3138146_2024-09-30,Western Alliance Bank,with_skill,leverage_ratio,0.079913,0.07991264572908795,correct,3.542709120507581e-07,3.542709120507581e-07
+3138146_2024-09-30,Western Alliance Bank,with_skill,total_risk_based_capital_ratio,0.132439,0.13243855997871268,correct,4.4002128732345547e-07,4.4002128732345547e-07
+3138146_2024-09-30,Western Alliance Bank,no_skill,form_version,041,,na,,
+3138146_2024-09-30,Western Alliance Bank,no_skill,total_assets,79937723000.0,79937723000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,no_skill,total_deposits,68361131000.0,68361131000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,no_skill,total_loans_net,56005138000.0,55648596000.0,wrong,356542000.0,0.006407025974204273
+3138146_2024-09-30,Western Alliance Bank,no_skill,allowance_credit_losses_loans,356542000.0,356542000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,no_skill,total_liabilities,73056732000.0,73056732000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,no_skill,total_equity_capital,6880991000.0,6880991000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,no_skill,total_securities,16237265000.0,16323338000.0,wrong,86073000.0,0.005273002372431423
+3138146_2024-09-30,Western Alliance Bank,no_skill,trading_assets,0.0,0.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,no_skill,intangible_assets,1672211000.0,1672211000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,no_skill,oreo,8481000.0,8481000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,no_skill,total_real_estate_loans,33103139000.0,33103139000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,no_skill,ci_loans,10059406000.0,10059406000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,no_skill,total_interest_income,3396809000.0,3396809000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,no_skill,total_interest_expense,1435235000.0,1435235000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,no_skill,net_interest_income,1961574000.0,1961574000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,no_skill,provision_credit_losses,85900000.0,85900000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,no_skill,total_noninterest_income,341079000.0,341079000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,no_skill,total_noninterest_expense,1523459000.0,1523459000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,no_skill,net_income,551903000.0,551903000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,no_skill,net_chargeoffs_loans_leases,59236000.0,59236000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,no_skill,nonaccrual_loans_total,349579000.0,948170000.0,wrong,598591000.0,0.6313118955461573
+3138146_2024-09-30,Western Alliance Bank,no_skill,past_due_30_89_days_loans,316084000.0,316084000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,no_skill,past_due_90_plus_days_loans,598591000.0,598591000.0,correct,0.0,0.0
+3138146_2024-09-30,Western Alliance Bank,no_skill,tier1_capital_ratio,0.121201,0.12119999999999999,correct,1.0000000000148779e-06,1.0000000000148779e-06
+3138146_2024-09-30,Western Alliance Bank,no_skill,cet1_capital_ratio,0.121201,0.12119999999999999,correct,1.0000000000148779e-06,1.0000000000148779e-06
+3138146_2024-09-30,Western Alliance Bank,no_skill,leverage_ratio,0.079913,0.07991264572908795,correct,3.542709120507581e-07,3.542709120507581e-07
+3138146_2024-09-30,Western Alliance Bank,no_skill,total_risk_based_capital_ratio,0.132439,0.13243855997871268,correct,4.4002128732345547e-07,4.4002128732345547e-07
+480228_2024-09-30,"Bank of America, National Association",with_skill,form_version,031,,na,,
+480228_2024-09-30,"Bank of America, National Association",with_skill,total_assets,2565878000000.0,2565878000000.0,correct,0.0,0.0
+480228_2024-09-30,"Bank of America, National Association",with_skill,total_deposits,2017820000000.0,2017820000000.0,correct,0.0,0.0
+480228_2024-09-30,"Bank of America, National Association",with_skill,total_loans_net,0.0,1064437000000.0,wrong,1064437000000.0,1.0
+480228_2024-09-30,"Bank of America, National Association",with_skill,allowance_credit_losses_loans,13228000000.0,13228000000.0,correct,0.0,0.0
+480228_2024-09-30,"Bank of America, National Association",with_skill,total_liabilities,2322190000.0,2322190000000.0,wrong,2319867810000.0,0.999
+480228_2024-09-30,"Bank of America, National Association",with_skill,total_equity_capital,0.0,243688000000.0,wrong,243688000000.0,1.0
+480228_2024-09-30,"Bank of America, National Association",with_skill,total_securities,0.0,863957000000.0,wrong,863957000000.0,1.0
+480228_2024-09-30,"Bank of America, National Association",with_skill,trading_assets,112377000000.0,112377000000.0,correct,0.0,0.0
+480228_2024-09-30,"Bank of America, National Association",with_skill,intangible_assets,58428000000.0,58428000000.0,correct,0.0,0.0
+480228_2024-09-30,"Bank of America, National Association",with_skill,oreo,236000000.0,236000000.0,correct,0.0,0.0
+480228_2024-09-30,"Bank of America, National Association",with_skill,total_real_estate_loans,0.0,326206000000.0,wrong,326206000000.0,1.0
+480228_2024-09-30,"Bank of America, National Association",with_skill,ci_loans,267118000000.0,337138000000.0,wrong,70020000000.0,0.20768943281386257
+480228_2024-09-30,"Bank of America, National Association",with_skill,total_interest_income,81944000000.0,81944000000.0,correct,0.0,0.0
+480228_2024-09-30,"Bank of America, National Association",with_skill,total_interest_expense,38571000000.0,38571000000.0,correct,0.0,0.0
+480228_2024-09-30,"Bank of America, National Association",with_skill,net_interest_income,43373000000.0,43373000000.0,correct,0.0,0.0
+480228_2024-09-30,"Bank of America, National Association",with_skill,provision_credit_losses,4520000000.0,4417000000.0,wrong,103000000.0,0.023318994792845823
+480228_2024-09-30,"Bank of America, National Association",with_skill,total_noninterest_income,18533000000.0,18533000000.0,correct,0.0,0.0
+480228_2024-09-30,"Bank of America, National Association",with_skill,total_noninterest_expense,35206000000.0,35206000000.0,correct,0.0,0.0
+480228_2024-09-30,"Bank of America, National Association",with_skill,net_income,20274000000.0,20274000000.0,correct,0.0,0.0
+480228_2024-09-30,"Bank of America, National Association",with_skill,net_chargeoffs_loans_leases,4570000000.0,4570000000.0,correct,0.0,0.0
+480228_2024-09-30,"Bank of America, National Association",with_skill,nonaccrual_loans_total,6293000000.0,8506000000.0,wrong,2213000000.0,0.26016929226428404
+480228_2024-09-30,"Bank of America, National Association",with_skill,past_due_30_89_days_loans,4343000000.0,4690000000.0,wrong,347000000.0,0.07398720682302772
+480228_2024-09-30,"Bank of America, National Association",with_skill,past_due_90_plus_days_loans,2213000000.0,2313000000.0,wrong,100000000.0,0.043233895373973194
+480228_2024-09-30,"Bank of America, National Association",with_skill,tier1_capital_ratio,0.134023,0.134,correct,2.2999999999995246e-05,2.2999999999995246e-05
+480228_2024-09-30,"Bank of America, National Association",with_skill,cet1_capital_ratio,0.134023,0.134,correct,2.2999999999995246e-05,2.2999999999995246e-05
+480228_2024-09-30,"Bank of America, National Association",with_skill,leverage_ratio,0.076354,0.07635372775499409,correct,2.722450059139403e-07,2.722450059139403e-07
+480228_2024-09-30,"Bank of America, National Association",with_skill,total_risk_based_capital_ratio,0.144524,0.14452447519641842,correct,4.751964184090962e-07,4.751964184090962e-07
+480228_2024-09-30,"Bank of America, National Association",no_skill,form_version,031,,na,,
+480228_2024-09-30,"Bank of America, National Association",no_skill,total_assets,2565878000000.0,2565878000000.0,correct,0.0,0.0
+480228_2024-09-30,"Bank of America, National Association",no_skill,total_deposits,1892511000000.0,2017820000000.0,wrong,125309000000.0,0.062101178499568845
+480228_2024-09-30,"Bank of America, National Association",no_skill,total_loans_net,1077665000000.0,1064437000000.0,wrong,13228000000.0,0.012427226787494234
+480228_2024-09-30,"Bank of America, National Association",no_skill,allowance_credit_losses_loans,13228000000.0,13228000000.0,correct,0.0,0.0
+480228_2024-09-30,"Bank of America, National Association",no_skill,total_liabilities,2322190000000.0,2322190000000.0,correct,0.0,0.0
+480228_2024-09-30,"Bank of America, National Association",no_skill,total_equity_capital,243688000000.0,243688000000.0,correct,0.0,0.0
+480228_2024-09-30,"Bank of America, National Association",no_skill,total_securities,296168000000.0,863957000000.0,wrong,567789000000.0,0.657195902110869
+480228_2024-09-30,"Bank of America, National Association",no_skill,trading_assets,112377000000.0,112377000000.0,correct,0.0,0.0
+480228_2024-09-30,"Bank of America, National Association",no_skill,intangible_assets,58428000000.0,58428000000.0,correct,0.0,0.0
+480228_2024-09-30,"Bank of America, National Association",no_skill,oreo,236000000.0,236000000.0,correct,0.0,0.0
+480228_2024-09-30,"Bank of America, National Association",no_skill,total_real_estate_loans,326206000000.0,326206000000.0,correct,0.0,0.0
+480228_2024-09-30,"Bank of America, National Association",no_skill,ci_loans,337138000000.0,337138000000.0,correct,0.0,0.0
+480228_2024-09-30,"Bank of America, National Association",no_skill,total_interest_income,81944000000.0,81944000000.0,correct,0.0,0.0
+480228_2024-09-30,"Bank of America, National Association",no_skill,total_interest_expense,38571000000.0,38571000000.0,correct,0.0,0.0
+480228_2024-09-30,"Bank of America, National Association",no_skill,net_interest_income,43373000000.0,43373000000.0,correct,0.0,0.0
+480228_2024-09-30,"Bank of America, National Association",no_skill,provision_credit_losses,4417000000.0,4417000000.0,correct,0.0,0.0
+480228_2024-09-30,"Bank of America, National Association",no_skill,total_noninterest_income,18533000000.0,18533000000.0,correct,0.0,0.0
+480228_2024-09-30,"Bank of America, National Association",no_skill,total_noninterest_expense,35206000000.0,35206000000.0,correct,0.0,0.0
+480228_2024-09-30,"Bank of America, National Association",no_skill,net_income,20274000000.0,20274000000.0,correct,0.0,0.0
+480228_2024-09-30,"Bank of America, National Association",no_skill,net_chargeoffs_loans_leases,4570000000.0,4570000000.0,correct,0.0,0.0
+480228_2024-09-30,"Bank of America, National Association",no_skill,nonaccrual_loans_total,6293000000.0,8506000000.0,wrong,2213000000.0,0.26016929226428404
+480228_2024-09-30,"Bank of America, National Association",no_skill,past_due_30_89_days_loans,4343000000.0,4690000000.0,wrong,347000000.0,0.07398720682302772
+480228_2024-09-30,"Bank of America, National Association",no_skill,past_due_90_plus_days_loans,2213000000.0,2313000000.0,wrong,100000000.0,0.043233895373973194
+480228_2024-09-30,"Bank of America, National Association",no_skill,tier1_capital_ratio,0.134023,0.134,correct,2.2999999999995246e-05,2.2999999999995246e-05
+480228_2024-09-30,"Bank of America, National Association",no_skill,cet1_capital_ratio,0.134023,0.134,correct,2.2999999999995246e-05,2.2999999999995246e-05
+480228_2024-09-30,"Bank of America, National Association",no_skill,leverage_ratio,0.076354,0.07635372775499409,correct,2.722450059139403e-07,2.722450059139403e-07
+480228_2024-09-30,"Bank of America, National Association",no_skill,total_risk_based_capital_ratio,0.144524,0.14452447519641842,correct,4.751964184090962e-07,4.751964184090962e-07
+504713_2024-09-30,U.S. Bank National Association,with_skill,form_version,031,,na,,
+504713_2024-09-30,U.S. Bank National Association,with_skill,total_assets,670008257000.0,670008257000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,with_skill,total_deposits,522481635000.0,529668951000.0,wrong,7187316000.0,0.013569449344596377
+504713_2024-09-30,U.S. Bank National Association,with_skill,total_loans_net,374163725000.0,369815320000.0,wrong,4348405000.0,0.01175831493405952
+504713_2024-09-30,U.S. Bank National Association,with_skill,allowance_credit_losses_loans,7559516000.0,7559516000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,with_skill,total_liabilities,605098433000.0,605098433000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,with_skill,total_equity_capital,64278714000.0,64278714000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,with_skill,total_securities,81025230000.0,161063697000.0,wrong,80038467000.0,0.4969367305656718
+504713_2024-09-30,U.S. Bank National Association,with_skill,trading_assets,3515908000.0,3515908000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,with_skill,intangible_assets,17891304000.0,17891304000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,with_skill,oreo,20621000.0,20621000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,with_skill,total_real_estate_loans,,183357061000.0,missing,,
+504713_2024-09-30,U.S. Bank National Association,with_skill,ci_loans,97950578000.0,97950578000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,with_skill,total_interest_income,23472562000.0,23472562000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,with_skill,total_interest_expense,11111515000.0,11111515000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,with_skill,net_interest_income,12361047000.0,12361047000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,with_skill,provision_credit_losses,1769944000.0,1685924000.0,wrong,84020000.0,0.049836172923571884
+504713_2024-09-30,U.S. Bank National Association,with_skill,total_noninterest_income,7944470000.0,7944470000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,with_skill,total_noninterest_expense,12453016000.0,12453016000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,with_skill,net_income,4703619000.0,4703619000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,with_skill,net_chargeoffs_loans_leases,1589785000.0,1589785000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,with_skill,nonaccrual_loans_total,1809314000.0,4543953000.0,wrong,2734639000.0,0.601819385015646
+504713_2024-09-30,U.S. Bank National Association,with_skill,past_due_30_89_days_loans,1842108000.0,1842794000.0,correct,686000.0,0.0003722608169985359
+504713_2024-09-30,U.S. Bank National Association,with_skill,past_due_90_plus_days_loans,2734639000.0,2734639000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,with_skill,tier1_capital_ratio,0.13654,0.1365,correct,3.999999999998449e-05,3.999999999998449e-05
+504713_2024-09-30,U.S. Bank National Association,with_skill,cet1_capital_ratio,0.135529,0.1355,correct,2.9000000000001247e-05,2.9000000000001247e-05
+504713_2024-09-30,U.S. Bank National Association,with_skill,leverage_ratio,0.093362,0.0933624932142833,correct,4.932142833036224e-07,4.932142833036224e-07
+504713_2024-09-30,U.S. Bank National Association,with_skill,total_risk_based_capital_ratio,0.158346,0.15834619987896392,correct,1.998789639356957e-07,1.998789639356957e-07
+504713_2024-09-30,U.S. Bank National Association,no_skill,form_version,031,,na,,
+504713_2024-09-30,U.S. Bank National Association,no_skill,total_assets,670008257000.0,670008257000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,no_skill,total_deposits,522481635000.0,529668951000.0,wrong,7187316000.0,0.013569449344596377
+504713_2024-09-30,U.S. Bank National Association,no_skill,total_loans_net,377374836000.0,369815320000.0,wrong,7559516000.0,0.02044132730899304
+504713_2024-09-30,U.S. Bank National Association,no_skill,allowance_credit_losses_loans,7559516000.0,7559516000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,no_skill,total_liabilities,605098433000.0,605098433000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,no_skill,total_equity_capital,64909824000.0,64278714000.0,wrong,631110000.0,0.009818335817981673
+504713_2024-09-30,U.S. Bank National Association,no_skill,total_securities,161050135000.0,161063697000.0,correct,13562000.0,8.42027114278893e-05
+504713_2024-09-30,U.S. Bank National Association,no_skill,trading_assets,3515908000.0,3515908000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,no_skill,intangible_assets,17891304000.0,17891304000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,no_skill,oreo,20621000.0,20621000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,no_skill,total_real_estate_loans,183357061000.0,183357061000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,no_skill,ci_loans,97950578000.0,97950578000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,no_skill,total_interest_income,23472562000.0,23472562000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,no_skill,total_interest_expense,11111515000.0,11111515000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,no_skill,net_interest_income,12361047000.0,12361047000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,no_skill,provision_credit_losses,1685924000.0,1685924000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,no_skill,total_noninterest_income,7944470000.0,7944470000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,no_skill,total_noninterest_expense,12453016000.0,12453016000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,no_skill,net_income,4703619000.0,4703619000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,no_skill,net_chargeoffs_loans_leases,1589785000.0,1589785000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,no_skill,nonaccrual_loans_total,1809314000.0,4543953000.0,wrong,2734639000.0,0.601819385015646
+504713_2024-09-30,U.S. Bank National Association,no_skill,past_due_30_89_days_loans,1842108000.0,1842794000.0,correct,686000.0,0.0003722608169985359
+504713_2024-09-30,U.S. Bank National Association,no_skill,past_due_90_plus_days_loans,2734639000.0,2734639000.0,correct,0.0,0.0
+504713_2024-09-30,U.S. Bank National Association,no_skill,tier1_capital_ratio,0.13654,0.1365,correct,3.999999999998449e-05,3.999999999998449e-05
+504713_2024-09-30,U.S. Bank National Association,no_skill,cet1_capital_ratio,0.135529,0.1355,correct,2.9000000000001247e-05,2.9000000000001247e-05
+504713_2024-09-30,U.S. Bank National Association,no_skill,leverage_ratio,0.093362,0.0933624932142833,correct,4.932142833036224e-07,4.932142833036224e-07
+504713_2024-09-30,U.S. Bank National Association,no_skill,total_risk_based_capital_ratio,0.158346,0.15834619987896392,correct,1.998789639356957e-07,1.998789639356957e-07

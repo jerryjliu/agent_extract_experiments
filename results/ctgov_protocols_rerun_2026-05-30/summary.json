@@ -1,0 +1,42 @@
+{
+  "with_skill": {
+    "accuracy": 0.6551724137931034,
+    "n_correct": 95,
+    "n_wrong": 37,
+    "n_missing": 13,
+    "n_na": 95,
+    "n_format_error": 0,
+    "n_runs": 12,
+    "n_runs_with_output": 12,
+    "token_cost_usd": 3.6328,
+    "credit_cost_usd": 40.0938,
+    "total_cost_usd": 43.7266,
+    "n_pages": 1283,
+    "n_pages_api": null,
+    "page_count_mismatches": [],
+    "extract_tier": null,
+    "parse_tier": null,
+    "total_duration_ms": 772231,
+    "mean_duration_ms": 64352
+  },
+  "no_skill": {
+    "accuracy": 0.7517241379310344,
+    "n_correct": 109,
+    "n_wrong": 36,
+    "n_missing": 0,
+    "n_na": 95,
+    "n_format_error": 0,
+    "n_runs": 12,
+    "n_runs_with_output": 12,
+    "token_cost_usd": 7.1504,
+    "credit_cost_usd": 0.0,
+    "total_cost_usd": 7.1504,
+    "n_pages": null,
+    "n_pages_api": null,
+    "page_count_mismatches": [],
+    "extract_tier": null,
+    "parse_tier": null,
+    "total_duration_ms": 810376,
+    "mean_duration_ms": 67531
+  }
+}

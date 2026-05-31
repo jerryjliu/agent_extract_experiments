@@ -134,18 +134,113 @@ def _delta_html(d: float | None) -> str:
     return f'<span class="{cls}">{"+" if d>=0 else ""}{d*100:.1f}pp</span>'
 
 
-def render_html(rows: list[dict], date: str | None, cost_sentence: str) -> str:
-    import html as _h
-    acc_tr = "\n".join(
-        f"<tr><td class='name'>{_h.escape(r['name'])}</td><td>{r['n']}</td>"
-        f"<td class='with'>{_pct(r['acc_w'])}</td><td class='no'>{_pct(r['acc_n'])}</td>"
-        f"<td>{_delta_html(r['acc_delta'])}</td><td class='why'>{r['why_html']}</td></tr>"
-        for r in rows
-    )
-    def _cost_row(r: dict) -> str:
+def _row_from_summary(ds, slug: str, src: Path, src_label: str,
+                      summary: dict, inv_block: dict, latb: dict) -> dict:
+    """Build one render row from a scored summary (batch summary_batch.json OR per-file
+    summary.json) plus its matching invocation block (batch/v2) and optional cold/warm
+    latency block (batch only; per-file passes {})."""
+    lat_cold = (latb.get("cold") or {}).get("wall_s") if latb else None
+    lat_warm = (latb.get("warm") or {}).get("wall_s") if latb else None
+    lat_speedup = latb.get("speedup") if latb else None
+    ws, ns = summary.get("with_skill", {}) or {}, summary.get("no_skill", {}) or {}
+    acc_w, acc_n = ws.get("accuracy"), ns.get("accuracy")
+    # Three-way cost split: token (Claude) + credit (LlamaCloud) = total.
+    tok_w, cred_w, tot_w = ws.get("token_cost_usd"), ws.get("credit_cost_usd"), ws.get("total_cost_usd")
+    tok_n, tot_n = ns.get("token_cost_usd"), ns.get("total_cost_usd")  # no_skill credit == 0
+    pages_w = ws.get("n_pages")
+    wall_w = ws.get("total_duration_ms") or ws.get("session_duration_ms")
+    wall_n = ns.get("total_duration_ms") or ns.get("session_duration_ms")
+    acc_delta = (acc_w - acc_n) if (acc_w is not None and acc_n is not None) else None
+    cost_ratio = (tot_n / tot_w) if (tot_w and tot_n) else None
+    token_ratio = (tok_n / tok_w) if (tok_w and tok_n) else None
+    return {
+        "name": ds.display_name, "slug": slug, "src": src, "src_label": src_label,
+        "n": ws.get("n_runs") or ns.get("n_runs") or 0,
+        "acc_w": acc_w, "acc_n": acc_n, "acc_delta": acc_delta,
+        "tok_w": tok_w, "cred_w": cred_w, "tot_w": tot_w, "tok_n": tok_n, "tot_n": tot_n,
+        "pages_w": pages_w, "cost_ratio": cost_ratio, "token_ratio": token_ratio,
+        "wall_w": wall_w, "wall_n": wall_n,
+        "lat_cold": lat_cold, "lat_warm": lat_warm, "lat_speedup": lat_speedup,
+        "skill": (inv_block.get("with_skill") or {}).get("n_invoked_skill"),
+        "cli": (inv_block.get("with_skill") or {}).get("extract_calls"),
+        "why": FINDINGS.get(slug, ""),
+        "why_html": _md_bold_to_html(FINDINGS.get(slug, "")),
+    }
+
+
+def _acc_table_md(rows: list[dict], why_col: bool = True) -> list[str]:
+    # The "Why" findings are batch-derived directional conclusions, so they only
+    # apply to the batch table; per-file passes why_col=False.
+    if why_col:
+        out = ["| Dataset | N | Acc (with) | Acc (no) | Δ (with−no) | Why |",
+               "|---|---|---|---|---|---|"]
+    else:
+        out = ["| Dataset | N | Acc (with) | Acc (no) | Δ (with−no) |",
+               "|---|---|---|---|---|"]
+    for r in rows:
+        d = r["acc_delta"]
+        dstr = (f"{'+' if d>=0 else ''}{d*100:.1f}pp") if d is not None else "—"
+        base = f"| {r['name']} | {r['n']} | {_pct(r['acc_w'])} | {_pct(r['acc_n'])} | {dstr} |"
+        out.append(base + (f" {FINDINGS.get(r['slug'],'')} |" if why_col else ""))
+    return out
+
+
+def _cost_table_md(rows: list[dict], with_latency: bool = True) -> list[str]:
+    if with_latency:
+        out = ["| Dataset | Token (with) | Credit (with) | Total (with) | Total (no) | Total vs no | "
+               "Pages | Wall cold (with) | Wall warm (with) | Wall (no) |",
+               "|---|---|---|---|---|---|---|---|---|---|"]
+    else:
+        out = ["| Dataset | Token (with) | Credit (with) | Total (with) | Total (no) | Total vs no | "
+               "Pages | Wall (with) | Wall (no) |",
+               "|---|---|---|---|---|---|---|---|---|"]
+    for r in rows:
         pages = f"{r['pages_w']:,}" if isinstance(r["pages_w"], int) else "—"
-        return (
-            "<tr>"
+        base = (f"| {r['name']} | {_money(r['tok_w'])} | {_money(r['cred_w'])} | {_money(r['tot_w'])} | "
+                f"{_money(r['tot_n'])} | {_ratio_str(r['tot_w'], r['tot_n'])} | {pages} |")
+        if with_latency:
+            wall_cold, wall_warm = _wall_cold_warm(r)
+            out.append(base + f" {wall_cold} | {wall_warm} | {_secs(r['wall_n'])} |")
+        else:
+            out.append(base + f" {_secs(r['wall_w'])} | {_secs(r['wall_n'])} |")
+    return out
+
+
+def _compare_table_md(rows_b: list[dict], rows_pf: list[dict]) -> list[str]:
+    """Per-dataset batch→per-file deltas for the headline numbers."""
+    pf_by = {r["slug"]: r for r in rows_pf}
+    out = ["| Dataset | Acc with (batch→file) | Acc no (batch→file) | "
+           "Total with (batch→file) | Total no (batch→file) |",
+           "|---|---|---|---|---|"]
+    for rb in rows_b:
+        rp = pf_by.get(rb["slug"])
+        if not rp:
+            continue
+        out.append(
+            f"| {rb['name']} | {_pct(rb['acc_w'])} → {_pct(rp['acc_w'])} | "
+            f"{_pct(rb['acc_n'])} → {_pct(rp['acc_n'])} | "
+            f"{_money(rb['tot_w'])} → {_money(rp['tot_w'])} | "
+            f"{_money(rb['tot_n'])} → {_money(rp['tot_n'])} |")
+    return out
+
+
+def _acc_rows_html(rows: list[dict], why_col: bool = True) -> str:
+    import html as _h
+    def row(r: dict) -> str:
+        cells = (f"<td class='name'>{_h.escape(r['name'])}</td><td>{r['n']}</td>"
+                 f"<td class='with'>{_pct(r['acc_w'])}</td><td class='no'>{_pct(r['acc_n'])}</td>"
+                 f"<td>{_delta_html(r['acc_delta'])}</td>")
+        if why_col:
+            cells += f"<td class='why'>{r['why_html']}</td>"
+        return f"<tr>{cells}</tr>"
+    return "\n".join(row(r) for r in rows)
+
+
+def _cost_rows_html(rows: list[dict], with_latency: bool = True) -> str:
+    import html as _h
+    def row(r: dict) -> str:
+        pages = f"{r['pages_w']:,}" if isinstance(r["pages_w"], int) else "—"
+        cells = (
             f"<td class='name'>{_h.escape(r['name'])}</td>"
             f"<td class='with'>{_money(r['tok_w'])}</td>"
             f"<td class='with'>{_money(r['cred_w'])}</td>"
@@ -153,11 +248,39 @@ def render_html(rows: list[dict], date: str | None, cost_sentence: str) -> str:
             f"<td class='no'>{_money(r['tot_n'])}</td>"
             f"<td>{_ratio_html(r['tot_w'], r['tot_n'])}</td>"
             f"<td>{pages}</td>"
-            f"<td class='with'>{_wall_cold_warm(r)[0]}</td>"
-            f"<td class='with'>{_wall_cold_warm(r)[1]}</td>"
-            f"<td class='no'>{_secs(r['wall_n'])}</td></tr>"
         )
-    cost_tr = "\n".join(_cost_row(r) for r in rows)
+        if with_latency:
+            cells += (f"<td class='with'>{_wall_cold_warm(r)[0]}</td>"
+                      f"<td class='with'>{_wall_cold_warm(r)[1]}</td>"
+                      f"<td class='no'>{_secs(r['wall_n'])}</td>")
+        else:
+            cells += (f"<td class='with'>{_secs(r['wall_w'])}</td>"
+                      f"<td class='no'>{_secs(r['wall_n'])}</td>")
+        return f"<tr>{cells}</tr>"
+    return "\n".join(row(r) for r in rows)
+
+
+def _compare_rows_html(rows_b: list[dict], rows_pf: list[dict]) -> str:
+    import html as _h
+    pf_by = {r["slug"]: r for r in rows_pf}
+    out: list[str] = []
+    for rb in rows_b:
+        rp = pf_by.get(rb["slug"])
+        if not rp:
+            continue
+        out.append(
+            f"<tr><td class='name'>{_h.escape(rb['name'])}</td>"
+            f"<td class='with'>{_pct(rb['acc_w'])} → {_pct(rp['acc_w'])}</td>"
+            f"<td class='no'>{_pct(rb['acc_n'])} → {_pct(rp['acc_n'])}</td>"
+            f"<td class='with'>{_money(rb['tot_w'])} → {_money(rp['tot_w'])}</td>"
+            f"<td class='no'>{_money(rb['tot_n'])} → {_money(rp['tot_n'])}</td></tr>")
+    return "\n".join(out)
+
+
+def render_html(rows: list[dict], rows_pf: list[dict], date: str | None, cost_sentence: str) -> str:
+    import html as _h
+    acc_tr = _acc_rows_html(rows)
+    cost_tr = _cost_rows_html(rows, with_latency=True)
 
     lat_rows = [r for r in rows if r.get("lat_cold") and r.get("lat_warm")]
     lat_section = ""
@@ -183,6 +306,50 @@ def render_html(rows: list[dict], date: str | None, cost_sentence: str) -> str:
 {lat_tr}
     </tbody>
   </table>"""
+    # Per-file mode section (one claude session per document). Cost table omits the
+    # cold/warm columns — there is no per-file cold/warm latency pilot.
+    perfile_section = ""
+    if rows_pf:
+        pf_acc_tr = _acc_rows_html(rows_pf, why_col=False)
+        pf_cost_tr = _cost_rows_html(rows_pf, with_latency=False)
+        perfile_section = f"""
+  <div class="section-label">Per-file mode · accuracy</div>
+  <p class="intro" style="margin-bottom:0.6rem">One claude session <b>per document</b> (vs one session over the
+  whole corpus in batch mode). Same conditions: <span class="with">with_skill</span> delegates to LlamaCloud;
+  <span class="no">no_skill</span> is the full agent without the <code>llama-extract</code> skill.</p>
+  <table>
+    <thead><tr><th>Dataset</th><th>N</th><th class="with">Acc (with)</th><th class="no">Acc (no)</th><th>Δ (with−no)</th></tr></thead>
+    <tbody>
+{pf_acc_tr}
+    </tbody>
+  </table>
+
+  <div class="section-label">Per-file mode · cost</div>
+  <p class="intro" style="margin-bottom:0.6rem">Per-file <span class="no">no_skill</span> loses the batch session's cross-document
+  prompt-cache amortization but also avoids its growing single-session context, so its token cost can land on either side of the
+  batch no_skill arm (higher on FFIEC/ctgov, lower/flat on IRS/SEC). Credit cost (<span class="with">with_skill</span>) is billed
+  per page and is unchanged by mode.</p>
+  <table>
+    <thead><tr><th>Dataset</th><th class="with">Token (with)</th><th class="with">Credit (with)</th><th class="with">Total (with)</th><th class="no">Total (no)</th><th>Total vs no</th><th>Pages</th><th class="with">Wall (with)</th><th class="no">Wall (no)</th></tr></thead>
+    <tbody>
+{pf_cost_tr}
+    </tbody>
+  </table>"""
+
+    compare_section = ""
+    cmp_tr = _compare_rows_html(rows, rows_pf) if rows_pf else ""
+    if cmp_tr:
+        compare_section = f"""
+  <div class="section-label">Batch vs per-file</div>
+  <p class="intro" style="margin-bottom:0.6rem">Headline numbers for the same dataset under the two execution modes
+  (batch = one session per corpus → per-file = one session per document).</p>
+  <table>
+    <thead><tr><th>Dataset</th><th class="with">Acc with (batch→file)</th><th class="no">Acc no (batch→file)</th><th class="with">Total with (batch→file)</th><th class="no">Total no (batch→file)</th></tr></thead>
+    <tbody>
+{cmp_tr}
+    </tbody>
+  </table>"""
+
     links = "\n".join(
         f"<li><b>{_h.escape(r['name'])}</b> <span class='dim'>({_h.escape(r['src_label'])})</span> — "
         f"<a href='{r['src'].relative_to(RESULTS)}/report.html'>report.html</a></li>"
@@ -235,15 +402,15 @@ footer{{text-align:center;padding:2rem 1rem;color:var(--text-dim);font-family:'I
 <body>
 <div class="hero">
   <h1>Claude Code <span class="accent">vs</span> Claude Code + LlamaExtract Skill</h1>
-  <div class="subtitle">Cross-dataset batch-mode structured extraction — {len(rows)} document corpora, one session per condition.</div>
+  <div class="subtitle">Cross-dataset structured extraction — {len(rows)} document corpora, in batch (one session per corpus) and per-file (one session per document) modes.</div>
 </div>
 <div class="container">
-  <p class="intro">Claude Code extracts a structured schema from a corpus of PDFs, one batch session per condition.
+  <p class="intro">Claude Code extracts a structured schema from a corpus of PDFs.
   <span class="with">with_skill</span> loads the <code>llama-extract</code> skill (delegates extraction to a LlamaCloud
-  parse+extract job); <span class="no">no_skill</span> runs <code>--bare</code> (Claude reads the PDFs directly).
+  parse+extract job); <span class="no">no_skill</span> is the full agent without the <code>llama-extract</code> skill (Claude reads the PDFs directly).
   Model <code>claude-opus-4-7</code>. Numbers use the latest run per dataset (rerun where present).</p>
 
-  <div class="section-label">Accuracy</div>
+  <div class="section-label">Batch mode · accuracy</div>
   <table>
     <thead><tr><th>Dataset</th><th>N</th><th class="with">Acc (with)</th><th class="no">Acc (no)</th><th>Δ (with−no)</th><th>Why</th></tr></thead>
     <tbody>
@@ -251,7 +418,7 @@ footer{{text-align:center;padding:2rem 1rem;color:var(--text-dim);font-family:'I
     </tbody>
   </table>
 
-  <div class="section-label">Cost &amp; latency</div>
+  <div class="section-label">Batch mode · cost &amp; latency</div>
   <p class="intro" style="margin-bottom:0.6rem">Total cost = <span class="with">Claude tokens</span> + LlamaCloud <b>credits</b>
   (parse + extract, billed per page at $0.00125/credit). <span class="no">no_skill</span> never calls LlamaCloud, so its credit cost is $0 and its total equals its token cost.</p>
   <table>
@@ -261,6 +428,8 @@ footer{{text-align:center;padding:2rem 1rem;color:var(--text-dim);font-family:'I
     </tbody>
   </table>
 {lat_section}
+{perfile_section}
+{compare_section}
 
   <div class="section-label">What holds across every dataset</div>
   <ul class="findings">
@@ -274,7 +443,7 @@ footer{{text-align:center;padding:2rem 1rem;color:var(--text-dim);font-family:'I
 {links}
   </ul>
 </div>
-<footer>{stamp}generated by <code>scripts/render_cross_dataset_summary.py</code> · with-skill loads <code>llama-extract</code> as a project skill, no-skill runs <code>--bare</code></footer>
+<footer>{stamp}generated by <code>scripts/render_cross_dataset_summary.py</code> · with-skill loads <code>llama-extract</code> as a project skill, no-skill is the full agent without it</footer>
 </body></html>"""
 
 
@@ -285,91 +454,60 @@ def main() -> None:
     parser.add_argument("--date", type=str, default=None)
     args = parser.parse_args()
 
-    rows = []
+    rows: list[dict] = []      # batch mode
+    rows_pf: list[dict] = []   # per-file mode
     for slug in REGISTRY:
         ds = get_dataset(slug)
         src, src_label = _source_dir(slug)
-        sb = _load(src / "summary_batch.json")
-        if not sb:
-            continue
-        inv = (_load(src / "invocation_stats.json").get("batch") or {})
+        inv_all = _load(src / "invocation_stats.json")
         latcw = _load(src / "latency_cold_warm.json")
         latb = (latcw.get("batch") or {}) if latcw else {}
-        lat_cold = (latb.get("cold") or {}).get("wall_s")
-        lat_warm = (latb.get("warm") or {}).get("wall_s")
-        lat_speedup = latb.get("speedup")
-        ws, ns = sb.get("with_skill", {}) or {}, sb.get("no_skill", {}) or {}
-        acc_w, acc_n = ws.get("accuracy"), ns.get("accuracy")
-        # Three-way cost split: token (Claude) + credit (LlamaCloud) = total.
-        tok_w, cred_w, tot_w = ws.get("token_cost_usd"), ws.get("credit_cost_usd"), ws.get("total_cost_usd")
-        tok_n, tot_n = ns.get("token_cost_usd"), ns.get("total_cost_usd")  # no_skill credit == 0
-        pages_w = ws.get("n_pages")
-        wall_w = ws.get("total_duration_ms") or ws.get("session_duration_ms")
-        wall_n = ns.get("total_duration_ms") or ns.get("session_duration_ms")
-        acc_delta = (acc_w - acc_n) if (acc_w is not None and acc_n is not None) else None
-        # total-cost ratio (no/with): >1 => with_skill cheaper, <1 => pricier
-        cost_ratio = (tot_n / tot_w) if (tot_w and tot_n) else None
-        token_ratio = (tok_n / tok_w) if (tok_w and tok_n) else None
-        rows.append({
-            "name": ds.display_name, "slug": slug, "src": src, "src_label": src_label,
-            "n": ws.get("n_runs") or ns.get("n_runs") or 0,
-            "acc_w": acc_w, "acc_n": acc_n, "acc_delta": acc_delta,
-            "tok_w": tok_w, "cred_w": cred_w, "tot_w": tot_w, "tok_n": tok_n, "tot_n": tot_n,
-            "pages_w": pages_w, "cost_ratio": cost_ratio, "token_ratio": token_ratio,
-            "wall_w": wall_w, "wall_n": wall_n,
-            "lat_cold": lat_cold, "lat_warm": lat_warm, "lat_speedup": lat_speedup,
-            "skill": (inv.get("with_skill") or {}).get("n_invoked_skill"),
-            "cli": (inv.get("with_skill") or {}).get("extract_calls"),
-            "why": FINDINGS.get(slug, ""),
-            "why_html": _md_bold_to_html(FINDINGS.get(slug, "")),
-        })
+        sb = _load(src / "summary_batch.json")
+        if sb:
+            rows.append(_row_from_summary(ds, slug, src, src_label, sb,
+                                          inv_all.get("batch") or {}, latb))
+        # Per-file summary lands in the same source dir (score.py --mode per_file with
+        # --summary-out). Optional: datasets without a per-file run are simply omitted.
+        sp = _load(src / "summary.json")
+        if sp:
+            rows_pf.append(_row_from_summary(ds, slug, src, src_label, sp,
+                                             inv_all.get("v2") or {}, {}))
 
     cost_sentence = _cost_sentence(rows)
 
-    L: list[str] = ["# Cross-Dataset Batch-Mode Comparison", ""]
+    L: list[str] = ["# Cross-Dataset Comparison — Batch & Per-File", ""]
     if args.date:
         L.append(f"Generated {args.date} by `scripts/render_cross_dataset_summary.py`.")
         L.append("")
     L += [
-        "Claude Code extracting a structured schema from a corpus of PDFs, one batch session per "
-        "condition. **with_skill** loads the `llama-extract` skill (delegates extraction to a "
-        "LlamaCloud parse+extract job); **no_skill** runs `--bare` (Claude reads the PDFs directly). "
-        "Model `claude-opus-4-7`. Numbers below use the latest run per dataset (rerun where present).",
+        "Claude Code extracting a structured schema from a corpus of PDFs. **with_skill** loads the "
+        "`llama-extract` skill (delegates extraction to a LlamaCloud parse+extract job); **no_skill** is "
+        "the full agent without the `llama-extract` skill (Claude reads the PDFs directly). Model "
+        "`claude-opus-4-7`. Results are shown in two execution modes: **batch** (one session per corpus) "
+        "and **per-file** (one session per document). Numbers use the latest run per dataset (rerun where present).",
         "",
-        "## Accuracy",
+        "## Batch mode",
         "",
-        "| Dataset | N | Acc (with) | Acc (no) | Δ (with−no) | Why |",
-        "|---|---|---|---|---|---|",
+        "### Accuracy",
+        "",
     ]
-    for r in rows:
-        d = r["acc_delta"]
-        dstr = (f"{'+' if d>=0 else ''}{d*100:.1f}pp") if d is not None else "—"
-        L.append(f"| {r['name']} | {r['n']} | {_pct(r['acc_w'])} | {_pct(r['acc_n'])} | {dstr} | "
-                 f"{FINDINGS.get(r['slug'],'')} |")
-
+    L += _acc_table_md(rows)
     L += [
         "",
-        "## Cost & latency",
+        "### Cost & latency",
         "",
         "Total cost = Claude tokens + LlamaCloud credits (parse + extract, billed per page at "
         "$0.00125/credit). `no_skill` never calls LlamaCloud, so its credit cost is $0 and its total "
         "equals its token cost.",
         "",
-        "| Dataset | Token (with) | Credit (with) | Total (with) | Total (no) | Total vs no | Pages | Wall cold (with) | Wall warm (with) | Wall (no) |",
-        "|---|---|---|---|---|---|---|---|---|---|",
     ]
-    for r in rows:
-        pages = f"{r['pages_w']:,}" if isinstance(r["pages_w"], int) else "—"
-        wall_cold, wall_warm = _wall_cold_warm(r)
-        L.append(f"| {r['name']} | {_money(r['tok_w'])} | {_money(r['cred_w'])} | {_money(r['tot_w'])} | "
-                 f"{_money(r['tot_n'])} | {_ratio_str(r['tot_w'], r['tot_n'])} | {pages} | "
-                 f"{wall_cold} | {wall_warm} | {_secs(r['wall_n'])} |")
+    L += _cost_table_md(rows, with_latency=True)
 
     lat_rows = [r for r in rows if r.get("lat_cold") and r.get("lat_warm")]
     if lat_rows:
         L += [
             "",
-            "## Parse-cache latency (cold vs warm)",
+            "### Parse-cache latency (cold vs warm)",
             "",
             "Same corpus and config — only the LlamaCloud parse cache differs. The parse step is "
             "cached by document content hash; a warm cache skips re-parsing. **Credit cost is identical "
@@ -383,9 +521,39 @@ def main() -> None:
             "|---|---|---|---|",
         ]
         for r in lat_rows:
-            sp = f"{r['lat_speedup']:.1f}×" if r.get("lat_speedup") else "—"
+            spd = f"{r['lat_speedup']:.1f}×" if r.get("lat_speedup") else "—"
             L.append(f"| {r['name']} | {_secs((r['lat_cold'] or 0)*1000)} | "
-                     f"{_secs((r['lat_warm'] or 0)*1000)} | {sp} |")
+                     f"{_secs((r['lat_warm'] or 0)*1000)} | {spd} |")
+
+    if rows_pf:
+        L += [
+            "",
+            "## Per-file mode",
+            "",
+            "One claude session **per document** (vs one session over the whole corpus in batch mode). "
+            "Per-file `no_skill` loses the batch session's cross-document prompt-cache amortization but also "
+            "avoids its growing single-session context, so its token cost can land on either side of the "
+            "batch no_skill arm (higher on FFIEC/ctgov, lower/flat on IRS/SEC). Credit cost (with_skill) is "
+            "per-page and unchanged by mode.",
+            "",
+            "### Accuracy",
+            "",
+        ]
+        L += _acc_table_md(rows_pf, why_col=False)
+        L += ["", "### Cost", ""]
+        L += _cost_table_md(rows_pf, with_latency=False)
+
+        cmp_lines = _compare_table_md(rows, rows_pf)
+        if len(cmp_lines) > 2:  # header + separator + ≥1 data row
+            L += [
+                "",
+                "## Batch vs per-file",
+                "",
+                "Headline numbers for the same dataset under the two execution modes "
+                "(batch = one session per corpus → per-file = one session per document).",
+                "",
+            ]
+            L += cmp_lines
 
     L += [
         "",
@@ -412,8 +580,9 @@ def main() -> None:
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text("\n".join(L))
-    args.html_output.write_text(render_html(rows, args.date, cost_sentence))
-    print(f"Wrote {args.output} and {args.html_output} ({len(rows)} datasets)")
+    args.html_output.write_text(render_html(rows, rows_pf, args.date, cost_sentence))
+    print(f"Wrote {args.output} and {args.html_output} "
+          f"({len(rows)} batch, {len(rows_pf)} per-file)")
 
 
 if __name__ == "__main__":
