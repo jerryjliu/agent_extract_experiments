@@ -89,8 +89,8 @@ footer { text-align: center; padding: 2rem 1rem; color: var(--text-dim); font-fa
   <div class="subtitle">ClinicalTrials.gov protocol structured extraction — 12 documents, ~20 fields each.</div>
   <div class="stats-bar">
     <div class="stat"><div class="val delta-pos">1/1</div><div class="lbl">skill invoked (batch with_skill)</div></div>
-    <div class="stat"><div class="val">-18.6pp</div><div class="lbl">accuracy Δ (with−no)</div></div>
-    <div class="stat"><div class="val">+$36.69</div><div class="lbl">total cost Δ (with−no)</div></div>
+    <div class="stat"><div class="val">-14.5pp</div><div class="lbl">accuracy Δ (with−no)</div></div>
+    <div class="stat"><div class="val">+$35.48</div><div class="lbl">total cost Δ (with−no)</div></div>
     <div class="stat"><div class="val">12</div><div class="lbl">documents</div></div>
   </div>
 </div>
@@ -104,7 +104,7 @@ footer { text-align: center; padding: 2rem 1rem; color: var(--text-dim); font-fa
       
       <tr><td class="cond-with">with_skill (cold)</td><td>59.3%</td><td>86</td><td>43</td><td>16</td><td>$0.70</td><td>$40.09</td><td><b>$40.79</b></td><td>193.2s</td></tr>
       <tr><td class="cond-with">with_skill (warm)</td><td>59.3%</td><td>86</td><td>43</td><td>16</td><td>$0.59</td><td>$40.09</td><td><b>$40.69</b></td><td>60.1s</td></tr>
-      <tr><td class="cond-no">no_skill</td><td>79.3%</td><td>115</td><td>30</td><td>0</td><td>$4.06</td><td>$0.00</td><td><b>$4.06</b></td><td>301.9s</td></tr>
+      <tr><td class="cond-no">no_skill</td><td>73.8%</td><td>107</td><td>38</td><td>0</td><td>$5.21</td><td>$0.00</td><td><b>$5.21</b></td><td>308.7s</td></tr>
     </tbody>
   </table>
   <p class="caveat">with_skill split by LlamaCloud parse-cache state (cold = first parse / new content hash; warm = cache hit). Accuracy and credit cost are cache-invariant — same parsed content, same per-page billing; only latency (and Claude token cost) vary.</p>
@@ -138,7 +138,7 @@ footer { text-align: center; padding: 2rem 1rem; color: var(--text-dim); font-fa
     <span class='filing-name'>SHR-1210 Combined With Apatinib in Treatment of ED-SCLC Afte</span>
     <span class='filing-meta'>NCT03417895 · SHR-1210 Combined With Apatinib in Treatment of ED-SCLC Afte</span>
     <span class='filing-scores'>
-      <span class='score-pair'><span class='label'>with</span> <span class='val'>9/20</span></span>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>10/20</span></span>
       <span class='score-pair'><span class='label'>no</span> <span class='val'>10/20</span></span>
       <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
     </span>
@@ -165,7 +165,7 @@ footer { text-align: center; padding: 2rem 1rem; color: var(--text-dim); font-fa
 <tr><td class='field-name'>minimum_age</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>maximum_age</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>sex</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>healthy_volunteers</td><td class='cell cell-missing' title='missing'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>healthy_volunteers</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>primary_outcome_measure</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
 <tr><td class='field-name'>primary_outcome_time_frame</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
 <tr><td class='field-name'>overall_status</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
@@ -184,20 +184,15 @@ footer { text-align: center; padding: 2rem 1rem; color: var(--text-dim); font-fa
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50; which pdftotext, description=List input and output directories and check for pdftotext</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p ./text/
-for f in ./inputs/*.pdf; do
-  name=$(basename &quot;$f&quot; .pdf)
-  pdft, description=Convert all PDFs to text files in parallel</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=head -200 ./text/NCT03417895_Prot_000.txt, description=Read first 200 lines of NCT03417895</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(59 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ./outputs/NCT02015819_Prot_SAP_000.json &lt;&lt; &#x27;EOF&#x27;
-{
-  &quot;nct_id&quot;: &quot;NCT0201581, description=Write NCT02015819 output</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ./outputs/NCT04090528_Prot_SAP_000.json &lt;&lt; &#x27;EOF&#x27;
-{
-  &quot;nct_id&quot;: &quot;NCT0409052, description=Write NCT04090528 output</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./outputs/; echo &quot;---&quot;; for f in ./outputs/*.json; do python3 -c &quot;import json, description=Validate all output JSON files</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List inputs and outputs directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Check pypdf availability</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(89 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;nct_id&quot;: &quot;NCT02807844&quot;,
+  &quot;brief_title&quot;: &quot;Phase Ib/II study of MCS110 in co</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Verify all output JSON files are valid</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Verify all 12 outputs exist and validate against schema</span></div>
       </div>
     </div>
   </div>
@@ -209,7 +204,7 @@ for f in ./inputs/*.pdf; do
     <span class='filing-meta'>NCT02732119 · Study of Ribociclib With Everolimus + Exemestane in HR+ HER2</span>
     <span class='filing-scores'>
       <span class='score-pair'><span class='label'>with</span> <span class='val'>7/20</span></span>
-      <span class='score-pair'><span class='label'>no</span> <span class='val'>10/20</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>9/20</span></span>
       <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
     </span>
   </summary>
@@ -222,7 +217,7 @@ for f in ./inputs/*.pdf; do
 <tr><td class='field-name'>nct_id</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>brief_title</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>official_title</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
-<tr><td class='field-name'>sponsor</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>sponsor</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>study_type</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>phase</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>allocation</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
@@ -254,20 +249,15 @@ for f in ./inputs/*.pdf; do
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50; which pdftotext, description=List input and output directories and check for pdftotext</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p ./text/
-for f in ./inputs/*.pdf; do
-  name=$(basename &quot;$f&quot; .pdf)
-  pdft, description=Convert all PDFs to text files in parallel</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=head -200 ./text/NCT03417895_Prot_000.txt, description=Read first 200 lines of NCT03417895</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(59 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ./outputs/NCT02015819_Prot_SAP_000.json &lt;&lt; &#x27;EOF&#x27;
-{
-  &quot;nct_id&quot;: &quot;NCT0201581, description=Write NCT02015819 output</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ./outputs/NCT04090528_Prot_SAP_000.json &lt;&lt; &#x27;EOF&#x27;
-{
-  &quot;nct_id&quot;: &quot;NCT0409052, description=Write NCT04090528 output</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./outputs/; echo &quot;---&quot;; for f in ./outputs/*.json; do python3 -c &quot;import json, description=Validate all output JSON files</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List inputs and outputs directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Check pypdf availability</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(89 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;nct_id&quot;: &quot;NCT02807844&quot;,
+  &quot;brief_title&quot;: &quot;Phase Ib/II study of MCS110 in co</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Verify all output JSON files are valid</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Verify all 12 outputs exist and validate against schema</span></div>
       </div>
     </div>
   </div>
@@ -278,7 +268,7 @@ for f in ./inputs/*.pdf; do
     <span class='filing-name'>A Phase 2 Study to Assess the Safety and Efficacy of IMO-212</span>
     <span class='filing-meta'>NCT02644967 · A Phase 2 Study to Assess the Safety and Efficacy of IMO-212</span>
     <span class='filing-scores'>
-      <span class='score-pair'><span class='label'>with</span> <span class='val'>6/20</span></span>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>4/20</span></span>
       <span class='score-pair'><span class='label'>no</span> <span class='val'>7/20</span></span>
       <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
     </span>
@@ -295,8 +285,8 @@ for f in ./inputs/*.pdf; do
 <tr><td class='field-name'>sponsor</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>study_type</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>phase</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
-<tr><td class='field-name'>allocation</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
-<tr><td class='field-name'>masking</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>allocation</td><td class='cell cell-missing' title='missing'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>masking</td><td class='cell cell-missing' title='missing'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>intervention_model</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>enrollment_count</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>start_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
@@ -305,7 +295,7 @@ for f in ./inputs/*.pdf; do
 <tr><td class='field-name'>minimum_age</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>maximum_age</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
 <tr><td class='field-name'>sex</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>healthy_volunteers</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>healthy_volunteers</td><td class='cell cell-missing' title='missing'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>primary_outcome_measure</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
 <tr><td class='field-name'>primary_outcome_time_frame</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
 <tr><td class='field-name'>overall_status</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
@@ -324,20 +314,15 @@ for f in ./inputs/*.pdf; do
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50; which pdftotext, description=List input and output directories and check for pdftotext</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p ./text/
-for f in ./inputs/*.pdf; do
-  name=$(basename &quot;$f&quot; .pdf)
-  pdft, description=Convert all PDFs to text files in parallel</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=head -200 ./text/NCT03417895_Prot_000.txt, description=Read first 200 lines of NCT03417895</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(59 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ./outputs/NCT02015819_Prot_SAP_000.json &lt;&lt; &#x27;EOF&#x27;
-{
-  &quot;nct_id&quot;: &quot;NCT0201581, description=Write NCT02015819 output</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ./outputs/NCT04090528_Prot_SAP_000.json &lt;&lt; &#x27;EOF&#x27;
-{
-  &quot;nct_id&quot;: &quot;NCT0409052, description=Write NCT04090528 output</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./outputs/; echo &quot;---&quot;; for f in ./outputs/*.json; do python3 -c &quot;import json, description=Validate all output JSON files</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List inputs and outputs directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Check pypdf availability</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(89 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;nct_id&quot;: &quot;NCT02807844&quot;,
+  &quot;brief_title&quot;: &quot;Phase Ib/II study of MCS110 in co</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Verify all output JSON files are valid</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Verify all 12 outputs exist and validate against schema</span></div>
       </div>
     </div>
   </div>
@@ -348,8 +333,8 @@ for f in ./inputs/*.pdf; do
     <span class='filing-name'>Phase Ib/II Study of MCS110 in Combination With PDR001 in Pa</span>
     <span class='filing-meta'>NCT02807844 · Phase Ib/II Study of MCS110 in Combination With PDR001 in Pa</span>
     <span class='filing-scores'>
-      <span class='score-pair'><span class='label'>with</span> <span class='val'>10/20</span></span>
-      <span class='score-pair'><span class='label'>no</span> <span class='val'>11/20</span></span>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>9/20</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>10/20</span></span>
       <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
     </span>
   </summary>
@@ -362,7 +347,7 @@ for f in ./inputs/*.pdf; do
 <tr><td class='field-name'>nct_id</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>brief_title</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>official_title</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
-<tr><td class='field-name'>sponsor</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>sponsor</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>study_type</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>phase</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>allocation</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
@@ -372,7 +357,7 @@ for f in ./inputs/*.pdf; do
 <tr><td class='field-name'>start_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
 <tr><td class='field-name'>primary_completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
 <tr><td class='field-name'>completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
-<tr><td class='field-name'>minimum_age</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>minimum_age</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>maximum_age</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
 <tr><td class='field-name'>sex</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>healthy_volunteers</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
@@ -394,20 +379,15 @@ for f in ./inputs/*.pdf; do
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50; which pdftotext, description=List input and output directories and check for pdftotext</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p ./text/
-for f in ./inputs/*.pdf; do
-  name=$(basename &quot;$f&quot; .pdf)
-  pdft, description=Convert all PDFs to text files in parallel</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=head -200 ./text/NCT03417895_Prot_000.txt, description=Read first 200 lines of NCT03417895</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(59 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ./outputs/NCT02015819_Prot_SAP_000.json &lt;&lt; &#x27;EOF&#x27;
-{
-  &quot;nct_id&quot;: &quot;NCT0201581, description=Write NCT02015819 output</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ./outputs/NCT04090528_Prot_SAP_000.json &lt;&lt; &#x27;EOF&#x27;
-{
-  &quot;nct_id&quot;: &quot;NCT0409052, description=Write NCT04090528 output</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./outputs/; echo &quot;---&quot;; for f in ./outputs/*.json; do python3 -c &quot;import json, description=Validate all output JSON files</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List inputs and outputs directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Check pypdf availability</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(89 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;nct_id&quot;: &quot;NCT02807844&quot;,
+  &quot;brief_title&quot;: &quot;Phase Ib/II study of MCS110 in co</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Verify all output JSON files are valid</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Verify all 12 outputs exist and validate against schema</span></div>
       </div>
     </div>
   </div>
@@ -464,20 +444,15 @@ for f in ./inputs/*.pdf; do
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50; which pdftotext, description=List input and output directories and check for pdftotext</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p ./text/
-for f in ./inputs/*.pdf; do
-  name=$(basename &quot;$f&quot; .pdf)
-  pdft, description=Convert all PDFs to text files in parallel</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=head -200 ./text/NCT03417895_Prot_000.txt, description=Read first 200 lines of NCT03417895</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(59 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ./outputs/NCT02015819_Prot_SAP_000.json &lt;&lt; &#x27;EOF&#x27;
-{
-  &quot;nct_id&quot;: &quot;NCT0201581, description=Write NCT02015819 output</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ./outputs/NCT04090528_Prot_SAP_000.json &lt;&lt; &#x27;EOF&#x27;
-{
-  &quot;nct_id&quot;: &quot;NCT0409052, description=Write NCT04090528 output</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./outputs/; echo &quot;---&quot;; for f in ./outputs/*.json; do python3 -c &quot;import json, description=Validate all output JSON files</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List inputs and outputs directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Check pypdf availability</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(89 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;nct_id&quot;: &quot;NCT02807844&quot;,
+  &quot;brief_title&quot;: &quot;Phase Ib/II study of MCS110 in co</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Verify all output JSON files are valid</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Verify all 12 outputs exist and validate against schema</span></div>
       </div>
     </div>
   </div>
@@ -534,20 +509,15 @@ for f in ./inputs/*.pdf; do
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50; which pdftotext, description=List input and output directories and check for pdftotext</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p ./text/
-for f in ./inputs/*.pdf; do
-  name=$(basename &quot;$f&quot; .pdf)
-  pdft, description=Convert all PDFs to text files in parallel</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=head -200 ./text/NCT03417895_Prot_000.txt, description=Read first 200 lines of NCT03417895</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(59 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ./outputs/NCT02015819_Prot_SAP_000.json &lt;&lt; &#x27;EOF&#x27;
-{
-  &quot;nct_id&quot;: &quot;NCT0201581, description=Write NCT02015819 output</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ./outputs/NCT04090528_Prot_SAP_000.json &lt;&lt; &#x27;EOF&#x27;
-{
-  &quot;nct_id&quot;: &quot;NCT0409052, description=Write NCT04090528 output</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./outputs/; echo &quot;---&quot;; for f in ./outputs/*.json; do python3 -c &quot;import json, description=Validate all output JSON files</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List inputs and outputs directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Check pypdf availability</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(89 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;nct_id&quot;: &quot;NCT02807844&quot;,
+  &quot;brief_title&quot;: &quot;Phase Ib/II study of MCS110 in co</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Verify all output JSON files are valid</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Verify all 12 outputs exist and validate against schema</span></div>
       </div>
     </div>
   </div>
@@ -558,8 +528,8 @@ for f in ./inputs/*.pdf; do
     <span class='filing-name'>Ceritinib (LDK378) for Patients Whose Tumors Have Aberration</span>
     <span class='filing-meta'>NCT02186821 · Ceritinib (LDK378) for Patients Whose Tumors Have Aberration</span>
     <span class='filing-scores'>
-      <span class='score-pair'><span class='label'>with</span> <span class='val'>7/20</span></span>
-      <span class='score-pair'><span class='label'>no</span> <span class='val'>9/20</span></span>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>8/20</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>8/20</span></span>
       <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
     </span>
   </summary>
@@ -572,12 +542,12 @@ for f in ./inputs/*.pdf; do
 <tr><td class='field-name'>nct_id</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>brief_title</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>official_title</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
-<tr><td class='field-name'>sponsor</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>sponsor</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>study_type</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>phase</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>allocation</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>allocation</td><td class='cell cell-missing' title='missing'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>masking</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>intervention_model</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>intervention_model</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>enrollment_count</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>start_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
 <tr><td class='field-name'>primary_completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
@@ -604,20 +574,15 @@ for f in ./inputs/*.pdf; do
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50; which pdftotext, description=List input and output directories and check for pdftotext</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p ./text/
-for f in ./inputs/*.pdf; do
-  name=$(basename &quot;$f&quot; .pdf)
-  pdft, description=Convert all PDFs to text files in parallel</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=head -200 ./text/NCT03417895_Prot_000.txt, description=Read first 200 lines of NCT03417895</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(59 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ./outputs/NCT02015819_Prot_SAP_000.json &lt;&lt; &#x27;EOF&#x27;
-{
-  &quot;nct_id&quot;: &quot;NCT0201581, description=Write NCT02015819 output</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ./outputs/NCT04090528_Prot_SAP_000.json &lt;&lt; &#x27;EOF&#x27;
-{
-  &quot;nct_id&quot;: &quot;NCT0409052, description=Write NCT04090528 output</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./outputs/; echo &quot;---&quot;; for f in ./outputs/*.json; do python3 -c &quot;import json, description=Validate all output JSON files</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List inputs and outputs directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Check pypdf availability</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(89 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;nct_id&quot;: &quot;NCT02807844&quot;,
+  &quot;brief_title&quot;: &quot;Phase Ib/II study of MCS110 in co</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Verify all output JSON files are valid</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Verify all 12 outputs exist and validate against schema</span></div>
       </div>
     </div>
   </div>
@@ -628,7 +593,7 @@ for f in ./inputs/*.pdf; do
     <span class='filing-name'>Durvalumab and Tremelimumab ± Platinum-Based Chemotherapy in</span>
     <span class='filing-meta'>NCT03057106 · Durvalumab and Tremelimumab ± Platinum-Based Chemotherapy in</span>
     <span class='filing-scores'>
-      <span class='score-pair'><span class='label'>with</span> <span class='val'>6/20</span></span>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>4/20</span></span>
       <span class='score-pair'><span class='label'>no</span> <span class='val'>11/20</span></span>
       <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
     </span>
@@ -646,13 +611,78 @@ for f in ./inputs/*.pdf; do
 <tr><td class='field-name'>study_type</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>phase</td><td class='cell cell-missing' title='missing'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>allocation</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>masking</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>masking</td><td class='cell cell-missing' title='missing'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>intervention_model</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>enrollment_count</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>start_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
 <tr><td class='field-name'>primary_completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
 <tr><td class='field-name'>completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
 <tr><td class='field-name'>minimum_age</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>maximum_age</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>sex</td><td class='cell cell-missing' title='missing'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>healthy_volunteers</td><td class='cell cell-missing' title='missing'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>primary_outcome_measure</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>primary_outcome_time_frame</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>overall_status</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List working directory contents</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List inputs and outputs directories</span></div>
+<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(10 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python .claude/skills/llama-extract/scripts/extract.py --input ./inputs/NCT02015, description=Extract NCT02015819, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python .claude/skills/llama-extract/scripts/extract.py --input ./inputs/NCT04090, description=Extract NCT04090528, timeout=600000</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; echo &quot;---&quot; &amp;&amp; for f in outputs/*.json; do python -c &quot;import json;, description=Validate all 12 output JSON files</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List inputs and outputs directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Check pypdf availability</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(89 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;nct_id&quot;: &quot;NCT02807844&quot;,
+  &quot;brief_title&quot;: &quot;Phase Ib/II study of MCS110 in co</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Verify all output JSON files are valid</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Verify all 12 outputs exist and validate against schema</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>Avelumab, Utomilumab, Anti-OX40 Antibody PF-04518600, and Ra</span>
+    <span class='filing-meta'>NCT03217747 · Avelumab, Utomilumab, Anti-OX40 Antibody PF-04518600, and Ra</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>5/20</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>9/20</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>nct_id</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>brief_title</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>official_title</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>sponsor</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>study_type</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>phase</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>allocation</td><td class='cell cell-missing' title='missing'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>masking</td><td class='cell cell-missing' title='missing'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>intervention_model</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>enrollment_count</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>start_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>primary_completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>minimum_age</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>maximum_age</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
 <tr><td class='field-name'>sex</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>healthy_volunteers</td><td class='cell cell-missing' title='missing'></td><td class='cell cell-correct' title='correct'></td></tr>
@@ -674,90 +704,15 @@ for f in ./inputs/*.pdf; do
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50; which pdftotext, description=List input and output directories and check for pdftotext</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p ./text/
-for f in ./inputs/*.pdf; do
-  name=$(basename &quot;$f&quot; .pdf)
-  pdft, description=Convert all PDFs to text files in parallel</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=head -200 ./text/NCT03417895_Prot_000.txt, description=Read first 200 lines of NCT03417895</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(59 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ./outputs/NCT02015819_Prot_SAP_000.json &lt;&lt; &#x27;EOF&#x27;
-{
-  &quot;nct_id&quot;: &quot;NCT0201581, description=Write NCT02015819 output</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ./outputs/NCT04090528_Prot_SAP_000.json &lt;&lt; &#x27;EOF&#x27;
-{
-  &quot;nct_id&quot;: &quot;NCT0409052, description=Write NCT04090528 output</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./outputs/; echo &quot;---&quot;; for f in ./outputs/*.json; do python3 -c &quot;import json, description=Validate all output JSON files</span></div>
-      </div>
-    </div>
-  </div>
-</details>
-
-<details class='filing-card'>
-  <summary>
-    <span class='filing-name'>Avelumab, Utomilumab, Anti-OX40 Antibody PF-04518600, and Ra</span>
-    <span class='filing-meta'>NCT03217747 · Avelumab, Utomilumab, Anti-OX40 Antibody PF-04518600, and Ra</span>
-    <span class='filing-scores'>
-      <span class='score-pair'><span class='label'>with</span> <span class='val'>7/20</span></span>
-      <span class='score-pair'><span class='label'>no</span> <span class='val'>10/20</span></span>
-      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
-    </span>
-  </summary>
-  <div class='filing-body'>
-    <div class='heatmap-wrap'>
-      <h4>Field-level results</h4>
-      <table class='heatmap'>
-<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
-<tbody>
-<tr><td class='field-name'>nct_id</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>brief_title</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
-<tr><td class='field-name'>official_title</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
-<tr><td class='field-name'>sponsor</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>study_type</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>phase</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>allocation</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>masking</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>intervention_model</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>enrollment_count</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
-<tr><td class='field-name'>start_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
-<tr><td class='field-name'>primary_completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
-<tr><td class='field-name'>completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
-<tr><td class='field-name'>minimum_age</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>maximum_age</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
-<tr><td class='field-name'>sex</td><td class='cell cell-missing' title='missing'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>healthy_volunteers</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>primary_outcome_measure</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
-<tr><td class='field-name'>primary_outcome_time_frame</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
-<tr><td class='field-name'>overall_status</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
-</tbody></table>
-    </div>
-    <div class='excerpts'>
-      <div class='excerpts-col'>
-        <h4>with_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List working directory contents</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory</span></div>
 <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List inputs and outputs directories</span></div>
-<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(10 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python .claude/skills/llama-extract/scripts/extract.py --input ./inputs/NCT02015, description=Extract NCT02015819, timeout=600000</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python .claude/skills/llama-extract/scripts/extract.py --input ./inputs/NCT04090, description=Extract NCT04090528, timeout=600000</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; echo &quot;---&quot; &amp;&amp; for f in outputs/*.json; do python -c &quot;import json;, description=Validate all 12 output JSON files</span></div>
-      </div>
-      <div class='excerpts-col'>
-        <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50; which pdftotext, description=List input and output directories and check for pdftotext</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p ./text/
-for f in ./inputs/*.pdf; do
-  name=$(basename &quot;$f&quot; .pdf)
-  pdft, description=Convert all PDFs to text files in parallel</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=head -200 ./text/NCT03417895_Prot_000.txt, description=Read first 200 lines of NCT03417895</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(59 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ./outputs/NCT02015819_Prot_SAP_000.json &lt;&lt; &#x27;EOF&#x27;
-{
-  &quot;nct_id&quot;: &quot;NCT0201581, description=Write NCT02015819 output</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ./outputs/NCT04090528_Prot_SAP_000.json &lt;&lt; &#x27;EOF&#x27;
-{
-  &quot;nct_id&quot;: &quot;NCT0409052, description=Write NCT04090528 output</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./outputs/; echo &quot;---&quot;; for f in ./outputs/*.json; do python3 -c &quot;import json, description=Validate all output JSON files</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Check pypdf availability</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(89 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;nct_id&quot;: &quot;NCT02807844&quot;,
+  &quot;brief_title&quot;: &quot;Phase Ib/II study of MCS110 in co</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Verify all output JSON files are valid</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Verify all 12 outputs exist and validate against schema</span></div>
       </div>
     </div>
   </div>
@@ -768,8 +723,8 @@ for f in ./inputs/*.pdf; do
     <span class='filing-name'>Memory and Attention Adaptation Training-Geriatrics (MAAT-G)</span>
     <span class='filing-meta'>NCT04669301 · Memory and Attention Adaptation Training-Geriatrics (MAAT-G)</span>
     <span class='filing-scores'>
-      <span class='score-pair'><span class='label'>with</span> <span class='val'>6/20</span></span>
-      <span class='score-pair'><span class='label'>no</span> <span class='val'>9/20</span></span>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>7/20</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>8/20</span></span>
       <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
     </span>
   </summary>
@@ -782,9 +737,9 @@ for f in ./inputs/*.pdf; do
 <tr><td class='field-name'>nct_id</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>brief_title</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>official_title</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
-<tr><td class='field-name'>sponsor</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>sponsor</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>study_type</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>phase</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>phase</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>allocation</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>masking</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>intervention_model</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
@@ -814,20 +769,15 @@ for f in ./inputs/*.pdf; do
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50; which pdftotext, description=List input and output directories and check for pdftotext</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p ./text/
-for f in ./inputs/*.pdf; do
-  name=$(basename &quot;$f&quot; .pdf)
-  pdft, description=Convert all PDFs to text files in parallel</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=head -200 ./text/NCT03417895_Prot_000.txt, description=Read first 200 lines of NCT03417895</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(59 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ./outputs/NCT02015819_Prot_SAP_000.json &lt;&lt; &#x27;EOF&#x27;
-{
-  &quot;nct_id&quot;: &quot;NCT0201581, description=Write NCT02015819 output</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ./outputs/NCT04090528_Prot_SAP_000.json &lt;&lt; &#x27;EOF&#x27;
-{
-  &quot;nct_id&quot;: &quot;NCT0409052, description=Write NCT04090528 output</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./outputs/; echo &quot;---&quot;; for f in ./outputs/*.json; do python3 -c &quot;import json, description=Validate all output JSON files</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List inputs and outputs directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Check pypdf availability</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(89 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;nct_id&quot;: &quot;NCT02807844&quot;,
+  &quot;brief_title&quot;: &quot;Phase Ib/II study of MCS110 in co</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Verify all output JSON files are valid</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Verify all 12 outputs exist and validate against schema</span></div>
       </div>
     </div>
   </div>
@@ -838,8 +788,8 @@ for f in ./inputs/*.pdf; do
     <span class='filing-name'>Genetically Modified Neural Stem Cells, Flucytosine, and Leu</span>
     <span class='filing-meta'>NCT02015819 · Genetically Modified Neural Stem Cells, Flucytosine, and Leu</span>
     <span class='filing-scores'>
-      <span class='score-pair'><span class='label'>with</span> <span class='val'>4/20</span></span>
-      <span class='score-pair'><span class='label'>no</span> <span class='val'>9/20</span></span>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>6/20</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>7/20</span></span>
       <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
     </span>
   </summary>
@@ -852,17 +802,17 @@ for f in ./inputs/*.pdf; do
 <tr><td class='field-name'>nct_id</td><td class='cell cell-missing' title='missing'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>brief_title</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>official_title</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
-<tr><td class='field-name'>sponsor</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>sponsor</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>study_type</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>phase</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>allocation</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
-<tr><td class='field-name'>masking</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>intervention_model</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>masking</td><td class='cell cell-missing' title='missing'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>intervention_model</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>enrollment_count</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>start_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
 <tr><td class='field-name'>primary_completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
 <tr><td class='field-name'>completion_date</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
-<tr><td class='field-name'>minimum_age</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>minimum_age</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>maximum_age</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
 <tr><td class='field-name'>sex</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>healthy_volunteers</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
@@ -884,20 +834,15 @@ for f in ./inputs/*.pdf; do
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50; which pdftotext, description=List input and output directories and check for pdftotext</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p ./text/
-for f in ./inputs/*.pdf; do
-  name=$(basename &quot;$f&quot; .pdf)
-  pdft, description=Convert all PDFs to text files in parallel</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=head -200 ./text/NCT03417895_Prot_000.txt, description=Read first 200 lines of NCT03417895</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(59 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ./outputs/NCT02015819_Prot_SAP_000.json &lt;&lt; &#x27;EOF&#x27;
-{
-  &quot;nct_id&quot;: &quot;NCT0201581, description=Write NCT02015819 output</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ./outputs/NCT04090528_Prot_SAP_000.json &lt;&lt; &#x27;EOF&#x27;
-{
-  &quot;nct_id&quot;: &quot;NCT0409052, description=Write NCT04090528 output</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./outputs/; echo &quot;---&quot;; for f in ./outputs/*.json; do python3 -c &quot;import json, description=Validate all output JSON files</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List inputs and outputs directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Check pypdf availability</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(89 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;nct_id&quot;: &quot;NCT02807844&quot;,
+  &quot;brief_title&quot;: &quot;Phase Ib/II study of MCS110 in co</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Verify all output JSON files are valid</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Verify all 12 outputs exist and validate against schema</span></div>
       </div>
     </div>
   </div>
@@ -909,7 +854,7 @@ for f in ./inputs/*.pdf; do
     <span class='filing-meta'>NCT04090528 · pTVG-HP DNA Vaccine With or Without pTVG-AR DNA Vaccine and </span>
     <span class='filing-scores'>
       <span class='score-pair'><span class='label'>with</span> <span class='val'>9/20</span></span>
-      <span class='score-pair'><span class='label'>no</span> <span class='val'>11/20</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>10/20</span></span>
       <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
     </span>
   </summary>
@@ -922,7 +867,7 @@ for f in ./inputs/*.pdf; do
 <tr><td class='field-name'>nct_id</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>brief_title</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>official_title</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
-<tr><td class='field-name'>sponsor</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>sponsor</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>study_type</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>phase</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>allocation</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
@@ -954,20 +899,15 @@ for f in ./inputs/*.pdf; do
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50; which pdftotext, description=List input and output directories and check for pdftotext</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p ./text/
-for f in ./inputs/*.pdf; do
-  name=$(basename &quot;$f&quot; .pdf)
-  pdft, description=Convert all PDFs to text files in parallel</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=head -200 ./text/NCT03417895_Prot_000.txt, description=Read first 200 lines of NCT03417895</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(59 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ./outputs/NCT02015819_Prot_SAP_000.json &lt;&lt; &#x27;EOF&#x27;
-{
-  &quot;nct_id&quot;: &quot;NCT0201581, description=Write NCT02015819 output</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; ./outputs/NCT04090528_Prot_SAP_000.json &lt;&lt; &#x27;EOF&#x27;
-{
-  &quot;nct_id&quot;: &quot;NCT0409052, description=Write NCT04090528 output</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./outputs/; echo &quot;---&quot;; for f in ./outputs/*.json; do python3 -c &quot;import json, description=Validate all output JSON files</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List inputs and outputs directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Check pypdf availability</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(89 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;nct_id&quot;: &quot;NCT02807844&quot;,
+  &quot;brief_title&quot;: &quot;Phase Ib/II study of MCS110 in co</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Verify all output JSON files are valid</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cd ru, description=Verify all 12 outputs exist and validate against schema</span></div>
       </div>
     </div>
   </div>

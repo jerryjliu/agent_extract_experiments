@@ -89,8 +89,8 @@ footer { text-align: center; padding: 2rem 1rem; color: var(--text-dim); font-fa
   <div class="subtitle">FFIEC Call Report structured extraction — 15 documents, ~28 fields each.</div>
   <div class="stats-bar">
     <div class="stat"><div class="val delta-pos">1/1</div><div class="lbl">skill invoked (batch with_skill)</div></div>
-    <div class="stat"><div class="val">+4.0pp</div><div class="lbl">accuracy Δ (with−no)</div></div>
-    <div class="stat"><div class="val">+$30.82</div><div class="lbl">total cost Δ (with−no)</div></div>
+    <div class="stat"><div class="val">-0.5pp</div><div class="lbl">accuracy Δ (with−no)</div></div>
+    <div class="stat"><div class="val">+$28.96</div><div class="lbl">total cost Δ (with−no)</div></div>
     <div class="stat"><div class="val">15</div><div class="lbl">documents</div></div>
   </div>
 </div>
@@ -104,7 +104,7 @@ footer { text-align: center; padding: 2rem 1rem; color: var(--text-dim); font-fa
       
       <tr><td class="cond-with">with_skill (cold)</td><td>84.9%</td><td>342</td><td>60</td><td>1</td><td>$0.74</td><td>$32.16</td><td><b>$32.89</b></td><td>200.6s</td></tr>
       <tr><td class="cond-with">with_skill (warm)</td><td>84.9%</td><td>342</td><td>60</td><td>1</td><td>$0.58</td><td>$32.16</td><td><b>$32.73</b></td><td>79.8s</td></tr>
-      <tr><td class="cond-no">no_skill</td><td>80.9%</td><td>326</td><td>57</td><td>20</td><td>$1.98</td><td>$0.00</td><td><b>$1.98</b></td><td>566.4s</td></tr>
+      <tr><td class="cond-no">no_skill</td><td>85.6%</td><td>345</td><td>57</td><td>1</td><td>$3.77</td><td>$0.00</td><td><b>$3.77</b></td><td>860.7s</td></tr>
     </tbody>
   </table>
   <p class="caveat">with_skill split by LlamaCloud parse-cache state (cold = first parse / new content hash; warm = cache hit). Accuracy and credit cost are cache-invariant — same parsed content, same per-page billing; only latency (and Claude token cost) vary.</p>
@@ -144,7 +144,7 @@ footer { text-align: center; padding: 2rem 1rem; color: var(--text-dim); font-fa
     <span class='filing-meta'>RSSD 2745426 · community · expected form 051</span>
     <span class='filing-scores'>
       <span class='score-pair'><span class='label'>with</span> <span class='val'>24/28</span></span>
-      <span class='score-pair'><span class='label'>no</span> <span class='val'>22/28</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>23/28</span></span>
       <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
     </span>
   </summary>
@@ -157,7 +157,7 @@ footer { text-align: center; padding: 2rem 1rem; color: var(--text-dim); font-fa
 <tr><td class='field-name'>form_version</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
 <tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_deposits</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_loans_net</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>total_loans_net</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>allowance_credit_losses_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_equity_capital</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
@@ -165,7 +165,7 @@ footer { text-align: center; padding: 2rem 1rem; color: var(--text-dim); font-fa
 <tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-missing' title='missing'></td></tr>
+<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
@@ -200,24 +200,24 @@ f, description=Validate output JSON files</span></div>
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and outputs directories</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import pypdf; print(pypdf.__version__)&quot; 2&gt;&amp;1 || pip install pypdf 2&gt;, description=Check pypdf availability</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
-import pypdf
-r = pypdf.PdfReader(&#x27;./inputs/2745426.pdf&#x27;)
-print(&#x27;pag, description=Read first PDF to understand structure</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(25 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import json, os
-import jsonschema
-with open(&#x27;./schema.json&#x27;) as, description=Validate outputs against schema</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import json, os
-for rssd in [&#x27;480228&#x27;, &#x27;504713&#x27;, &#x27;722777&#x27;, &#x27;313, description=Inspect a few outputs</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import pypdf, re
-r = pypdf.PdfReader(&#x27;./inputs/504713.pdf&#x27;)
-tex, description=Check past-due ordering for 504713</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50, description=List inputs and outputs directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+r = PdfReader(&#x27;./inputs/2745426_2024-09-, description=Read first PDF to understand format</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+r = PdfReader(&#x27;./inputs/2745426_2024-09-, description=Find Schedule RC page</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(36 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+import re
+r = PdfReader(&#x27;./inputs/480228, description=Check BofA capital ratios in PDF</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat ./outputs/504713_2024-09-30.json &amp;&amp; echo &quot;---&quot; &amp;&amp; python -c &quot;
+from pypdf imp, description=Check 504713 output</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+import json, os, sys
+from pathlib import Path
+schema = json.load(ope, description=Validate all outputs</span></div>
       </div>
     </div>
   </div>
@@ -229,7 +229,7 @@ tex, description=Check past-due ordering for 504713</span></div>
     <span class='filing-meta'>RSSD 805755 · community · expected form 051</span>
     <span class='filing-scores'>
       <span class='score-pair'><span class='label'>with</span> <span class='val'>24/28</span></span>
-      <span class='score-pair'><span class='label'>no</span> <span class='val'>23/28</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>24/28</span></span>
       <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
     </span>
   </summary>
@@ -250,7 +250,7 @@ tex, description=Check past-due ordering for 504713</span></div>
 <tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-missing' title='missing'></td></tr>
+<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
@@ -285,24 +285,24 @@ f, description=Validate output JSON files</span></div>
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and outputs directories</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import pypdf; print(pypdf.__version__)&quot; 2&gt;&amp;1 || pip install pypdf 2&gt;, description=Check pypdf availability</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
-import pypdf
-r = pypdf.PdfReader(&#x27;./inputs/2745426.pdf&#x27;)
-print(&#x27;pag, description=Read first PDF to understand structure</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(25 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import json, os
-import jsonschema
-with open(&#x27;./schema.json&#x27;) as, description=Validate outputs against schema</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import json, os
-for rssd in [&#x27;480228&#x27;, &#x27;504713&#x27;, &#x27;722777&#x27;, &#x27;313, description=Inspect a few outputs</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import pypdf, re
-r = pypdf.PdfReader(&#x27;./inputs/504713.pdf&#x27;)
-tex, description=Check past-due ordering for 504713</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50, description=List inputs and outputs directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+r = PdfReader(&#x27;./inputs/2745426_2024-09-, description=Read first PDF to understand format</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+r = PdfReader(&#x27;./inputs/2745426_2024-09-, description=Find Schedule RC page</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(36 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+import re
+r = PdfReader(&#x27;./inputs/480228, description=Check BofA capital ratios in PDF</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat ./outputs/504713_2024-09-30.json &amp;&amp; echo &quot;---&quot; &amp;&amp; python -c &quot;
+from pypdf imp, description=Check 504713 output</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+import json, os, sys
+from pathlib import Path
+schema = json.load(ope, description=Validate all outputs</span></div>
       </div>
     </div>
   </div>
@@ -314,7 +314,7 @@ tex, description=Check past-due ordering for 504713</span></div>
     <span class='filing-meta'>RSSD 507152 · community · expected form 051</span>
     <span class='filing-scores'>
       <span class='score-pair'><span class='label'>with</span> <span class='val'>25/28</span></span>
-      <span class='score-pair'><span class='label'>no</span> <span class='val'>24/28</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>25/28</span></span>
       <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
     </span>
   </summary>
@@ -335,7 +335,7 @@ tex, description=Check past-due ordering for 504713</span></div>
 <tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-missing' title='missing'></td></tr>
+<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
@@ -370,24 +370,24 @@ f, description=Validate output JSON files</span></div>
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and outputs directories</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import pypdf; print(pypdf.__version__)&quot; 2&gt;&amp;1 || pip install pypdf 2&gt;, description=Check pypdf availability</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
-import pypdf
-r = pypdf.PdfReader(&#x27;./inputs/2745426.pdf&#x27;)
-print(&#x27;pag, description=Read first PDF to understand structure</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(25 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import json, os
-import jsonschema
-with open(&#x27;./schema.json&#x27;) as, description=Validate outputs against schema</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import json, os
-for rssd in [&#x27;480228&#x27;, &#x27;504713&#x27;, &#x27;722777&#x27;, &#x27;313, description=Inspect a few outputs</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import pypdf, re
-r = pypdf.PdfReader(&#x27;./inputs/504713.pdf&#x27;)
-tex, description=Check past-due ordering for 504713</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50, description=List inputs and outputs directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+r = PdfReader(&#x27;./inputs/2745426_2024-09-, description=Read first PDF to understand format</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+r = PdfReader(&#x27;./inputs/2745426_2024-09-, description=Find Schedule RC page</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(36 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+import re
+r = PdfReader(&#x27;./inputs/480228, description=Check BofA capital ratios in PDF</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat ./outputs/504713_2024-09-30.json &amp;&amp; echo &quot;---&quot; &amp;&amp; python -c &quot;
+from pypdf imp, description=Check 504713 output</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+import json, os, sys
+from pathlib import Path
+schema = json.load(ope, description=Validate all outputs</span></div>
       </div>
     </div>
   </div>
@@ -398,8 +398,8 @@ tex, description=Check past-due ordering for 504713</span></div>
     <span class='filing-name'>First Utah Bank</span>
     <span class='filing-meta'>RSSD 207872 · community · expected form 051</span>
     <span class='filing-scores'>
-      <span class='score-pair'><span class='label'>with</span> <span class='val'>24/28</span></span>
-      <span class='score-pair'><span class='label'>no</span> <span class='val'>24/28</span></span>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>25/28</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>25/28</span></span>
       <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
     </span>
   </summary>
@@ -420,7 +420,7 @@ tex, description=Check past-due ordering for 504713</span></div>
 <tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-missing' title='missing'></td></tr>
+<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
@@ -455,24 +455,24 @@ f, description=Validate output JSON files</span></div>
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and outputs directories</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import pypdf; print(pypdf.__version__)&quot; 2&gt;&amp;1 || pip install pypdf 2&gt;, description=Check pypdf availability</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
-import pypdf
-r = pypdf.PdfReader(&#x27;./inputs/2745426.pdf&#x27;)
-print(&#x27;pag, description=Read first PDF to understand structure</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(25 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import json, os
-import jsonschema
-with open(&#x27;./schema.json&#x27;) as, description=Validate outputs against schema</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import json, os
-for rssd in [&#x27;480228&#x27;, &#x27;504713&#x27;, &#x27;722777&#x27;, &#x27;313, description=Inspect a few outputs</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import pypdf, re
-r = pypdf.PdfReader(&#x27;./inputs/504713.pdf&#x27;)
-tex, description=Check past-due ordering for 504713</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50, description=List inputs and outputs directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+r = PdfReader(&#x27;./inputs/2745426_2024-09-, description=Read first PDF to understand format</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+r = PdfReader(&#x27;./inputs/2745426_2024-09-, description=Find Schedule RC page</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(36 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+import re
+r = PdfReader(&#x27;./inputs/480228, description=Check BofA capital ratios in PDF</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat ./outputs/504713_2024-09-30.json &amp;&amp; echo &quot;---&quot; &amp;&amp; python -c &quot;
+from pypdf imp, description=Check 504713 output</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+import json, os, sys
+from pathlib import Path
+schema = json.load(ope, description=Validate all outputs</span></div>
       </div>
     </div>
   </div>
@@ -483,8 +483,8 @@ tex, description=Check past-due ordering for 504713</span></div>
     <span class='filing-name'>Nebraskaland Bank</span>
     <span class='filing-meta'>RSSD 2667957 · community · expected form 051</span>
     <span class='filing-scores'>
-      <span class='score-pair'><span class='label'>with</span> <span class='val'>22/28</span></span>
-      <span class='score-pair'><span class='label'>no</span> <span class='val'>20/28</span></span>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>21/28</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>21/28</span></span>
       <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
     </span>
   </summary>
@@ -505,12 +505,12 @@ tex, description=Check past-due ordering for 504713</span></div>
 <tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-missing' title='missing'></td></tr>
+<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>net_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>provision_credit_losses</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>provision_credit_losses</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>total_noninterest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_noninterest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
@@ -540,24 +540,24 @@ f, description=Validate output JSON files</span></div>
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and outputs directories</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import pypdf; print(pypdf.__version__)&quot; 2&gt;&amp;1 || pip install pypdf 2&gt;, description=Check pypdf availability</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
-import pypdf
-r = pypdf.PdfReader(&#x27;./inputs/2745426.pdf&#x27;)
-print(&#x27;pag, description=Read first PDF to understand structure</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(25 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import json, os
-import jsonschema
-with open(&#x27;./schema.json&#x27;) as, description=Validate outputs against schema</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import json, os
-for rssd in [&#x27;480228&#x27;, &#x27;504713&#x27;, &#x27;722777&#x27;, &#x27;313, description=Inspect a few outputs</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import pypdf, re
-r = pypdf.PdfReader(&#x27;./inputs/504713.pdf&#x27;)
-tex, description=Check past-due ordering for 504713</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50, description=List inputs and outputs directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+r = PdfReader(&#x27;./inputs/2745426_2024-09-, description=Read first PDF to understand format</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+r = PdfReader(&#x27;./inputs/2745426_2024-09-, description=Find Schedule RC page</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(36 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+import re
+r = PdfReader(&#x27;./inputs/480228, description=Check BofA capital ratios in PDF</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat ./outputs/504713_2024-09-30.json &amp;&amp; echo &quot;---&quot; &amp;&amp; python -c &quot;
+from pypdf imp, description=Check 504713 output</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+import json, os, sys
+from pathlib import Path
+schema = json.load(ope, description=Validate all outputs</span></div>
       </div>
     </div>
   </div>
@@ -568,8 +568,8 @@ tex, description=Check past-due ordering for 504713</span></div>
     <span class='filing-name'>Centennial Bank</span>
     <span class='filing-meta'>RSSD 456045 · midsize_regional · expected form 041</span>
     <span class='filing-scores'>
-      <span class='score-pair'><span class='label'>with</span> <span class='val'>23/28</span></span>
-      <span class='score-pair'><span class='label'>no</span> <span class='val'>22/28</span></span>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>24/28</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>23/28</span></span>
       <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
     </span>
   </summary>
@@ -586,16 +586,16 @@ tex, description=Check past-due ordering for 504713</span></div>
 <tr><td class='field-name'>allowance_credit_losses_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_equity_capital</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_securities</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>total_securities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-missing' title='missing'></td></tr>
+<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>net_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>provision_credit_losses</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>provision_credit_losses</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>total_noninterest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_noninterest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
@@ -625,24 +625,24 @@ f, description=Validate output JSON files</span></div>
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and outputs directories</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import pypdf; print(pypdf.__version__)&quot; 2&gt;&amp;1 || pip install pypdf 2&gt;, description=Check pypdf availability</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
-import pypdf
-r = pypdf.PdfReader(&#x27;./inputs/2745426.pdf&#x27;)
-print(&#x27;pag, description=Read first PDF to understand structure</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(25 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import json, os
-import jsonschema
-with open(&#x27;./schema.json&#x27;) as, description=Validate outputs against schema</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import json, os
-for rssd in [&#x27;480228&#x27;, &#x27;504713&#x27;, &#x27;722777&#x27;, &#x27;313, description=Inspect a few outputs</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import pypdf, re
-r = pypdf.PdfReader(&#x27;./inputs/504713.pdf&#x27;)
-tex, description=Check past-due ordering for 504713</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50, description=List inputs and outputs directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+r = PdfReader(&#x27;./inputs/2745426_2024-09-, description=Read first PDF to understand format</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+r = PdfReader(&#x27;./inputs/2745426_2024-09-, description=Find Schedule RC page</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(36 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+import re
+r = PdfReader(&#x27;./inputs/480228, description=Check BofA capital ratios in PDF</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat ./outputs/504713_2024-09-30.json &amp;&amp; echo &quot;---&quot; &amp;&amp; python -c &quot;
+from pypdf imp, description=Check 504713 output</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+import json, os, sys
+from pathlib import Path
+schema = json.load(ope, description=Validate all outputs</span></div>
       </div>
     </div>
   </div>
@@ -653,8 +653,8 @@ tex, description=Check past-due ordering for 504713</span></div>
     <span class='filing-name'>LendingClub Bank, National Association</span>
     <span class='filing-meta'>RSSD 264772 · midsize_regional · expected form 041</span>
     <span class='filing-scores'>
-      <span class='score-pair'><span class='label'>with</span> <span class='val'>25/28</span></span>
-      <span class='score-pair'><span class='label'>no</span> <span class='val'>23/28</span></span>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>24/28</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>24/28</span></span>
       <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
     </span>
   </summary>
@@ -675,92 +675,7 @@ tex, description=Check past-due ordering for 504713</span></div>
 <tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-missing' title='missing'></td></tr>
-<tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>net_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>provision_credit_losses</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-wrong' title='wrong'></td></tr>
-<tr><td class='field-name'>total_noninterest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_noninterest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>net_chargeoffs_loans_leases</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>nonaccrual_loans_total</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
-<tr><td class='field-name'>past_due_30_89_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>past_due_90_plus_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>tier1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>cet1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>leverage_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_risk_based_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-</tbody></table>
-    </div>
-    <div class='excerpts'>
-      <div class='excerpts-col'>
-        <h4>with_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory contents</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List input PDFs</span></div>
-<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(15 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=Check outputs directory</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=until [ -f outputs/507152_2024-09-30.json ] &amp;&amp; [ -f outputs/3138146_2024-09-30.j, description=Wait for remaining extractions, timeout=600000</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
-import json, os, glob
-files = sorted(glob.glob(&#x27;outputs/*.json&#x27;))
-f, description=Validate output JSON files</span></div>
-      </div>
-      <div class='excerpts-col'>
-        <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and outputs directories</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import pypdf; print(pypdf.__version__)&quot; 2&gt;&amp;1 || pip install pypdf 2&gt;, description=Check pypdf availability</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
-import pypdf
-r = pypdf.PdfReader(&#x27;./inputs/2745426.pdf&#x27;)
-print(&#x27;pag, description=Read first PDF to understand structure</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(25 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import json, os
-import jsonschema
-with open(&#x27;./schema.json&#x27;) as, description=Validate outputs against schema</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import json, os
-for rssd in [&#x27;480228&#x27;, &#x27;504713&#x27;, &#x27;722777&#x27;, &#x27;313, description=Inspect a few outputs</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import pypdf, re
-r = pypdf.PdfReader(&#x27;./inputs/504713.pdf&#x27;)
-tex, description=Check past-due ordering for 504713</span></div>
-      </div>
-    </div>
-  </div>
-</details>
-
-<details class='filing-card'>
-  <summary>
-    <span class='filing-name'>Stifel Bank and Trust</span>
-    <span class='filing-meta'>RSSD 3076248 · midsize_regional · expected form 041</span>
-    <span class='filing-scores'>
-      <span class='score-pair'><span class='label'>with</span> <span class='val'>23/28</span></span>
-      <span class='score-pair'><span class='label'>no</span> <span class='val'>22/28</span></span>
-      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
-    </span>
-  </summary>
-  <div class='filing-body'>
-    <div class='heatmap-wrap'>
-      <h4>Field-level results</h4>
-      <table class='heatmap'>
-<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
-<tbody>
-<tr><td class='field-name'>form_version</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
-<tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_deposits</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_loans_net</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
-<tr><td class='field-name'>allowance_credit_losses_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_equity_capital</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_securities</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
-<tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-missing' title='missing'></td></tr>
+<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
@@ -795,24 +710,24 @@ f, description=Validate output JSON files</span></div>
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and outputs directories</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import pypdf; print(pypdf.__version__)&quot; 2&gt;&amp;1 || pip install pypdf 2&gt;, description=Check pypdf availability</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
-import pypdf
-r = pypdf.PdfReader(&#x27;./inputs/2745426.pdf&#x27;)
-print(&#x27;pag, description=Read first PDF to understand structure</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(25 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import json, os
-import jsonschema
-with open(&#x27;./schema.json&#x27;) as, description=Validate outputs against schema</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import json, os
-for rssd in [&#x27;480228&#x27;, &#x27;504713&#x27;, &#x27;722777&#x27;, &#x27;313, description=Inspect a few outputs</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import pypdf, re
-r = pypdf.PdfReader(&#x27;./inputs/504713.pdf&#x27;)
-tex, description=Check past-due ordering for 504713</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50, description=List inputs and outputs directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+r = PdfReader(&#x27;./inputs/2745426_2024-09-, description=Read first PDF to understand format</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+r = PdfReader(&#x27;./inputs/2745426_2024-09-, description=Find Schedule RC page</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(36 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+import re
+r = PdfReader(&#x27;./inputs/480228, description=Check BofA capital ratios in PDF</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat ./outputs/504713_2024-09-30.json &amp;&amp; echo &quot;---&quot; &amp;&amp; python -c &quot;
+from pypdf imp, description=Check 504713 output</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+import json, os, sys
+from pathlib import Path
+schema = json.load(ope, description=Validate all outputs</span></div>
       </div>
     </div>
   </div>
@@ -820,11 +735,11 @@ tex, description=Check past-due ordering for 504713</span></div>
 
 <details class='filing-card'>
   <summary>
-    <span class='filing-name'>ConnectOne Bank</span>
-    <span class='filing-meta'>RSSD 3317932 · midsize_regional · expected form 041</span>
+    <span class='filing-name'>Stifel Bank and Trust</span>
+    <span class='filing-meta'>RSSD 3076248 · midsize_regional · expected form 041</span>
     <span class='filing-scores'>
-      <span class='score-pair'><span class='label'>with</span> <span class='val'>23/28</span></span>
-      <span class='score-pair'><span class='label'>no</span> <span class='val'>22/28</span></span>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>24/28</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>23/28</span></span>
       <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
     </span>
   </summary>
@@ -845,7 +760,7 @@ tex, description=Check past-due ordering for 504713</span></div>
 <tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-missing' title='missing'></td></tr>
+<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
@@ -880,24 +795,109 @@ f, description=Validate output JSON files</span></div>
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and outputs directories</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import pypdf; print(pypdf.__version__)&quot; 2&gt;&amp;1 || pip install pypdf 2&gt;, description=Check pypdf availability</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50, description=List inputs and outputs directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+r = PdfReader(&#x27;./inputs/2745426_2024-09-, description=Read first PDF to understand format</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+r = PdfReader(&#x27;./inputs/2745426_2024-09-, description=Find Schedule RC page</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(36 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+import re
+r = PdfReader(&#x27;./inputs/480228, description=Check BofA capital ratios in PDF</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat ./outputs/504713_2024-09-30.json &amp;&amp; echo &quot;---&quot; &amp;&amp; python -c &quot;
+from pypdf imp, description=Check 504713 output</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+import json, os, sys
+from pathlib import Path
+schema = json.load(ope, description=Validate all outputs</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>ConnectOne Bank</span>
+    <span class='filing-meta'>RSSD 3317932 · midsize_regional · expected form 041</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>22/28</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>23/28</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>form_version</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_deposits</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_loans_net</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>allowance_credit_losses_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_equity_capital</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_securities</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>provision_credit_losses</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>total_noninterest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_noninterest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_chargeoffs_loans_leases</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>nonaccrual_loans_total</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>past_due_30_89_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>past_due_90_plus_days_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>tier1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cet1_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>leverage_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_risk_based_capital_ratio</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory contents</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List input PDFs</span></div>
+<div class='tool-event'><code class='tool-name'>Skill</code><span class='tool-input'>skill=llama-extract</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(15 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=Check outputs directory</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=until [ -f outputs/507152_2024-09-30.json ] &amp;&amp; [ -f outputs/3138146_2024-09-30.j, description=Wait for remaining extractions, timeout=600000</span></div>
 <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
-import pypdf
-r = pypdf.PdfReader(&#x27;./inputs/2745426.pdf&#x27;)
-print(&#x27;pag, description=Read first PDF to understand structure</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(25 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import json, os
-import jsonschema
-with open(&#x27;./schema.json&#x27;) as, description=Validate outputs against schema</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import json, os
-for rssd in [&#x27;480228&#x27;, &#x27;504713&#x27;, &#x27;722777&#x27;, &#x27;313, description=Inspect a few outputs</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import pypdf, re
-r = pypdf.PdfReader(&#x27;./inputs/504713.pdf&#x27;)
-tex, description=Check past-due ordering for 504713</span></div>
+import json, os, glob
+files = sorted(glob.glob(&#x27;outputs/*.json&#x27;))
+f, description=Validate output JSON files</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50, description=List inputs and outputs directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+r = PdfReader(&#x27;./inputs/2745426_2024-09-, description=Read first PDF to understand format</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+r = PdfReader(&#x27;./inputs/2745426_2024-09-, description=Find Schedule RC page</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(36 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+import re
+r = PdfReader(&#x27;./inputs/480228, description=Check BofA capital ratios in PDF</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat ./outputs/504713_2024-09-30.json &amp;&amp; echo &quot;---&quot; &amp;&amp; python -c &quot;
+from pypdf imp, description=Check 504713 output</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+import json, os, sys
+from pathlib import Path
+schema = json.load(ope, description=Validate all outputs</span></div>
       </div>
     </div>
   </div>
@@ -909,7 +909,7 @@ tex, description=Check past-due ordering for 504713</span></div>
     <span class='filing-meta'>RSSD 317342 · midsize_regional · expected form 041</span>
     <span class='filing-scores'>
       <span class='score-pair'><span class='label'>with</span> <span class='val'>23/28</span></span>
-      <span class='score-pair'><span class='label'>no</span> <span class='val'>22/28</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>23/28</span></span>
       <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
     </span>
   </summary>
@@ -930,7 +930,7 @@ tex, description=Check past-due ordering for 504713</span></div>
 <tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-missing' title='missing'></td></tr>
+<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
@@ -965,24 +965,24 @@ f, description=Validate output JSON files</span></div>
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and outputs directories</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import pypdf; print(pypdf.__version__)&quot; 2&gt;&amp;1 || pip install pypdf 2&gt;, description=Check pypdf availability</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
-import pypdf
-r = pypdf.PdfReader(&#x27;./inputs/2745426.pdf&#x27;)
-print(&#x27;pag, description=Read first PDF to understand structure</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(25 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import json, os
-import jsonschema
-with open(&#x27;./schema.json&#x27;) as, description=Validate outputs against schema</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import json, os
-for rssd in [&#x27;480228&#x27;, &#x27;504713&#x27;, &#x27;722777&#x27;, &#x27;313, description=Inspect a few outputs</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import pypdf, re
-r = pypdf.PdfReader(&#x27;./inputs/504713.pdf&#x27;)
-tex, description=Check past-due ordering for 504713</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50, description=List inputs and outputs directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+r = PdfReader(&#x27;./inputs/2745426_2024-09-, description=Read first PDF to understand format</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+r = PdfReader(&#x27;./inputs/2745426_2024-09-, description=Find Schedule RC page</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(36 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+import re
+r = PdfReader(&#x27;./inputs/480228, description=Check BofA capital ratios in PDF</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat ./outputs/504713_2024-09-30.json &amp;&amp; echo &quot;---&quot; &amp;&amp; python -c &quot;
+from pypdf imp, description=Check 504713 output</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+import json, os, sys
+from pathlib import Path
+schema = json.load(ope, description=Validate all outputs</span></div>
       </div>
     </div>
   </div>
@@ -994,7 +994,7 @@ tex, description=Check past-due ordering for 504713</span></div>
     <span class='filing-meta'>RSSD 233031 · large_regional · expected form 031</span>
     <span class='filing-scores'>
       <span class='score-pair'><span class='label'>with</span> <span class='val'>23/28</span></span>
-      <span class='score-pair'><span class='label'>no</span> <span class='val'>21/28</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>23/28</span></span>
       <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
     </span>
   </summary>
@@ -1010,13 +1010,13 @@ tex, description=Check past-due ordering for 504713</span></div>
 <tr><td class='field-name'>total_loans_net</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>allowance_credit_losses_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_equity_capital</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_equity_capital</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_securities</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-missing' title='missing'></td></tr>
-<tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-missing' title='missing'></td></tr>
+<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>net_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
@@ -1050,24 +1050,24 @@ f, description=Validate output JSON files</span></div>
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and outputs directories</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import pypdf; print(pypdf.__version__)&quot; 2&gt;&amp;1 || pip install pypdf 2&gt;, description=Check pypdf availability</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
-import pypdf
-r = pypdf.PdfReader(&#x27;./inputs/2745426.pdf&#x27;)
-print(&#x27;pag, description=Read first PDF to understand structure</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(25 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import json, os
-import jsonschema
-with open(&#x27;./schema.json&#x27;) as, description=Validate outputs against schema</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import json, os
-for rssd in [&#x27;480228&#x27;, &#x27;504713&#x27;, &#x27;722777&#x27;, &#x27;313, description=Inspect a few outputs</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import pypdf, re
-r = pypdf.PdfReader(&#x27;./inputs/504713.pdf&#x27;)
-tex, description=Check past-due ordering for 504713</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50, description=List inputs and outputs directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+r = PdfReader(&#x27;./inputs/2745426_2024-09-, description=Read first PDF to understand format</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+r = PdfReader(&#x27;./inputs/2745426_2024-09-, description=Find Schedule RC page</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(36 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+import re
+r = PdfReader(&#x27;./inputs/480228, description=Check BofA capital ratios in PDF</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat ./outputs/504713_2024-09-30.json &amp;&amp; echo &quot;---&quot; &amp;&amp; python -c &quot;
+from pypdf imp, description=Check 504713 output</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+import json, os, sys
+from pathlib import Path
+schema = json.load(ope, description=Validate all outputs</span></div>
       </div>
     </div>
   </div>
@@ -1078,8 +1078,8 @@ tex, description=Check past-due ordering for 504713</span></div>
     <span class='filing-name'>Santander Bank, N.A.</span>
     <span class='filing-meta'>RSSD 722777 · large_regional · expected form 031</span>
     <span class='filing-scores'>
-      <span class='score-pair'><span class='label'>with</span> <span class='val'>23/28</span></span>
-      <span class='score-pair'><span class='label'>no</span> <span class='val'>21/28</span></span>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>22/28</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>23/28</span></span>
       <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
     </span>
   </summary>
@@ -1100,12 +1100,12 @@ tex, description=Check past-due ordering for 504713</span></div>
 <tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-missing' title='missing'></td></tr>
-<tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-missing' title='missing'></td></tr>
+<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>net_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>provision_credit_losses</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>provision_credit_losses</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>total_noninterest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_noninterest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
@@ -1135,24 +1135,24 @@ f, description=Validate output JSON files</span></div>
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and outputs directories</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import pypdf; print(pypdf.__version__)&quot; 2&gt;&amp;1 || pip install pypdf 2&gt;, description=Check pypdf availability</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
-import pypdf
-r = pypdf.PdfReader(&#x27;./inputs/2745426.pdf&#x27;)
-print(&#x27;pag, description=Read first PDF to understand structure</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(25 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import json, os
-import jsonschema
-with open(&#x27;./schema.json&#x27;) as, description=Validate outputs against schema</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import json, os
-for rssd in [&#x27;480228&#x27;, &#x27;504713&#x27;, &#x27;722777&#x27;, &#x27;313, description=Inspect a few outputs</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import pypdf, re
-r = pypdf.PdfReader(&#x27;./inputs/504713.pdf&#x27;)
-tex, description=Check past-due ordering for 504713</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50, description=List inputs and outputs directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+r = PdfReader(&#x27;./inputs/2745426_2024-09-, description=Read first PDF to understand format</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+r = PdfReader(&#x27;./inputs/2745426_2024-09-, description=Find Schedule RC page</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(36 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+import re
+r = PdfReader(&#x27;./inputs/480228, description=Check BofA capital ratios in PDF</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat ./outputs/504713_2024-09-30.json &amp;&amp; echo &quot;---&quot; &amp;&amp; python -c &quot;
+from pypdf imp, description=Check 504713 output</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+import json, os, sys
+from pathlib import Path
+schema = json.load(ope, description=Validate all outputs</span></div>
       </div>
     </div>
   </div>
@@ -1163,8 +1163,8 @@ tex, description=Check past-due ordering for 504713</span></div>
     <span class='filing-name'>Western Alliance Bank</span>
     <span class='filing-meta'>RSSD 3138146 · large_regional · expected form 031</span>
     <span class='filing-scores'>
-      <span class='score-pair'><span class='label'>with</span> <span class='val'>21/28</span></span>
-      <span class='score-pair'><span class='label'>no</span> <span class='val'>22/28</span></span>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>23/28</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>23/28</span></span>
       <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
     </span>
   </summary>
@@ -1185,8 +1185,8 @@ tex, description=Check past-due ordering for 504713</span></div>
 <tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-missing' title='missing'></td></tr>
-<tr><td class='field-name'>ci_loans</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>net_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
@@ -1220,24 +1220,24 @@ f, description=Validate output JSON files</span></div>
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and outputs directories</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import pypdf; print(pypdf.__version__)&quot; 2&gt;&amp;1 || pip install pypdf 2&gt;, description=Check pypdf availability</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
-import pypdf
-r = pypdf.PdfReader(&#x27;./inputs/2745426.pdf&#x27;)
-print(&#x27;pag, description=Read first PDF to understand structure</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(25 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import json, os
-import jsonschema
-with open(&#x27;./schema.json&#x27;) as, description=Validate outputs against schema</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import json, os
-for rssd in [&#x27;480228&#x27;, &#x27;504713&#x27;, &#x27;722777&#x27;, &#x27;313, description=Inspect a few outputs</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import pypdf, re
-r = pypdf.PdfReader(&#x27;./inputs/504713.pdf&#x27;)
-tex, description=Check past-due ordering for 504713</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50, description=List inputs and outputs directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+r = PdfReader(&#x27;./inputs/2745426_2024-09-, description=Read first PDF to understand format</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+r = PdfReader(&#x27;./inputs/2745426_2024-09-, description=Find Schedule RC page</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(36 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+import re
+r = PdfReader(&#x27;./inputs/480228, description=Check BofA capital ratios in PDF</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat ./outputs/504713_2024-09-30.json &amp;&amp; echo &quot;---&quot; &amp;&amp; python -c &quot;
+from pypdf imp, description=Check 504713 output</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+import json, os, sys
+from pathlib import Path
+schema = json.load(ope, description=Validate all outputs</span></div>
       </div>
     </div>
   </div>
@@ -1248,8 +1248,8 @@ tex, description=Check past-due ordering for 504713</span></div>
     <span class='filing-name'>Bank of America, National Association</span>
     <span class='filing-meta'>RSSD 480228 · megabank · expected form 031</span>
     <span class='filing-scores'>
-      <span class='score-pair'><span class='label'>with</span> <span class='val'>17/28</span></span>
-      <span class='score-pair'><span class='label'>no</span> <span class='val'>18/28</span></span>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>18/28</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>20/28</span></span>
       <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
     </span>
   </summary>
@@ -1261,7 +1261,7 @@ tex, description=Check past-due ordering for 504713</span></div>
 <tbody>
 <tr><td class='field-name'>form_version</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
 <tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_deposits</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>total_deposits</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>total_loans_net</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>allowance_credit_losses_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_liabilities</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
@@ -1270,12 +1270,12 @@ tex, description=Check past-due ordering for 504713</span></div>
 <tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-missing' title='missing'></td></tr>
-<tr><td class='field-name'>ci_loans</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-missing' title='missing'></td></tr>
+<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>net_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>provision_credit_losses</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>provision_credit_losses</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>total_noninterest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_noninterest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
@@ -1305,24 +1305,24 @@ f, description=Validate output JSON files</span></div>
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and outputs directories</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import pypdf; print(pypdf.__version__)&quot; 2&gt;&amp;1 || pip install pypdf 2&gt;, description=Check pypdf availability</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
-import pypdf
-r = pypdf.PdfReader(&#x27;./inputs/2745426.pdf&#x27;)
-print(&#x27;pag, description=Read first PDF to understand structure</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(25 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import json, os
-import jsonschema
-with open(&#x27;./schema.json&#x27;) as, description=Validate outputs against schema</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import json, os
-for rssd in [&#x27;480228&#x27;, &#x27;504713&#x27;, &#x27;722777&#x27;, &#x27;313, description=Inspect a few outputs</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import pypdf, re
-r = pypdf.PdfReader(&#x27;./inputs/504713.pdf&#x27;)
-tex, description=Check past-due ordering for 504713</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50, description=List inputs and outputs directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+r = PdfReader(&#x27;./inputs/2745426_2024-09-, description=Read first PDF to understand format</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+r = PdfReader(&#x27;./inputs/2745426_2024-09-, description=Find Schedule RC page</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(36 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+import re
+r = PdfReader(&#x27;./inputs/480228, description=Check BofA capital ratios in PDF</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat ./outputs/504713_2024-09-30.json &amp;&amp; echo &quot;---&quot; &amp;&amp; python -c &quot;
+from pypdf imp, description=Check 504713 output</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+import json, os, sys
+from pathlib import Path
+schema = json.load(ope, description=Validate all outputs</span></div>
       </div>
     </div>
   </div>
@@ -1333,8 +1333,8 @@ tex, description=Check past-due ordering for 504713</span></div>
     <span class='filing-name'>U.S. Bank National Association</span>
     <span class='filing-meta'>RSSD 504713 · megabank · expected form 031</span>
     <span class='filing-scores'>
-      <span class='score-pair'><span class='label'>with</span> <span class='val'>22/28</span></span>
-      <span class='score-pair'><span class='label'>no</span> <span class='val'>20/28</span></span>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>21/28</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>22/28</span></span>
       <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
     </span>
   </summary>
@@ -1346,21 +1346,21 @@ tex, description=Check past-due ordering for 504713</span></div>
 <tbody>
 <tr><td class='field-name'>form_version</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
 <tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_deposits</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>total_deposits</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>total_loans_net</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>allowance_credit_losses_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_equity_capital</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_equity_capital</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_securities</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>trading_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>intangible_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>oreo</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-missing' title='missing'></td></tr>
-<tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-missing' title='missing'></td></tr>
+<tr><td class='field-name'>total_real_estate_loans</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>ci_loans</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_interest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>net_interest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>provision_credit_losses</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>provision_credit_losses</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>total_noninterest_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_noninterest_expense</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
@@ -1390,24 +1390,24 @@ f, description=Validate output JSON files</span></div>
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ./inputs/ &amp;&amp; ls ./outputs/ 2&gt;/dev/null || mkdir -p ./outputs/, description=List inputs and outputs directories</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;import pypdf; print(pypdf.__version__)&quot; 2&gt;&amp;1 || pip install pypdf 2&gt;, description=Check pypdf availability</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
-import pypdf
-r = pypdf.PdfReader(&#x27;./inputs/2745426.pdf&#x27;)
-print(&#x27;pag, description=Read first PDF to understand structure</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(25 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import json, os
-import jsonschema
-with open(&#x27;./schema.json&#x27;) as, description=Validate outputs against schema</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import json, os
-for rssd in [&#x27;480228&#x27;, &#x27;504713&#x27;, &#x27;722777&#x27;, &#x27;313, description=Inspect a few outputs</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 &lt;&lt; &#x27;EOF&#x27;
-import pypdf, re
-r = pypdf.PdfReader(&#x27;./inputs/504713.pdf&#x27;)
-tex, description=Check past-due ordering for 504713</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ ./outputs/ 2&gt;&amp;1 | head -50, description=List inputs and outputs directories</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+r = PdfReader(&#x27;./inputs/2745426_2024-09-, description=Read first PDF to understand format</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+r = PdfReader(&#x27;./inputs/2745426_2024-09-, description=Find Schedule RC page</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(36 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+from pypdf import PdfReader
+import re
+r = PdfReader(&#x27;./inputs/480228, description=Check BofA capital ratios in PDF</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat ./outputs/504713_2024-09-30.json &amp;&amp; echo &quot;---&quot; &amp;&amp; python -c &quot;
+from pypdf imp, description=Check 504713 output</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python -c &quot;
+import json, os, sys
+from pathlib import Path
+schema = json.load(ope, description=Validate all outputs</span></div>
       </div>
     </div>
   </div>

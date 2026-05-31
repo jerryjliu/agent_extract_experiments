@@ -4,23 +4,17 @@ A benchmark measuring whether giving a **Claude Code agent a bundled `llama-extr
 
 For each document, the harness runs `claude --print` (headless) twice under identical settings except one lever:
 
-- **`with_skill`** — a project-local `.claude/skills/llama-extract/` is staged into the run, so Claude delegates parse + extract to LlamaCloud.
-- **`no_skill`** — `--bare`, so Claude reads the PDF pages directly and extracts on its own.
+- **`with_skill`** — the `llama-extract` skill is staged into the run, so Claude delegates parse + extract to LlamaCloud (billed as per-page **credits**).
+- **`no_skill`** — the *same* full agent with the skill **not** staged, so Claude reads the PDFs and extracts itself (Claude **tokens** only). A stripped 3-tool `--bare` agent is an opt-in variant (`--no-skill-agent bare`).
 
-Each run is asked to populate a fixed Pydantic/JSON schema, and the output is scored against **authoritative non-PDF ground truth** (regulator/registry APIs), measuring **accuracy, cost, and latency**.
+Each run populates a fixed Pydantic/JSON schema, scored against **authoritative non-PDF ground truth** (regulator/registry APIs). We measure **accuracy**, **cost** — split into Claude **token cost** and LlamaCloud **credit cost** (`total = token + credit`) — and **latency**.
 
-## Headline results
+## Results
 
-Across four public-record datasets in batch mode (`claude-opus-4-7`, one session per condition), the skill is **dramatically cheaper everywhere**, but accuracy is **domain-dependent**:
+Four public-record datasets, batch mode (`claude-opus-4-7`, one session per condition), scored on **accuracy**, **cost** (token + credit + total), and **latency**. Once LlamaCloud credits are counted, `with_skill` total cost is a large multiple of `no_skill`, while accuracy is domain-dependent. Numbers, per-field breakdowns, and the mechanism analysis:
 
-| Dataset | N | `with_skill` | `no_skill` | Δ accuracy | Cost advantage (skill) |
-|---|---:|---:|---:|---:|---:|
-| FFIEC Call Reports | 15 | 85.1% | 80.9% | **+4.2pp** | ~3–8× cheaper |
-| ClinicalTrials.gov protocols | 12 | 59.3% | 81.4% | −22.1pp | ~8× cheaper |
-| IRS Form 990 | 11 | 94.2% | 94.8% | −0.6pp | cheaper |
-| SEC 10-Q (insurance) | 12 | 79.0% | 97.2% | −18.2pp | cheaper |
-
-The cost win is consistent; the accuracy gaps are deterministic and mechanism-specific (e.g. SEC misses are dominated by a dropped "(in millions)" unit conversion). Full write-up: [`results/cross_dataset_summary.md`](results/cross_dataset_summary.md) (and `.html`).
+- [`results/cross_dataset_summary.md`](results/cross_dataset_summary.md) — cross-dataset comparison (also `.html`)
+- `results/<slug>_rerun_2026-05-30/report.html` — per-dataset, field-level reports
 
 ## Datasets
 
@@ -46,9 +40,9 @@ scripts/              Benchmark harness
   compute_invocation_stats.py, render_report.py, render_cross_dataset_summary.py
   run_phase5.sh       Convenience driver: run -> score -> stats -> report
 data/<slug>/          manifest.json, pdfs/, ground_truth/ per dataset
-results/<slug>/        Scored CSVs, summary JSON, and HTML reports
+results/              Per-dataset scored CSVs + summary JSON + report.html, plus cross_dataset_summary.{md,html}
 runs/, runs_batch/     Raw session transcripts (gitignored — reproducible build artifacts)
-plans/, research/     Design docs and findings from each phase of the project
+plans/, research/     Design docs and findings (gitignored — local working notes)
 ```
 
 > `runs/` and `runs_batch/` hold the full `stream-json` session transcripts (~347 MB, mostly base64 PDF imagery in `no_skill` traces). They are **gitignored** and regenerable — see below.
@@ -94,7 +88,7 @@ To (re)build a dataset's inputs from scratch: `scripts/seed_*_manifest.py` (or `
 
 ## How the A/B stays clean
 
-Both conditions share identical flags — model, prompt, an empty MCP config, and disallowed `WebFetch`/`WebSearch` — differing only by `--setting-sources project,local` (loads the staged skill) vs `--bare`. The harness verifies the skill loaded (or didn't) by reading the `skills` array from each session's `system/init` trace event, so a contaminated run is caught rather than silently scored.
+Both conditions run the **same full agent** under identical flags — model, prompt, an empty MCP config, disallowed `WebFetch`/`WebSearch`, and `--setting-sources project,local` — differing only by whether the `llama-extract` skill is staged into the run. The harness verifies the skill loaded (or didn't) by reading the `skills` array from each session's `system/init` trace event, so a contaminated run is caught rather than silently scored. (A stripped `--bare` no_skill agent is available via `--no-skill-agent bare` to isolate agent-scaffolding cost.)
 
 ## License
 

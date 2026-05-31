@@ -462,12 +462,13 @@ def main() -> None:
                              f"{DEFAULT_PARSE_TIER}), decoupled from --extract-tier so the "
                              "parsing stage can be tuned independently. Ignored by no_skill.")
     parser.add_argument("--no-skill-agent", dest="no_skill_agent",
-                        choices=["bare", "full"], default="bare",
-                        help="Agent harness for no_skill (batch mode). 'bare' (default) = "
-                             "3-tool agent (--bare); 'full' = the same 27-tool agent as "
-                             "with_skill but with the llama-extract skill not staged, i.e. "
-                             "'full Claude Code without the skill'. Use with --run-tag to "
-                             "avoid clobbering canonical no_skill artifacts.")
+                        choices=["bare", "full"], default="full",
+                        help="Agent harness for no_skill (batch mode). 'full' (default, "
+                             "canonical) = the same 27-tool agent as with_skill but with the "
+                             "llama-extract skill not staged, i.e. 'full Claude Code without the "
+                             "skill' — the realistic skill-less baseline. 'bare' = stripped "
+                             "3-tool agent (--bare), opt-in; pair with --run-tag bare to avoid "
+                             "clobbering the canonical no_skill artifacts.")
     parser.add_argument("--run-tag", dest="run_tag", default="",
                         help="Namespace suffix for batch output dirs (<condition>__<tag>) so "
                              "experiments never overwrite the canonical runs. Empty = canonical.")

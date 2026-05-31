@@ -89,8 +89,8 @@ footer { text-align: center; padding: 2rem 1rem; color: var(--text-dim); font-fa
   <div class="subtitle">SEC 10-Q (insurance segment) structured extraction — 12 documents, ~17 fields each.</div>
   <div class="stats-bar">
     <div class="stat"><div class="val delta-pos">1/1</div><div class="lbl">skill invoked (batch with_skill)</div></div>
-    <div class="stat"><div class="val">-27.3pp</div><div class="lbl">accuracy Δ (with−no)</div></div>
-    <div class="stat"><div class="val">+$47.66</div><div class="lbl">total cost Δ (with−no)</div></div>
+    <div class="stat"><div class="val">-9.1pp</div><div class="lbl">accuracy Δ (with−no)</div></div>
+    <div class="stat"><div class="val">+$46.02</div><div class="lbl">total cost Δ (with−no)</div></div>
     <div class="stat"><div class="val">12</div><div class="lbl">documents</div></div>
   </div>
 </div>
@@ -104,7 +104,7 @@ footer { text-align: center; padding: 2rem 1rem; color: var(--text-dim); font-fa
       
       <tr><td class="cond-with">with_skill (cold)</td><td>87.5%</td><td>154</td><td>22</td><td>0</td><td>$0.81</td><td>$48.94</td><td><b>$49.75</b></td><td>279.1s</td></tr>
       <tr><td class="cond-with">with_skill (warm)</td><td>87.5%</td><td>154</td><td>22</td><td>0</td><td>$0.63</td><td>$48.94</td><td><b>$49.56</b></td><td>63.0s</td></tr>
-      <tr><td class="cond-no">no_skill</td><td>97.2%</td><td>171</td><td>5</td><td>0</td><td>$1.98</td><td>$0.00</td><td><b>$1.98</b></td><td>234.7s</td></tr>
+      <tr><td class="cond-no">no_skill</td><td>96.6%</td><td>170</td><td>5</td><td>1</td><td>$3.54</td><td>$0.00</td><td><b>$3.54</b></td><td>347.7s</td></tr>
     </tbody>
   </table>
   <p class="caveat">with_skill split by LlamaCloud parse-cache state (cold = first parse / new content hash; warm = cache hit). Accuracy and credit cost are cache-invariant — same parsed content, same per-page billing; only latency (and Claude token cost) vary.</p>
@@ -138,7 +138,7 @@ footer { text-align: center; padding: 2rem 1rem; color: var(--text-dim); font-fa
     <span class='filing-name'>Progressive</span>
     <span class='filing-meta'>CIK 80661 · PGR · 2026-03-31</span>
     <span class='filing-scores'>
-      <span class='score-pair'><span class='label'>with</span> <span class='val'>5/17</span></span>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>16/17</span></span>
       <span class='score-pair'><span class='label'>no</span> <span class='val'>15/17</span></span>
       <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
     </span>
@@ -151,20 +151,20 @@ footer { text-align: center; padding: 2rem 1rem; color: var(--text-dim); font-fa
 <tbody>
 <tr><td class='field-name'>issuer_name</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
 <tr><td class='field-name'>period_end_date</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_revenues</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>net_investment_income</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
-<tr><td class='field-name'>net_income</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_revenues</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_investment_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>net_income_per_share_basic</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>net_income_per_share_diluted</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_assets</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_investments</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_liabilities</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>stockholders_equity</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>insurance_reserves</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>deferred_policy_acquisition_costs</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_investments</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>stockholders_equity</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>insurance_reserves</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>deferred_policy_acquisition_costs</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>cash_from_operations</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>cash_from_investing</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>cash_from_financing</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_investing</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_financing</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>common_shares_outstanding</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 </tbody></table>
     </div>
@@ -181,20 +181,19 @@ footer { text-align: center; padding: 2rem 1rem; color: var(--text-dim); font-fa
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ &amp;&amp; ls -la ./outputs/ 2&gt;/dev/null &amp;&amp; ls schema.json, description=List input/output directories and schema</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; which python3, description=Check available pdf tools</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p ./txt &amp;&amp; for f in ./inputs/*.pdf; do name=$(basename &quot;$f&quot; .pdf); pdftot, description=Convert all PDFs to text in parallel</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(38 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=grep -n &quot;Net cash\|operating activities\|investing activities\|financing activit, description=Cash flow lines for MetLife</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; /tmp/write_outputs.py &lt;&lt; &#x27;EOF&#x27;
-import json
-import os
-
-os.makedirs(&#x27;./outpu, description=Write all output JSON files</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
-import json, os, jsonschema
-with open(&#x27;schema.json&#x27;) as f:
-    sche, description=Validate all output JSON against schema</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List input PDFs</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext pypdf2 || ls ~/Programming/other/jerry-exp/2026_05, description=Check for PDF tools</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(55 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;issuer_name&quot;: &quot;Henry Schein, Inc.&quot;,
+  &quot;period_end_date&quot;: &quot;2026-03-28&quot;,
+  &quot;t</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;issuer_name&quot;: &quot;Invesco Ltd.&quot;,
+  &quot;period_end_date&quot;: &quot;2026-03-31&quot;,
+  &quot;total_r</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; echo &quot;---&quot; &amp;&amp; for f in outputs/*.json; do python3 -c &quot;import json, description=Validate all 12 JSON outputs</span></div>
       </div>
     </div>
   </div>
@@ -205,7 +204,7 @@ with open(&#x27;schema.json&#x27;) as f:
     <span class='filing-name'>MetLife</span>
     <span class='filing-meta'>CIK 1099219 · MET · 2026-03-31</span>
     <span class='filing-scores'>
-      <span class='score-pair'><span class='label'>with</span> <span class='val'>8/17</span></span>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>11/17</span></span>
       <span class='score-pair'><span class='label'>no</span> <span class='val'>14/17</span></span>
       <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
     </span>
@@ -219,16 +218,16 @@ with open(&#x27;schema.json&#x27;) as f:
 <tr><td class='field-name'>issuer_name</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
 <tr><td class='field-name'>period_end_date</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_revenues</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>net_investment_income</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_investment_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>net_income</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>net_income_per_share_basic</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>net_income_per_share_diluted</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_assets</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_investments</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_liabilities</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>stockholders_equity</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>insurance_reserves</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
-<tr><td class='field-name'>deferred_policy_acquisition_costs</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>deferred_policy_acquisition_costs</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-wrong' title='wrong'></td></tr>
 <tr><td class='field-name'>cash_from_operations</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>cash_from_investing</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>cash_from_financing</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
@@ -248,20 +247,19 @@ with open(&#x27;schema.json&#x27;) as f:
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ &amp;&amp; ls -la ./outputs/ 2&gt;/dev/null &amp;&amp; ls schema.json, description=List input/output directories and schema</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; which python3, description=Check available pdf tools</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p ./txt &amp;&amp; for f in ./inputs/*.pdf; do name=$(basename &quot;$f&quot; .pdf); pdftot, description=Convert all PDFs to text in parallel</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(38 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=grep -n &quot;Net cash\|operating activities\|investing activities\|financing activit, description=Cash flow lines for MetLife</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; /tmp/write_outputs.py &lt;&lt; &#x27;EOF&#x27;
-import json
-import os
-
-os.makedirs(&#x27;./outpu, description=Write all output JSON files</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
-import json, os, jsonschema
-with open(&#x27;schema.json&#x27;) as f:
-    sche, description=Validate all output JSON against schema</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List input PDFs</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext pypdf2 || ls ~/Programming/other/jerry-exp/2026_05, description=Check for PDF tools</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(55 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;issuer_name&quot;: &quot;Henry Schein, Inc.&quot;,
+  &quot;period_end_date&quot;: &quot;2026-03-28&quot;,
+  &quot;t</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;issuer_name&quot;: &quot;Invesco Ltd.&quot;,
+  &quot;period_end_date&quot;: &quot;2026-03-31&quot;,
+  &quot;total_r</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; echo &quot;---&quot; &amp;&amp; for f in outputs/*.json; do python3 -c &quot;import json, description=Validate all 12 JSON outputs</span></div>
       </div>
     </div>
   </div>
@@ -272,7 +270,7 @@ with open(&#x27;schema.json&#x27;) as f:
     <span class='filing-name'>Allstate</span>
     <span class='filing-meta'>CIK 899051 · ALL · 2026-03-31</span>
     <span class='filing-scores'>
-      <span class='score-pair'><span class='label'>with</span> <span class='val'>11/17</span></span>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>14/17</span></span>
       <span class='score-pair'><span class='label'>no</span> <span class='val'>15/17</span></span>
       <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
     </span>
@@ -294,11 +292,11 @@ with open(&#x27;schema.json&#x27;) as f:
 <tr><td class='field-name'>total_investments</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>stockholders_equity</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>insurance_reserves</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>insurance_reserves</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>deferred_policy_acquisition_costs</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
 <tr><td class='field-name'>cash_from_operations</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>cash_from_investing</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>cash_from_financing</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_investing</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_financing</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>common_shares_outstanding</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 </tbody></table>
     </div>
@@ -315,20 +313,19 @@ with open(&#x27;schema.json&#x27;) as f:
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ &amp;&amp; ls -la ./outputs/ 2&gt;/dev/null &amp;&amp; ls schema.json, description=List input/output directories and schema</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; which python3, description=Check available pdf tools</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p ./txt &amp;&amp; for f in ./inputs/*.pdf; do name=$(basename &quot;$f&quot; .pdf); pdftot, description=Convert all PDFs to text in parallel</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(38 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=grep -n &quot;Net cash\|operating activities\|investing activities\|financing activit, description=Cash flow lines for MetLife</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; /tmp/write_outputs.py &lt;&lt; &#x27;EOF&#x27;
-import json
-import os
-
-os.makedirs(&#x27;./outpu, description=Write all output JSON files</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
-import json, os, jsonschema
-with open(&#x27;schema.json&#x27;) as f:
-    sche, description=Validate all output JSON against schema</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List input PDFs</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext pypdf2 || ls ~/Programming/other/jerry-exp/2026_05, description=Check for PDF tools</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(55 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;issuer_name&quot;: &quot;Henry Schein, Inc.&quot;,
+  &quot;period_end_date&quot;: &quot;2026-03-28&quot;,
+  &quot;t</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;issuer_name&quot;: &quot;Invesco Ltd.&quot;,
+  &quot;period_end_date&quot;: &quot;2026-03-31&quot;,
+  &quot;total_r</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; echo &quot;---&quot; &amp;&amp; for f in outputs/*.json; do python3 -c &quot;import json, description=Validate all 12 JSON outputs</span></div>
       </div>
     </div>
   </div>
@@ -382,20 +379,19 @@ with open(&#x27;schema.json&#x27;) as f:
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ &amp;&amp; ls -la ./outputs/ 2&gt;/dev/null &amp;&amp; ls schema.json, description=List input/output directories and schema</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; which python3, description=Check available pdf tools</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p ./txt &amp;&amp; for f in ./inputs/*.pdf; do name=$(basename &quot;$f&quot; .pdf); pdftot, description=Convert all PDFs to text in parallel</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(38 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=grep -n &quot;Net cash\|operating activities\|investing activities\|financing activit, description=Cash flow lines for MetLife</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; /tmp/write_outputs.py &lt;&lt; &#x27;EOF&#x27;
-import json
-import os
-
-os.makedirs(&#x27;./outpu, description=Write all output JSON files</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
-import json, os, jsonschema
-with open(&#x27;schema.json&#x27;) as f:
-    sche, description=Validate all output JSON against schema</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List input PDFs</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext pypdf2 || ls ~/Programming/other/jerry-exp/2026_05, description=Check for PDF tools</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(55 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;issuer_name&quot;: &quot;Henry Schein, Inc.&quot;,
+  &quot;period_end_date&quot;: &quot;2026-03-28&quot;,
+  &quot;t</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;issuer_name&quot;: &quot;Invesco Ltd.&quot;,
+  &quot;period_end_date&quot;: &quot;2026-03-31&quot;,
+  &quot;total_r</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; echo &quot;---&quot; &amp;&amp; for f in outputs/*.json; do python3 -c &quot;import json, description=Validate all 12 JSON outputs</span></div>
       </div>
     </div>
   </div>
@@ -405,6 +401,72 @@ with open(&#x27;schema.json&#x27;) as f:
   <summary>
     <span class='filing-name'>American International Group</span>
     <span class='filing-meta'>CIK 5272 · AIG · 2026-03-31</span>
+    <span class='filing-scores'>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>13/17</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>15/17</span></span>
+      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
+    </span>
+  </summary>
+  <div class='filing-body'>
+    <div class='heatmap-wrap'>
+      <h4>Field-level results</h4>
+      <table class='heatmap'>
+<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
+<tbody>
+<tr><td class='field-name'>issuer_name</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
+<tr><td class='field-name'>period_end_date</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_revenues</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_investment_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income_per_share_basic</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_income_per_share_diluted</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_investments</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>stockholders_equity</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>insurance_reserves</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>deferred_policy_acquisition_costs</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_operations</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_investing</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_financing</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>common_shares_outstanding</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+</tbody></table>
+    </div>
+    <div class='excerpts'>
+      <div class='excerpts-col'>
+        <h4>with_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List working directory contents</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List input PDFs</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=Check outputs and extract script</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(13 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python .claude/skills/llama-extract/scripts/extract.py --input ./inputs/914208_0, description=Extract 914208, run_in_background=True</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=Check completed outputs</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=for f in outputs/*.json; do [[ &quot;$f&quot; == *.usage.json ]] &amp;&amp; continue; python -c &quot;i, description=Validate all JSON outputs</span></div>
+      </div>
+      <div class='excerpts-col'>
+        <h4>no_skill tool_use excerpts</h4>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List input PDFs</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext pypdf2 || ls ~/Programming/other/jerry-exp/2026_05, description=Check for PDF tools</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(55 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;issuer_name&quot;: &quot;Henry Schein, Inc.&quot;,
+  &quot;period_end_date&quot;: &quot;2026-03-28&quot;,
+  &quot;t</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;issuer_name&quot;: &quot;Invesco Ltd.&quot;,
+  &quot;period_end_date&quot;: &quot;2026-03-31&quot;,
+  &quot;total_r</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; echo &quot;---&quot; &amp;&amp; for f in outputs/*.json; do python3 -c &quot;import json, description=Validate all 12 JSON outputs</span></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class='filing-card'>
+  <summary>
+    <span class='filing-name'>Hartford Financial</span>
+    <span class='filing-meta'>CIK 874766 · HIG · 2026-03-31</span>
     <span class='filing-scores'>
       <span class='score-pair'><span class='label'>with</span> <span class='val'>15/17</span></span>
       <span class='score-pair'><span class='label'>no</span> <span class='val'>15/17</span></span>
@@ -429,11 +491,11 @@ with open(&#x27;schema.json&#x27;) as f:
 <tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>stockholders_equity</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>insurance_reserves</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>deferred_policy_acquisition_costs</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>deferred_policy_acquisition_costs</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
 <tr><td class='field-name'>cash_from_operations</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>cash_from_investing</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>cash_from_financing</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>common_shares_outstanding</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-wrong' title='wrong'></td></tr>
+<tr><td class='field-name'>common_shares_outstanding</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 </tbody></table>
     </div>
     <div class='excerpts'>
@@ -449,20 +511,19 @@ with open(&#x27;schema.json&#x27;) as f:
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ &amp;&amp; ls -la ./outputs/ 2&gt;/dev/null &amp;&amp; ls schema.json, description=List input/output directories and schema</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; which python3, description=Check available pdf tools</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p ./txt &amp;&amp; for f in ./inputs/*.pdf; do name=$(basename &quot;$f&quot; .pdf); pdftot, description=Convert all PDFs to text in parallel</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(38 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=grep -n &quot;Net cash\|operating activities\|investing activities\|financing activit, description=Cash flow lines for MetLife</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; /tmp/write_outputs.py &lt;&lt; &#x27;EOF&#x27;
-import json
-import os
-
-os.makedirs(&#x27;./outpu, description=Write all output JSON files</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
-import json, os, jsonschema
-with open(&#x27;schema.json&#x27;) as f:
-    sche, description=Validate all output JSON against schema</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List input PDFs</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext pypdf2 || ls ~/Programming/other/jerry-exp/2026_05, description=Check for PDF tools</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(55 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;issuer_name&quot;: &quot;Henry Schein, Inc.&quot;,
+  &quot;period_end_date&quot;: &quot;2026-03-28&quot;,
+  &quot;t</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;issuer_name&quot;: &quot;Invesco Ltd.&quot;,
+  &quot;period_end_date&quot;: &quot;2026-03-31&quot;,
+  &quot;total_r</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; echo &quot;---&quot; &amp;&amp; for f in outputs/*.json; do python3 -c &quot;import json, description=Validate all 12 JSON outputs</span></div>
       </div>
     </div>
   </div>
@@ -470,8 +531,8 @@ with open(&#x27;schema.json&#x27;) as f:
 
 <details class='filing-card'>
   <summary>
-    <span class='filing-name'>Hartford Financial</span>
-    <span class='filing-meta'>CIK 874766 · HIG · 2026-03-31</span>
+    <span class='filing-name'>Prudential Financial</span>
+    <span class='filing-meta'>CIK 1137774 · PRU · 2026-03-31</span>
     <span class='filing-scores'>
       <span class='score-pair'><span class='label'>with</span> <span class='val'>12/17</span></span>
       <span class='score-pair'><span class='label'>no</span> <span class='val'>15/17</span></span>
@@ -495,75 +556,8 @@ with open(&#x27;schema.json&#x27;) as f:
 <tr><td class='field-name'>total_investments</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>stockholders_equity</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>insurance_reserves</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>deferred_policy_acquisition_costs</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
-<tr><td class='field-name'>cash_from_operations</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>cash_from_investing</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>cash_from_financing</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>common_shares_outstanding</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-</tbody></table>
-    </div>
-    <div class='excerpts'>
-      <div class='excerpts-col'>
-        <h4>with_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List working directory contents</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List input PDFs</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=Check outputs and extract script</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(13 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python .claude/skills/llama-extract/scripts/extract.py --input ./inputs/914208_0, description=Extract 914208, run_in_background=True</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=Check completed outputs</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=for f in outputs/*.json; do [[ &quot;$f&quot; == *.usage.json ]] &amp;&amp; continue; python -c &quot;i, description=Validate all JSON outputs</span></div>
-      </div>
-      <div class='excerpts-col'>
-        <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ &amp;&amp; ls -la ./outputs/ 2&gt;/dev/null &amp;&amp; ls schema.json, description=List input/output directories and schema</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; which python3, description=Check available pdf tools</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p ./txt &amp;&amp; for f in ./inputs/*.pdf; do name=$(basename &quot;$f&quot; .pdf); pdftot, description=Convert all PDFs to text in parallel</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(38 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=grep -n &quot;Net cash\|operating activities\|investing activities\|financing activit, description=Cash flow lines for MetLife</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; /tmp/write_outputs.py &lt;&lt; &#x27;EOF&#x27;
-import json
-import os
-
-os.makedirs(&#x27;./outpu, description=Write all output JSON files</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
-import json, os, jsonschema
-with open(&#x27;schema.json&#x27;) as f:
-    sche, description=Validate all output JSON against schema</span></div>
-      </div>
-    </div>
-  </div>
-</details>
-
-<details class='filing-card'>
-  <summary>
-    <span class='filing-name'>Prudential Financial</span>
-    <span class='filing-meta'>CIK 1137774 · PRU · 2026-03-31</span>
-    <span class='filing-scores'>
-      <span class='score-pair'><span class='label'>with</span> <span class='val'>6/17</span></span>
-      <span class='score-pair'><span class='label'>no</span> <span class='val'>15/17</span></span>
-      <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
-    </span>
-  </summary>
-  <div class='filing-body'>
-    <div class='heatmap-wrap'>
-      <h4>Field-level results</h4>
-      <table class='heatmap'>
-<thead><tr><th>field</th><th>with skill</th><th>no skill</th></tr></thead>
-<tbody>
-<tr><td class='field-name'>issuer_name</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
-<tr><td class='field-name'>period_end_date</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_revenues</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>net_investment_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>net_income</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>net_income_per_share_basic</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>net_income_per_share_diluted</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_assets</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_investments</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_liabilities</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>stockholders_equity</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>insurance_reserves</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
-<tr><td class='field-name'>deferred_policy_acquisition_costs</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>deferred_policy_acquisition_costs</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>cash_from_operations</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>cash_from_investing</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>cash_from_financing</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
@@ -583,20 +577,19 @@ with open(&#x27;schema.json&#x27;) as f:
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ &amp;&amp; ls -la ./outputs/ 2&gt;/dev/null &amp;&amp; ls schema.json, description=List input/output directories and schema</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; which python3, description=Check available pdf tools</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p ./txt &amp;&amp; for f in ./inputs/*.pdf; do name=$(basename &quot;$f&quot; .pdf); pdftot, description=Convert all PDFs to text in parallel</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(38 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=grep -n &quot;Net cash\|operating activities\|investing activities\|financing activit, description=Cash flow lines for MetLife</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; /tmp/write_outputs.py &lt;&lt; &#x27;EOF&#x27;
-import json
-import os
-
-os.makedirs(&#x27;./outpu, description=Write all output JSON files</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
-import json, os, jsonschema
-with open(&#x27;schema.json&#x27;) as f:
-    sche, description=Validate all output JSON against schema</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List input PDFs</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext pypdf2 || ls ~/Programming/other/jerry-exp/2026_05, description=Check for PDF tools</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(55 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;issuer_name&quot;: &quot;Henry Schein, Inc.&quot;,
+  &quot;period_end_date&quot;: &quot;2026-03-28&quot;,
+  &quot;t</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;issuer_name&quot;: &quot;Invesco Ltd.&quot;,
+  &quot;period_end_date&quot;: &quot;2026-03-31&quot;,
+  &quot;total_r</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; echo &quot;---&quot; &amp;&amp; for f in outputs/*.json; do python3 -c &quot;import json, description=Validate all 12 JSON outputs</span></div>
       </div>
     </div>
   </div>
@@ -607,7 +600,7 @@ with open(&#x27;schema.json&#x27;) as f:
     <span class='filing-name'>Lincoln National</span>
     <span class='filing-meta'>CIK 59558 · LNC · 2026-03-31</span>
     <span class='filing-scores'>
-      <span class='score-pair'><span class='label'>with</span> <span class='val'>7/17</span></span>
+      <span class='score-pair'><span class='label'>with</span> <span class='val'>14/17</span></span>
       <span class='score-pair'><span class='label'>no</span> <span class='val'>14/17</span></span>
       <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
     </span>
@@ -621,19 +614,19 @@ with open(&#x27;schema.json&#x27;) as f:
 <tr><td class='field-name'>issuer_name</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
 <tr><td class='field-name'>period_end_date</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_revenues</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>net_investment_income</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>net_investment_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>net_income</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>net_income_per_share_basic</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>net_income_per_share_diluted</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_assets</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_assets</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_investments</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_liabilities</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>stockholders_equity</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_liabilities</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>stockholders_equity</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>insurance_reserves</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
 <tr><td class='field-name'>deferred_policy_acquisition_costs</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
-<tr><td class='field-name'>cash_from_operations</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>cash_from_investing</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>cash_from_financing</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_operations</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_investing</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>cash_from_financing</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>common_shares_outstanding</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 </tbody></table>
     </div>
@@ -650,20 +643,19 @@ with open(&#x27;schema.json&#x27;) as f:
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ &amp;&amp; ls -la ./outputs/ 2&gt;/dev/null &amp;&amp; ls schema.json, description=List input/output directories and schema</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; which python3, description=Check available pdf tools</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p ./txt &amp;&amp; for f in ./inputs/*.pdf; do name=$(basename &quot;$f&quot; .pdf); pdftot, description=Convert all PDFs to text in parallel</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(38 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=grep -n &quot;Net cash\|operating activities\|investing activities\|financing activit, description=Cash flow lines for MetLife</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; /tmp/write_outputs.py &lt;&lt; &#x27;EOF&#x27;
-import json
-import os
-
-os.makedirs(&#x27;./outpu, description=Write all output JSON files</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
-import json, os, jsonschema
-with open(&#x27;schema.json&#x27;) as f:
-    sche, description=Validate all output JSON against schema</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List input PDFs</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext pypdf2 || ls ~/Programming/other/jerry-exp/2026_05, description=Check for PDF tools</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(55 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;issuer_name&quot;: &quot;Henry Schein, Inc.&quot;,
+  &quot;period_end_date&quot;: &quot;2026-03-28&quot;,
+  &quot;t</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;issuer_name&quot;: &quot;Invesco Ltd.&quot;,
+  &quot;period_end_date&quot;: &quot;2026-03-31&quot;,
+  &quot;total_r</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; echo &quot;---&quot; &amp;&amp; for f in outputs/*.json; do python3 -c &quot;import json, description=Validate all 12 JSON outputs</span></div>
       </div>
     </div>
   </div>
@@ -717,20 +709,19 @@ with open(&#x27;schema.json&#x27;) as f:
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ &amp;&amp; ls -la ./outputs/ 2&gt;/dev/null &amp;&amp; ls schema.json, description=List input/output directories and schema</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; which python3, description=Check available pdf tools</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p ./txt &amp;&amp; for f in ./inputs/*.pdf; do name=$(basename &quot;$f&quot; .pdf); pdftot, description=Convert all PDFs to text in parallel</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(38 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=grep -n &quot;Net cash\|operating activities\|investing activities\|financing activit, description=Cash flow lines for MetLife</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; /tmp/write_outputs.py &lt;&lt; &#x27;EOF&#x27;
-import json
-import os
-
-os.makedirs(&#x27;./outpu, description=Write all output JSON files</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
-import json, os, jsonschema
-with open(&#x27;schema.json&#x27;) as f:
-    sche, description=Validate all output JSON against schema</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List input PDFs</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext pypdf2 || ls ~/Programming/other/jerry-exp/2026_05, description=Check for PDF tools</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(55 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;issuer_name&quot;: &quot;Henry Schein, Inc.&quot;,
+  &quot;period_end_date&quot;: &quot;2026-03-28&quot;,
+  &quot;t</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;issuer_name&quot;: &quot;Invesco Ltd.&quot;,
+  &quot;period_end_date&quot;: &quot;2026-03-31&quot;,
+  &quot;total_r</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; echo &quot;---&quot; &amp;&amp; for f in outputs/*.json; do python3 -c &quot;import json, description=Validate all 12 JSON outputs</span></div>
       </div>
     </div>
   </div>
@@ -784,20 +775,19 @@ with open(&#x27;schema.json&#x27;) as f:
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ &amp;&amp; ls -la ./outputs/ 2&gt;/dev/null &amp;&amp; ls schema.json, description=List input/output directories and schema</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; which python3, description=Check available pdf tools</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p ./txt &amp;&amp; for f in ./inputs/*.pdf; do name=$(basename &quot;$f&quot; .pdf); pdftot, description=Convert all PDFs to text in parallel</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(38 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=grep -n &quot;Net cash\|operating activities\|investing activities\|financing activit, description=Cash flow lines for MetLife</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; /tmp/write_outputs.py &lt;&lt; &#x27;EOF&#x27;
-import json
-import os
-
-os.makedirs(&#x27;./outpu, description=Write all output JSON files</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
-import json, os, jsonschema
-with open(&#x27;schema.json&#x27;) as f:
-    sche, description=Validate all output JSON against schema</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List input PDFs</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext pypdf2 || ls ~/Programming/other/jerry-exp/2026_05, description=Check for PDF tools</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(55 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;issuer_name&quot;: &quot;Henry Schein, Inc.&quot;,
+  &quot;period_end_date&quot;: &quot;2026-03-28&quot;,
+  &quot;t</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;issuer_name&quot;: &quot;Invesco Ltd.&quot;,
+  &quot;period_end_date&quot;: &quot;2026-03-31&quot;,
+  &quot;total_r</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; echo &quot;---&quot; &amp;&amp; for f in outputs/*.json; do python3 -c &quot;import json, description=Validate all 12 JSON outputs</span></div>
       </div>
     </div>
   </div>
@@ -851,20 +841,19 @@ with open(&#x27;schema.json&#x27;) as f:
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ &amp;&amp; ls -la ./outputs/ 2&gt;/dev/null &amp;&amp; ls schema.json, description=List input/output directories and schema</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; which python3, description=Check available pdf tools</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p ./txt &amp;&amp; for f in ./inputs/*.pdf; do name=$(basename &quot;$f&quot; .pdf); pdftot, description=Convert all PDFs to text in parallel</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(38 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=grep -n &quot;Net cash\|operating activities\|investing activities\|financing activit, description=Cash flow lines for MetLife</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; /tmp/write_outputs.py &lt;&lt; &#x27;EOF&#x27;
-import json
-import os
-
-os.makedirs(&#x27;./outpu, description=Write all output JSON files</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
-import json, os, jsonschema
-with open(&#x27;schema.json&#x27;) as f:
-    sche, description=Validate all output JSON against schema</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List input PDFs</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext pypdf2 || ls ~/Programming/other/jerry-exp/2026_05, description=Check for PDF tools</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(55 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;issuer_name&quot;: &quot;Henry Schein, Inc.&quot;,
+  &quot;period_end_date&quot;: &quot;2026-03-28&quot;,
+  &quot;t</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;issuer_name&quot;: &quot;Invesco Ltd.&quot;,
+  &quot;period_end_date&quot;: &quot;2026-03-31&quot;,
+  &quot;total_r</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; echo &quot;---&quot; &amp;&amp; for f in outputs/*.json; do python3 -c &quot;import json, description=Validate all 12 JSON outputs</span></div>
       </div>
     </div>
   </div>
@@ -876,7 +865,7 @@ with open(&#x27;schema.json&#x27;) as f:
     <span class='filing-meta'>CIK 914208 · UNM · 2026-03-31</span>
     <span class='filing-scores'>
       <span class='score-pair'><span class='label'>with</span> <span class='val'>4/17</span></span>
-      <span class='score-pair'><span class='label'>no</span> <span class='val'>11/17</span></span>
+      <span class='score-pair'><span class='label'>no</span> <span class='val'>10/17</span></span>
       <span class='score-pair'><span class='label'>cost</span> <span class='val'>— vs —</span></span>
     </span>
   </summary>
@@ -894,7 +883,7 @@ with open(&#x27;schema.json&#x27;) as f:
 <tr><td class='field-name'>net_income_per_share_basic</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>net_income_per_share_diluted</td><td class='cell cell-correct' title='correct'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>total_assets</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
-<tr><td class='field-name'>total_investments</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
+<tr><td class='field-name'>total_investments</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-missing' title='missing'></td></tr>
 <tr><td class='field-name'>total_liabilities</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>stockholders_equity</td><td class='cell cell-wrong' title='wrong'></td><td class='cell cell-correct' title='correct'></td></tr>
 <tr><td class='field-name'>insurance_reserves</td><td class='cell cell-na' title='na'></td><td class='cell cell-na' title='na'></td></tr>
@@ -918,20 +907,19 @@ with open(&#x27;schema.json&#x27;) as f:
       </div>
       <div class='excerpts-col'>
         <h4>no_skill tool_use excerpts</h4>
-        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ./inputs/ &amp;&amp; ls -la ./outputs/ 2&gt;/dev/null &amp;&amp; ls schema.json, description=List input/output directories and schema</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext &amp;&amp; which python3, description=Check available pdf tools</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=mkdir -p ./txt &amp;&amp; for f in ./inputs/*.pdf; do name=$(basename &quot;$f&quot; .pdf); pdftot, description=Convert all PDFs to text in parallel</span></div>
-<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(38 more)</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=grep -n &quot;Net cash\|operating activities\|investing activities\|financing activit, description=Cash flow lines for MetLife</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=cat &gt; /tmp/write_outputs.py &lt;&lt; &#x27;EOF&#x27;
-import json
-import os
-
-os.makedirs(&#x27;./outpu, description=Write all output JSON files</span></div>
-<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=python3 -c &quot;
-import json, os, jsonschema
-with open(&#x27;schema.json&#x27;) as f:
-    sche, description=Validate all output JSON against schema</span></div>
+        <div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls -la ~/Programming/other/jerry-exp/2026_05_24_extract_experiment, description=List working directory</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls ru, description=List input PDFs</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=which pdftotext pypdf2 || ls ~/Programming/other/jerry-exp/2026_05, description=Check for PDF tools</span></div>
+<div class='tool-event'><code class='tool-name'>...</code><span class='tool-input'>(55 more)</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;issuer_name&quot;: &quot;Henry Schein, Inc.&quot;,
+  &quot;period_end_date&quot;: &quot;2026-03-28&quot;,
+  &quot;t</span></div>
+<div class='tool-event'><code class='tool-name'>Write</code><span class='tool-input'>file_path=runs_, content={
+  &quot;issuer_name&quot;: &quot;Invesco Ltd.&quot;,
+  &quot;period_end_date&quot;: &quot;2026-03-31&quot;,
+  &quot;total_r</span></div>
+<div class='tool-event'><code class='tool-name'>Bash</code><span class='tool-input'>command=ls outputs/ &amp;&amp; echo &quot;---&quot; &amp;&amp; for f in outputs/*.json; do python3 -c &quot;import json, description=Validate all 12 JSON outputs</span></div>
       </div>
     </div>
   </div>

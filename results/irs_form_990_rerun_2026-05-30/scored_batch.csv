@@ -80,7 +80,7 @@ doc_key,name,condition,field,extracted,truth,status,abs_error,rel_error
 530196605_2021,American National Red Cross,no_skill,total_revenue,3182229338.0,3182229338.0,correct,0.0,0.0
 530196605_2021,American National Red Cross,no_skill,contributions_grants,1060031161.0,1060031161.0,correct,0.0,0.0
 530196605_2021,American National Red Cross,no_skill,program_service_revenue,2018755758.0,2018755758.0,correct,0.0,0.0
-530196605_2021,American National Red Cross,no_skill,investment_income,48466117.0,48466117.0,correct,0.0,0.0
+530196605_2021,American National Red Cross,no_skill,investment_income,60268572.0,48466117.0,wrong,11802455.0,0.243519715020702
 530196605_2021,American National Red Cross,no_skill,total_expenses,3048182336.0,3048182336.0,correct,0.0,0.0
 530196605_2021,American National Red Cross,no_skill,revenue_less_expenses,134047002.0,134047002.0,correct,0.0,0.0
 530196605_2021,American National Red Cross,no_skill,compensation_current_officers,5758532.0,5758532.0,correct,0.0,0.0
@@ -158,7 +158,7 @@ doc_key,name,condition,field,extracted,truth,status,abs_error,rel_error
 521693387_2020,"World Wildlife Fund, Inc.",with_skill,investment_income,15149240.0,4996060.0,wrong,10153180.0,2.032237403073622
 521693387_2020,"World Wildlife Fund, Inc.",with_skill,total_expenses,283476575.0,283476575.0,correct,0.0,0.0
 521693387_2020,"World Wildlife Fund, Inc.",with_skill,revenue_less_expenses,124840884.0,124840884.0,correct,0.0,0.0
-521693387_2020,"World Wildlife Fund, Inc.",with_skill,compensation_current_officers,4706160.0,4706160.0,correct,0.0,0.0
+521693387_2020,"World Wildlife Fund, Inc.",with_skill,compensation_current_officers,5842038.0,4706160.0,wrong,1135878.0,0.2413598347697486
 521693387_2020,"World Wildlife Fund, Inc.",with_skill,other_salaries_wages,71362356.0,71362356.0,correct,0.0,0.0
 521693387_2020,"World Wildlife Fund, Inc.",with_skill,professional_fundraising_fees,2075428.0,2075428.0,correct,0.0,0.0
 521693387_2020,"World Wildlife Fund, Inc.",with_skill,total_assets_eoy,698927854.0,698927854.0,correct,0.0,0.0
@@ -188,7 +188,7 @@ doc_key,name,condition,field,extracted,truth,status,abs_error,rel_error
 363673599_2019,Feeding America,with_skill,investment_income,1908671.0,1930894.0,wrong,22223.0,0.011509176578310357
 363673599_2019,Feeding America,with_skill,total_expenses,3309075710.0,3309075710.0,correct,0.0,0.0
 363673599_2019,Feeding America,with_skill,revenue_less_expenses,262354636.0,262354636.0,correct,0.0,0.0
-363673599_2019,Feeding America,with_skill,compensation_current_officers,4398170.0,4398170.0,correct,0.0,0.0
+363673599_2019,Feeding America,with_skill,compensation_current_officers,0.0,4398170.0,wrong,4398170.0,1.0
 363673599_2019,Feeding America,with_skill,other_salaries_wages,28973099.0,28973099.0,correct,0.0,0.0
 363673599_2019,Feeding America,with_skill,professional_fundraising_fees,2674356.0,2674356.0,correct,0.0,0.0
 363673599_2019,Feeding America,with_skill,total_assets_eoy,432594156.0,432594156.0,correct,0.0,0.0
@@ -225,7 +225,7 @@ doc_key,name,condition,field,extracted,truth,status,abs_error,rel_error
 136213516_2022,"American Civil Liberties Union Foundation, Inc.",with_skill,total_liabilities_eoy,145527053.0,145527053.0,correct,0.0,0.0
 136213516_2022,"American Civil Liberties Union Foundation, Inc.",with_skill,net_assets_eoy,640103105.0,640103105.0,correct,0.0,0.0
 136213516_2022,"American Civil Liberties Union Foundation, Inc.",no_skill,ein,136213516,136213516,correct,,
-136213516_2022,"American Civil Liberties Union Foundation, Inc.",no_skill,legal_name,AMERICAN CIVIL LIBERTIES UNION FOUNDATION,American Civil Liberties Union Foundation Inc,na,,
+136213516_2022,"American Civil Liberties Union Foundation, Inc.",no_skill,legal_name,"AMERICAN CIVIL LIBERTIES UNION FOUNDATION, INC.",American Civil Liberties Union Foundation Inc,na,,
 136213516_2022,"American Civil Liberties Union Foundation, Inc.",no_skill,tax_year,2022,2022,correct,0.0,0.0
 136213516_2022,"American Civil Liberties Union Foundation, Inc.",no_skill,total_revenue,201181635.0,201181635.0,correct,0.0,0.0
 136213516_2022,"American Civil Liberties Union Foundation, Inc.",no_skill,contributions_grants,184197455.0,184197455.0,correct,0.0,0.0
@@ -248,7 +248,7 @@ doc_key,name,condition,field,extracted,truth,status,abs_error,rel_error
 910511770_2015,Group Health Cooperative,with_skill,investment_income,42865145.0,37042600.0,wrong,5822545.0,0.1571851057971093
 910511770_2015,Group Health Cooperative,with_skill,total_expenses,2908625317.0,2908625317.0,correct,0.0,0.0
 910511770_2015,Group Health Cooperative,with_skill,revenue_less_expenses,119215620.0,119215620.0,correct,0.0,0.0
-910511770_2015,Group Health Cooperative,with_skill,compensation_current_officers,0.0,15559270.0,wrong,15559270.0,1.0
+910511770_2015,Group Health Cooperative,with_skill,compensation_current_officers,15559270.0,15559270.0,correct,0.0,0.0
 910511770_2015,Group Health Cooperative,with_skill,other_salaries_wages,447715014.0,447715014.0,correct,0.0,0.0
 910511770_2015,Group Health Cooperative,with_skill,professional_fundraising_fees,0.0,0.0,correct,0.0,0.0
 910511770_2015,Group Health Cooperative,with_skill,total_assets_eoy,1877474544.0,1877474544.0,correct,0.0,0.0
@@ -260,12 +260,12 @@ doc_key,name,condition,field,extracted,truth,status,abs_error,rel_error
 910511770_2015,Group Health Cooperative,no_skill,total_revenue,3027840937.0,3027840937.0,correct,0.0,0.0
 910511770_2015,Group Health Cooperative,no_skill,contributions_grants,46364989.0,46364989.0,correct,0.0,0.0
 910511770_2015,Group Health Cooperative,no_skill,program_service_revenue,2869169578.0,2869169578.0,correct,0.0,0.0
-910511770_2015,Group Health Cooperative,no_skill,investment_income,37042600.0,37042600.0,correct,0.0,0.0
+910511770_2015,Group Health Cooperative,no_skill,investment_income,42865145.0,37042600.0,wrong,5822545.0,0.1571851057971093
 910511770_2015,Group Health Cooperative,no_skill,total_expenses,2908625317.0,2908625317.0,correct,0.0,0.0
 910511770_2015,Group Health Cooperative,no_skill,revenue_less_expenses,119215620.0,119215620.0,correct,0.0,0.0
 910511770_2015,Group Health Cooperative,no_skill,compensation_current_officers,15559270.0,15559270.0,correct,0.0,0.0
 910511770_2015,Group Health Cooperative,no_skill,other_salaries_wages,447715014.0,447715014.0,correct,0.0,0.0
-910511770_2015,Group Health Cooperative,no_skill,professional_fundraising_fees,1935667.0,0.0,wrong,1935667.0,1935667.0
+910511770_2015,Group Health Cooperative,no_skill,professional_fundraising_fees,0.0,0.0,correct,0.0,0.0
 910511770_2015,Group Health Cooperative,no_skill,total_assets_eoy,1877474544.0,1877474544.0,correct,0.0,0.0
 910511770_2015,Group Health Cooperative,no_skill,total_liabilities_eoy,838748423.0,838748423.0,correct,0.0,0.0
 910511770_2015,Group Health Cooperative,no_skill,net_assets_eoy,1038726121.0,1038726121.0,correct,0.0,0.0
@@ -293,8 +293,8 @@ doc_key,name,condition,field,extracted,truth,status,abs_error,rel_error
 941156365_2022,Leland Stanford Junior University,no_skill,investment_income,1064657583.0,373737079.0,wrong,690920504.0,1.848680644287906
 941156365_2022,Leland Stanford Junior University,no_skill,total_expenses,8133284247.0,8133284247.0,correct,0.0,0.0
 941156365_2022,Leland Stanford Junior University,no_skill,revenue_less_expenses,340381993.0,340381993.0,correct,0.0,0.0
-941156365_2022,Leland Stanford Junior University,no_skill,compensation_current_officers,13308833.0,13308833.0,correct,0.0,0.0
-941156365_2022,Leland Stanford Junior University,no_skill,other_salaries_wages,3942818376.0,3942818376.0,correct,0.0,0.0
+941156365_2022,Leland Stanford Junior University,no_skill,compensation_current_officers,8565841.0,13308833.0,wrong,4742992.0,0.3563792557919992
+941156365_2022,Leland Stanford Junior University,no_skill,other_salaries_wages,443141913.0,3942818376.0,wrong,3499676463.0,0.8876078300493342
 941156365_2022,Leland Stanford Junior University,no_skill,professional_fundraising_fees,2492107.0,2492107.0,correct,0.0,0.0
 941156365_2022,Leland Stanford Junior University,no_skill,total_assets_eoy,61810855396.0,61810855396.0,correct,0.0,0.0
 941156365_2022,Leland Stanford Junior University,no_skill,total_liabilities_eoy,10572551350.0,10572551350.0,correct,0.0,0.0
@@ -323,7 +323,7 @@ doc_key,name,condition,field,extracted,truth,status,abs_error,rel_error
 340714585_2019,The Cleveland Clinic Foundation,no_skill,investment_income,185811169.0,65932993.0,wrong,119878176.0,1.8181819229714022
 340714585_2019,The Cleveland Clinic Foundation,no_skill,total_expenses,6232896760.0,6232896760.0,correct,0.0,0.0
 340714585_2019,The Cleveland Clinic Foundation,no_skill,revenue_less_expenses,597516248.0,597516248.0,correct,0.0,0.0
-340714585_2019,The Cleveland Clinic Foundation,no_skill,compensation_current_officers,21169952.0,21169952.0,correct,0.0,0.0
+340714585_2019,The Cleveland Clinic Foundation,no_skill,compensation_current_officers,4437221.0,21169952.0,wrong,16732731.0,0.7904000443647675
 340714585_2019,The Cleveland Clinic Foundation,no_skill,other_salaries_wages,2725966635.0,2725966635.0,correct,0.0,0.0
 340714585_2019,The Cleveland Clinic Foundation,no_skill,professional_fundraising_fees,1770231.0,1770231.0,correct,0.0,0.0
 340714585_2019,The Cleveland Clinic Foundation,no_skill,total_assets_eoy,12446161990.0,12446161990.0,correct,0.0,0.0

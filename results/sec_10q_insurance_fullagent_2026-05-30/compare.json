@@ -1,0 +1,60 @@
+{
+  "dataset": "sec_10q_insurance",
+  "tag": "fullagent",
+  "bare": {
+    "session_dir": "runs_batch/sec_10q_insurance/no_skill",
+    "exists": true,
+    "token_cost_usd": 1.9799709999999997,
+    "num_turns": 45,
+    "wall_seconds": 234.72,
+    "no_skill_agent": null,
+    "cache_creation_tok": 90630,
+    "cache_read_tok": 1993207,
+    "output_tok": 16529,
+    "input_tok": 49,
+    "tools": {
+      "Bash": 44
+    },
+    "n_tool_calls": 44,
+    "read_on_pdf": 0,
+    "text_into_context_tok": 74781,
+    "max_tool_result_tok": 4220,
+    "big_tool_results_gt8kb": 13,
+    "accuracy": 0.9715909090909091,
+    "n_correct": 171,
+    "n_runs_with_output": 12
+  },
+  "full": {
+    "session_dir": "runs_batch/sec_10q_insurance/no_skill__fullagent",
+    "exists": true,
+    "token_cost_usd": 3.5377937499999996,
+    "num_turns": 62,
+    "wall_seconds": 347.74,
+    "no_skill_agent": "full",
+    "cache_creation_tok": 104481,
+    "cache_read_tok": 4559795,
+    "output_tok": 24044,
+    "input_tok": 66,
+    "tools": {
+      "Grep": 19,
+      "Read": 18,
+      "Bash": 12,
+      "Write": 12
+    },
+    "n_tool_calls": 61,
+    "read_on_pdf": 0,
+    "text_into_context_tok": 74314,
+    "max_tool_result_tok": 4584,
+    "big_tool_results_gt8kb": 17,
+    "accuracy": 0.9659090909090909,
+    "n_correct": 170,
+    "n_runs_with_output": 12
+  },
+  "deltas": {
+    "token_cost_ratio_full_over_bare": 1.79,
+    "accuracy_bare": 0.9715909090909091,
+    "accuracy_full": 0.9659090909090909,
+    "read_on_pdf_bare": 0,
+    "read_on_pdf_full": 0
+  }
+}

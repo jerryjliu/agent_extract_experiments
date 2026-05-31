@@ -1,0 +1,61 @@
+{
+  "dataset": "irs_form_990",
+  "tag": "fullagent",
+  "bare": {
+    "session_dir": "runs_batch/irs_form_990/no_skill",
+    "exists": true,
+    "token_cost_usd": 2.74326825,
+    "num_turns": 51,
+    "wall_seconds": 326.6,
+    "no_skill_agent": null,
+    "cache_creation_tok": 112099,
+    "cache_read_tok": 2996409,
+    "output_tok": 21641,
+    "input_tok": 55,
+    "tools": {
+      "Bash": 50
+    },
+    "n_tool_calls": 50,
+    "read_on_pdf": 0,
+    "text_into_context_tok": 72830,
+    "max_tool_result_tok": 6822,
+    "big_tool_results_gt8kb": 12,
+    "accuracy": 0.9545454545454546,
+    "n_correct": 147,
+    "n_runs_with_output": 11
+  },
+  "full": {
+    "session_dir": "runs_batch/irs_form_990/no_skill__fullagent",
+    "exists": true,
+    "token_cost_usd": 4.348820000000001,
+    "num_turns": 10,
+    "wall_seconds": 400.51,
+    "no_skill_agent": "full",
+    "cache_creation_tok": 107392,
+    "cache_read_tok": 210194,
+    "output_tok": 9470,
+    "input_tok": 547,
+    "tools": {
+      "Read": 32,
+      "Bash": 18,
+      "Write": 11,
+      "Grep": 7,
+      "Agent": 2
+    },
+    "n_tool_calls": 70,
+    "read_on_pdf": 15,
+    "text_into_context_tok": 63861,
+    "max_tool_result_tok": 13871,
+    "big_tool_results_gt8kb": 9,
+    "accuracy": 0.9285714285714286,
+    "n_correct": 143,
+    "n_runs_with_output": 11
+  },
+  "deltas": {
+    "token_cost_ratio_full_over_bare": 1.59,
+    "accuracy_bare": 0.9545454545454546,
+    "accuracy_full": 0.9285714285714286,
+    "read_on_pdf_bare": 0,
+    "read_on_pdf_full": 15
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "dataset": "ctgov_protocols",
+  "tag": "fullagent",
+  "bare": {
+    "session_dir": "runs_batch/ctgov_protocols/no_skill",
+    "exists": true,
+    "token_cost_usd": 4.057810249999999,
+    "num_turns": 66,
+    "wall_seconds": 301.95,
+    "no_skill_agent": null,
+    "cache_creation_tok": 135385,
+    "cache_read_tok": 5514978,
+    "output_tok": 18006,
+    "input_tok": 70,
+    "tools": {
+      "Bash": 65
+    },
+    "n_tool_calls": 65,
+    "read_on_pdf": 0,
+    "text_into_context_tok": 91743,
+    "max_tool_result_tok": 6902,
+    "big_tool_results_gt8kb": 19,
+    "accuracy": 0.7931034482758621,
+    "n_correct": 115,
+    "n_runs_with_output": 12
+  },
+  "full": {
+    "session_dir": "runs_batch/ctgov_protocols/no_skill__fullagent",
+    "exists": true,
+    "token_cost_usd": 5.207707499999999,
+    "num_turns": 12,
+    "wall_seconds": 308.69,
+    "no_skill_agent": "full",
+    "cache_creation_tok": 41966,
+    "cache_read_tok": 336676,
+    "output_tok": 10106,
+    "input_tok": 18,
+    "tools": {
+      "Read": 35,
+      "Grep": 26,
+      "Bash": 18,
+      "Write": 12,
+      "Agent": 3,
+      "Edit": 1
+    },
+    "n_tool_calls": 95,
+    "read_on_pdf": 0,
+    "text_into_context_tok": 160443,
+    "max_tool_result_tok": 8833,
+    "big_tool_results_gt8kb": 29,
+    "accuracy": 0.7379310344827587,
+    "n_correct": 107,
+    "n_runs_with_output": 12
+  },
+  "deltas": {
+    "token_cost_ratio_full_over_bare": 1.28,
+    "accuracy_bare": 0.7931034482758621,
+    "accuracy_full": 0.7379310344827587,
+    "read_on_pdf_bare": 0,
+    "read_on_pdf_full": 0
+  }
+}
