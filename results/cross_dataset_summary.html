@@ -56,38 +56,57 @@ footer{text-align:center;padding:2rem 1rem;color:var(--text-dim);font-family:'IB
   <table>
     <thead><tr><th>Dataset</th><th>N</th><th class="with">Acc (with)</th><th class="no">Acc (no)</th><th>Δ (with−no)</th><th>Why</th></tr></thead>
     <tbody>
-<tr><td class='name'>FFIEC Call Report</td><td>15</td><td class='with'>85.1%</td><td class='no'>80.9%</td><td><span class="pos">+4.2pp</span></td><td class='why'>Skill <b>edges ahead</b> — Call Report values are raw dollars on a fixed form grid; delegated extraction reads the schedule cells cleanly.</td></tr>
-<tr><td class='name'>ClinicalTrials.gov protocol</td><td>12</td><td class='with'>59.3%</td><td class='no'>81.4%</td><td><span class="neg">-22.1pp</span></td><td class='why'>Skill <b>trails by ~20pp</b> — brittle exact-string matches on free-text <code>brief_title</code>/<code>sponsor</code>, plus nulls on categorical design fields (allocation/masking) that direct reading recovers from deep in the document.</td></tr>
-<tr><td class='name'>IRS Form 990</td><td>11</td><td class='with'>94.2%</td><td class='no'>94.8%</td><td><span class="neg">-0.6pp</span></td><td class='why'><b>Near tie</b> — Form 990 amounts are raw dollars (no unit trap). Most remaining errors are <code>investment_income</code>, which mismatches the ground-truth line definition under <i>both</i> conditions.</td></tr>
-<tr><td class='name'>SEC 10-Q (insurance segment)</td><td>12</td><td class='with'>79.0%</td><td class='no'>97.2%</td><td><span class="neg">-18.2pp</span></td><td class='why'>Skill <b>trails by ~18pp</b> — a systematic dropped unit conversion: on &quot;(in millions)&quot; filings llama-extract returns the table value verbatim (28 of 37 misses are off by exactly ×1,000,000). Direct reading sees the header and multiplies.</td></tr>
+<tr><td class='name'>FFIEC Call Report</td><td>15</td><td class='with'>84.9%</td><td class='no'>80.9%</td><td><span class="pos">+4.0pp</span></td><td class='why'>Skill <b>edges ahead</b> — Call Report values are raw dollars on a fixed form grid; delegated extraction reads the schedule cells cleanly.</td></tr>
+<tr><td class='name'>ClinicalTrials.gov protocol</td><td>12</td><td class='with'>60.7%</td><td class='no'>79.3%</td><td><span class="neg">-18.6pp</span></td><td class='why'>Skill <b>trails by ~20pp</b> — brittle exact-string matches on free-text <code>brief_title</code>/<code>sponsor</code>, plus nulls on categorical design fields (allocation/masking) that direct reading recovers from deep in the document.</td></tr>
+<tr><td class='name'>IRS Form 990</td><td>11</td><td class='with'>94.2%</td><td class='no'>95.5%</td><td><span class="neg">-1.3pp</span></td><td class='why'><b>Near tie</b> — Form 990 amounts are raw dollars (no unit trap). Most remaining errors are <code>investment_income</code>, which mismatches the ground-truth line definition under <i>both</i> conditions.</td></tr>
+<tr><td class='name'>SEC 10-Q (insurance segment)</td><td>12</td><td class='with'>69.9%</td><td class='no'>97.2%</td><td><span class="neg">-27.3pp</span></td><td class='why'>Skill <b>trails by ~18pp</b> — a systematic dropped unit conversion: on &quot;(in millions)&quot; filings llama-extract returns the table value verbatim (28 of 37 misses are off by exactly ×1,000,000). Direct reading sees the header and multiplies.</td></tr>
     </tbody>
   </table>
 
   <div class="section-label">Cost &amp; latency</div>
+  <p class="intro" style="margin-bottom:0.6rem">Total cost = <span class="with">Claude tokens</span> + LlamaCloud <b>credits</b>
+  (parse + extract, billed per page at $0.00125/credit). <span class="no">no_skill</span> never calls LlamaCloud, so its credit cost is $0 and its total equals its token cost.</p>
   <table>
-    <thead><tr><th>Dataset</th><th class="with">Cost (with)</th><th class="no">Cost (no)</th><th>Cost saving</th><th class="with">Wall (with)</th><th class="no">Wall (no)</th></tr></thead>
+    <thead><tr><th>Dataset</th><th class="with">Token (with)</th><th class="with">Credit (with)</th><th class="with">Total (with)</th><th class="no">Total (no)</th><th>Total vs no</th><th>Pages</th><th class="with">Wall cold (with)</th><th class="with">Wall warm (with)</th><th class="no">Wall (no)</th></tr></thead>
     <tbody>
-<tr><td class='name'>FFIEC Call Report</td><td class='with'>$0.72</td><td class='no'>$1.98</td><td><span class='pos'>2.7× cheaper</span></td><td class='with'>92s</td><td class='no'>566s</td></tr>
-<tr><td class='name'>ClinicalTrials.gov protocol</td><td class='with'>$0.37</td><td class='no'>$3.04</td><td><span class='pos'>8.1× cheaper</span></td><td class='with'>63s</td><td class='no'>327s</td></tr>
-<tr><td class='name'>IRS Form 990</td><td class='with'>$0.58</td><td class='no'>$4.62</td><td><span class='pos'>8.0× cheaper</span></td><td class='with'>69s</td><td class='no'>488s</td></tr>
-<tr><td class='name'>SEC 10-Q (insurance segment)</td><td class='with'>$0.49</td><td class='no'>$2.18</td><td><span class='pos'>4.4× cheaper</span></td><td class='with'>64s</td><td class='no'>281s</td></tr>
+<tr><td class='name'>FFIEC Call Report</td><td class='with'>$0.65</td><td class='with'>$32.16</td><td class='with'><b>$32.80</b></td><td class='no'>$1.98</td><td><span class="neg">16.6× pricier</span></td><td>1,029</td><td class='with'>201s</td><td class='with'>80s</td><td class='no'>566s</td></tr>
+<tr><td class='name'>ClinicalTrials.gov protocol</td><td class='with'>$0.66</td><td class='with'>$40.09</td><td class='with'><b>$40.75</b></td><td class='no'>$4.06</td><td><span class="neg">10.0× pricier</span></td><td>1,283</td><td class='with'>193s</td><td class='with'>60s</td><td class='no'>302s</td></tr>
+<tr><td class='name'>IRS Form 990</td><td class='with'>$0.82</td><td class='with'>$37.34</td><td class='with'><b>$38.16</b></td><td class='no'>$2.74</td><td><span class="neg">13.9× pricier</span></td><td>1,195</td><td class='with'>754s</td><td class='with'>137s</td><td class='no'>327s</td></tr>
+<tr><td class='name'>SEC 10-Q (insurance segment)</td><td class='with'>$0.70</td><td class='with'>$48.94</td><td class='with'><b>$49.64</b></td><td class='no'>$1.98</td><td><span class="neg">25.1× pricier</span></td><td>1,566</td><td class='with'>279s</td><td class='with'>63s</td><td class='no'>235s</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-label">Parse cache · cold vs warm latency</div>
+  <p class="intro" style="margin-bottom:0.6rem">Same corpus and config — only the LlamaCloud
+  <b>parse</b> cache differs (cached by document content hash). A warm cache skips re-parsing.
+  <b>Credit cost is identical per pass</b> (billed per page) — only latency changes. No API toggle
+  disables the cache on the extract path, and any parse-option or tier change busts it. The batch
+  speedup below understates the isolated cache effect (the batch parallelizes parses and carries fixed
+  orchestration overhead, and is noisy run-to-run); a per-file probe shows ~7×.</p>
+  <table>
+    <thead><tr><th>Dataset</th><th class="no">Cold wall</th><th class="with">Warm wall</th><th>Speedup</th></tr></thead>
+    <tbody>
+<tr><td class='name'>FFIEC Call Report</td><td class='no'>201s</td><td class='with'>80s</td><td><span class='pos'>2.5×</span></td></tr>
+<tr><td class='name'>ClinicalTrials.gov protocol</td><td class='no'>193s</td><td class='with'>60s</td><td><span class='pos'>3.2×</span></td></tr>
+<tr><td class='name'>IRS Form 990</td><td class='no'>754s</td><td class='with'>137s</td><td><span class='pos'>5.5×</span></td></tr>
+<tr><td class='name'>SEC 10-Q (insurance segment)</td><td class='no'>279s</td><td class='with'>63s</td><td><span class='pos'>4.4×</span></td></tr>
     </tbody>
   </table>
 
   <div class="section-label">What holds across every dataset</div>
   <ul class="findings">
-    <li><b>Cost: with_skill is 3–8× cheaper, consistently.</b> Cost tracks Claude tokens; the skill offloads document reading to LlamaCloud, so the Claude side does little.</li>
+    <li><b>Cost: total = Claude tokens + LlamaCloud credits.</b> On Claude tokens alone, with_skill is 2.8–6.2× cheaper (it offloads document reading to LlamaCloud). But LlamaExtract bills per page — ~$0.03125/page at agentic parse+extract ($0.00125/credit) — so credit cost scales with corpus pages, not Claude work. Across all 4 corpora those credits more than offset the token saving: with_skill total cost runs 10.0–25.1× higher than no_skill. Token, credit, and total are shown as separate line items above.</li>
     <li><b>Accuracy is deterministic and reproduces to the field.</b> The with-vs-no gap is set by whether correct extraction needs a <i>convention applied after reading</i> (SEC unit scaling) or <i>robust free-text matching</i> (ClinicalTrials) — things the delegated extractor doesn't do — versus face-value cell reads where it keeps pace (FFIEC, IRS).</li>
     <li><b>Wall time for with_skill is dominated by a variable LlamaCloud tail, not Claude.</b> <code>extract.py</code> uploads each PDF and polls a remote job. In a fast run that tail is ~15s and with_skill finishes in ~63–69s across datasets (4–7× faster than no_skill); under load the same runs took 196–805s. The Claude-side time is small and stable, so the swing is external I/O the cost meter never sees. For batch SLAs, watch that tail — not cost.</li>
   </ul>
 
   <div class="section-label">Per-dataset reports</div>
   <ul class="links">
-<li><b>FFIEC Call Report</b> <span class='dim'>(original)</span> — <a href='ffiec_call_reports/report.html'>report.html</a></li>
-<li><b>ClinicalTrials.gov protocol</b> <span class='dim'>(2026-05-29 (rerun))</span> — <a href='ctgov_protocols_rerun_2026-05-29/report.html'>report.html</a></li>
-<li><b>IRS Form 990</b> <span class='dim'>(2026-05-29 (rerun))</span> — <a href='irs_form_990_rerun_2026-05-29/report.html'>report.html</a></li>
-<li><b>SEC 10-Q (insurance segment)</b> <span class='dim'>(2026-05-29 (rerun))</span> — <a href='sec_10q_insurance_rerun_2026-05-29/report.html'>report.html</a></li>
+<li><b>FFIEC Call Report</b> <span class='dim'>(2026-05-30 (rerun))</span> — <a href='ffiec_call_reports_rerun_2026-05-30/report.html'>report.html</a></li>
+<li><b>ClinicalTrials.gov protocol</b> <span class='dim'>(2026-05-30 (rerun))</span> — <a href='ctgov_protocols_rerun_2026-05-30/report.html'>report.html</a></li>
+<li><b>IRS Form 990</b> <span class='dim'>(2026-05-30 (rerun))</span> — <a href='irs_form_990_rerun_2026-05-30/report.html'>report.html</a></li>
+<li><b>SEC 10-Q (insurance segment)</b> <span class='dim'>(2026-05-30 (rerun))</span> — <a href='sec_10q_insurance_rerun_2026-05-30/report.html'>report.html</a></li>
   </ul>
 </div>
-<footer>Generated 2026-05-29 · generated by <code>scripts/render_cross_dataset_summary.py</code> · with-skill loads <code>llama-extract</code> as a project skill, no-skill runs <code>--bare</code></footer>
+<footer>Generated 2026-05-30 · generated by <code>scripts/render_cross_dataset_summary.py</code> · with-skill loads <code>llama-extract</code> as a project skill, no-skill runs <code>--bare</code></footer>
 </body></html>

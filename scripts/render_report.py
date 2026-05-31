@@ -154,11 +154,14 @@ def main() -> None:
                         help="Batch-mode summary; if absent, mode-comparison panel is skipped.")
     parser.add_argument("--runs-dir", type=Path, default=None)
     parser.add_argument("--runs-batch-dir", type=Path, default=None)
+    parser.add_argument("--results-dir", type=Path, default=None,
+                        help="Override results dir for BOTH reading summaries/stats and "
+                             "writing report.html (e.g. results/<slug>_rerun_2026-05-30).")
     parser.add_argument("--output", type=Path, default=None)
     args = parser.parse_args()
 
     ds = get_dataset(args.dataset)
-    rdir = ds.results_dir()
+    rdir = args.results_dir or ds.results_dir()
     manifest_path = args.manifest or ds.manifest_path()
     summary_path = args.summary or (rdir / "summary.json")
     summary_v1_path = args.summary_v1 or (rdir / "summary-baseline-v1.json")
@@ -174,6 +177,14 @@ def main() -> None:
     summary_v1 = json.loads(summary_v1_path.read_text()) if summary_v1_path.exists() else {}
     summary_batch = json.loads(summary_batch_path.read_text()) if summary_batch_path.exists() else {}
     invocation_stats = json.loads(invocation_path.read_text()) if invocation_path.exists() else {}
+    latency_cw_path = rdir / "latency_cold_warm.json"
+    latency_cw = json.loads(latency_cw_path.read_text()) if latency_cw_path.exists() else {}
+    # Optional per-cache-state scored summaries (from run_latency_cold_warm.py). When
+    # present, the aggregate table splits with_skill into (cold) and (warm) rows.
+    sb_cold_path = rdir / "summary_batch_cold.json"
+    sb_warm_path = rdir / "summary_batch_warm.json"
+    summary_cold = json.loads(sb_cold_path.read_text()) if sb_cold_path.exists() else {}
+    summary_warm = json.loads(sb_warm_path.read_text()) if sb_warm_path.exists() else {}
 
     # Per-file scoring rows live in scored.csv; batch-only datasets only have
     # scored_batch.csv. Fall back so the per-document heatmaps still render.
@@ -258,6 +269,9 @@ def main() -> None:
         dur_delta=dur_delta,
         per_filing=per_filing_rows,
         schema_fields=schema_fields,
+        latency_cw=latency_cw,
+        ws_cold=(summary_cold.get("with_skill") or {}),
+        ws_warm=(summary_warm.get("with_skill") or {}),
     ))
     print(f"Wrote {output_path}")
 
@@ -412,8 +426,72 @@ def _filing_meta(b: dict, doc_key: str) -> str:
     return " · ".join(str(p) for p in parts)
 
 
+def render_latency_panel(latency_cw: dict) -> str:
+    """Cold-vs-warm parse-cache latency panel. Empty string when no experiment data."""
+    if not latency_cw:
+        return ""
+    b = latency_cw.get("batch", {}) or {}
+    cold, warm = b.get("cold", {}) or {}, b.get("warm", {}) or {}
+    cw, ww = cold.get("wall_s"), warm.get("wall_s")
+    speed = b.get("speedup")
+    pages = latency_cw.get("total_pages")
+    ndocs = latency_cw.get("n_docs")
+    credit = latency_cw.get("credit_cost_usd_per_pass")
+
+    # Per-file pilot table (isolated extract-job latency, no Claude orchestration).
+    pf = latency_cw.get("per_file_pilot", {}) or {}
+    pc, pw = pf.get("cold", {}) or {}, pf.get("warm", {}) or {}
+    pf_html = ""
+    if pc.get("rows") and pw.get("rows"):
+        wmap = {r["doc_key"]: r for r in pw["rows"]}
+        trs = []
+        for r in pc["rows"]:
+            w = wmap.get(r["doc_key"], {})
+            cs, ws = r.get("wall_s"), w.get("wall_s")
+            sp = f"{cs/ws:.1f}×" if (cs and ws) else "—"
+            trs.append(
+                f"<tr><td class='field-name'>{html.escape(str(r.get('doc_key')))}</td>"
+                f"<td>{r.get('pages')}</td><td>{cs}s</td><td>{ws}s</td>"
+                f"<td><span class='delta-pos'>{sp}</span></td></tr>")
+        pf_html = f"""
+  <p class="caveat">Per-file probe (isolated extract-job wall, no Claude orchestration; pilot subset):</p>
+  <table class="cmp-table">
+    <thead><tr><th>document</th><th>pages</th><th>cold</th><th>warm</th><th>speedup</th></tr></thead>
+    <tbody>{''.join(trs)}</tbody>
+  </table>"""
+
+    speed_str = f"{speed:.1f}×" if isinstance(speed, (int, float)) else "—"
+    cold_turns = cold.get("num_turns")
+    warm_turns = warm.get("num_turns")
+    turns_note = ""
+    if cold_turns is not None and warm_turns is not None:
+        turns_note = (f" Batch wall also mixes in Claude's orchestration, which varies run to run "
+                      f"(this pair: cold {cold_turns} turns vs warm {warm_turns} turns) and LlamaCloud "
+                      f"server load — so the per-file probe below is the cleaner measure of the cache effect.")
+    return f"""
+  <div class="section-label">Parse cache · cold vs warm latency</div>
+  <p class="cost-note" style="margin:0 0 1rem">The with_skill wall time is dominated by the LlamaCloud
+  <b>parse</b> step, which is cached by document content hash. The same corpus runs faster once the
+  parse cache is warm. Credit cost is <b>identical</b> per pass (billed per page) — only latency changes.
+  There is no API toggle to disable the cache on the extract path (the documented <code>parse_config_id</code>
+  hook 404s), and any change to parse options or tier busts the cache.</p>
+  <table class="cmp-table">
+    <thead><tr><th>cache state</th><th>batch wall ({ndocs} docs · {pages} pg)</th><th>credit cost</th></tr></thead>
+    <tbody>
+      <tr><td class="cond-no">cold (first parse)</td><td>{fmt_seconds((cw or 0)*1000) if cw else '—'}</td><td>{fmt_money(credit)}</td></tr>
+      <tr><td class="cond-with">warm (cache hit)</td><td>{fmt_seconds((ww or 0)*1000) if ww else '—'}</td><td>{fmt_money(credit)}</td></tr>
+      <tr><td><b>batch speedup</b></td><td><b><span class="delta-pos">{speed_str}</span></b></td><td class="dim">same</td></tr>
+    </tbody>
+  </table>
+  <p class="caveat">The batch speedup ({speed_str}) is smaller than the per-file speedup because the batch
+  parallelizes parses across Claude Task subagents and carries fixed orchestration overhead the cache
+  can't shrink.{turns_note}</p>{pf_html}
+"""
+
+
 def render_html(*, dataset, banks, summary, with_s, no_s, with_s_v1, invocation_stats,
-                summary_batch, acc_delta, cost_delta, dur_delta, per_filing, schema_fields) -> str:
+                summary_batch, acc_delta, cost_delta, dur_delta, per_filing, schema_fields,
+                latency_cw=None, ws_cold=None, ws_warm=None) -> str:
     n_banks = len(banks)
     n_fields = len(schema_fields)
     has_v1 = bool(with_s_v1)
@@ -474,11 +552,39 @@ def render_html(*, dataset, banks, summary, with_s, no_s, with_s_v1, invocation_
             f'<tr><td class="cond-with-v1">with_skill (v1 baseline)</td>'
             f'<td>{fmt_pct(with_s_v1.get("accuracy"))}</td>'
             f'<td>{with_s_v1.get("n_correct","—")}</td><td>{with_s_v1.get("n_wrong","—")}</td>'
-            f'<td>{with_s_v1.get("n_missing","—")}</td><td>{fmt_money(with_s_v1.get("total_cost_usd"))}</td>'
+            f'<td>{with_s_v1.get("n_missing","—")}</td>'
+            f'<td>{fmt_money(with_s_v1.get("token_cost_usd"))}</td>'
+            f'<td>{fmt_money(with_s_v1.get("credit_cost_usd"))}</td>'
+            f'<td>{fmt_money(with_s_v1.get("total_cost_usd"))}</td>'
             f'<td>{fmt_seconds(with_s_v1.get("mean_duration_ms"))}</td></tr>'
         )
     else:
         v1_row = ""
+
+    # Cost note: explain the three-way split, surface billable pages + tier, and warn
+    # on any API-vs-local page-count divergence. Batch-sourced (with_skill) only.
+    n_pages = with_s.get("n_pages")
+    et = with_s.get("extract_tier") or "agentic"
+    pt = with_s.get("parse_tier") or "agentic"
+    mismatches = with_s.get("page_count_mismatches") or []
+    cost_note_parts = [
+        "<p class='cost-note'>Total cost = <span class='cond-with'>Claude tokens</span> + "
+        "LlamaCloud <b>credits</b> (parse + extract, billed per page at $0.00125/credit). "
+        "<span class='cond-no'>no_skill</span> never calls LlamaCloud, so its credit cost is $0."
+    ]
+    if n_pages:
+        cost_note_parts.append(
+            f" with_skill billed <b>{n_pages:,}</b> pages "
+            f"(extract={html.escape(str(et))}, parse={html.escape(str(pt))}).")
+    cost_note_parts.append("</p>")
+    cost_note_html = "".join(cost_note_parts)
+    if mismatches:
+        items = ", ".join(
+            f"{html.escape(str(m.get('doc_key')))} (API {m.get('api_pages')} vs local {m.get('local_pages')})"
+            for m in mismatches[:10])
+        cost_note_html += (
+            f"<div class='warn-callout'>⚠ {len(mismatches)} document(s) where the LlamaExtract "
+            f"API page count diverged from the local PDF page count: {items}.</div>")
 
     # Mode-comparison panel only when we have genuine per-file data distinct from
     # the batch summary (FFIEC). Batch-only datasets pass the same object for both.
@@ -486,6 +592,30 @@ def render_html(*, dataset, banks, summary, with_s, no_s, with_s_v1, invocation_
         render_mode_comparison(summary, summary_batch, invocation_stats)
         if (summary is not summary_batch and summary_batch) else ""
     )
+    latency_panel = render_latency_panel(latency_cw or {})
+
+    # Aggregate-table with_skill row(s). When cold/warm scored summaries are present,
+    # split with_skill into two rows so the parse-cache latency shows inline.
+    def _ws_row(label: str, d: dict) -> str:
+        dur = d.get("total_duration_ms") or d.get("session_duration_ms") or d.get("mean_duration_ms")
+        return (f'<tr><td class="cond-with">{label}</td>'
+                f'<td>{fmt_pct(d.get("accuracy"))}</td>'
+                f'<td>{d.get("n_correct","—")}</td><td>{d.get("n_wrong","—")}</td>'
+                f'<td>{d.get("n_missing","—")}</td>'
+                f'<td>{fmt_money(d.get("token_cost_usd"))}</td>'
+                f'<td>{fmt_money(d.get("credit_cost_usd"))}</td>'
+                f'<td><b>{fmt_money(d.get("total_cost_usd"))}</b></td>'
+                f'<td>{fmt_seconds(dur)}</td></tr>')
+    if ws_cold and ws_warm:
+        with_skill_rows = (_ws_row("with_skill (cold)", ws_cold) + "\n      "
+                           + _ws_row("with_skill (warm)", ws_warm))
+        cache_note = ('<p class="caveat">with_skill split by LlamaCloud parse-cache state '
+                      '(cold = first parse / new content hash; warm = cache hit). Accuracy and credit '
+                      'cost are cache-invariant — same parsed content, same per-page billing; only '
+                      'latency (and Claude token cost) vary.</p>')
+    else:
+        with_skill_rows = _ws_row("with_skill", with_s)
+        cache_note = ""
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -565,6 +695,9 @@ body {{ font-family: 'Overused Grotesk', -apple-system, sans-serif; background: 
   font-size: 0.85rem; margin-bottom: 1rem; }}
 .warn-callout code {{ background: var(--bg-alt); padding: 0.05rem 0.3rem; border-radius: 3px; font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; }}
 .discipline-note {{ font-size: 0.85rem; color: var(--text); margin: 0.5rem 0 0.3rem; }}
+.cost-note {{ font-size: 0.83rem; color: var(--text-dim); margin: -1.8rem 0 2.2rem; }}
+.cost-note .cond-with {{ color: var(--purple); }} .cost-note .cond-no {{ color: var(--orange); }}
+.cost-col {{ color: var(--text-dim); }}
 .caveat {{ font-size: 0.75rem; color: var(--text-dim); font-style: italic; margin-bottom: 2.5rem; }}
 footer {{ text-align: center; padding: 2rem 1rem; color: var(--text-dim); font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; }}
 </style>
@@ -585,13 +718,16 @@ footer {{ text-align: center; padding: 2rem 1rem; color: var(--text-dim); font-f
 
   <div class="section-label">Aggregate comparison · with_skill vs no_skill</div>
   <table class="cmp-table">
-    <thead><tr><th>condition</th><th>accuracy</th><th>correct</th><th>wrong</th><th>missing</th><th>total cost</th><th>total/session duration</th></tr></thead>
+    <thead><tr><th>condition</th><th>accuracy</th><th>correct</th><th>wrong</th><th>missing</th><th class="cost-col">token cost</th><th class="cost-col">credit cost</th><th class="cost-col">total cost</th><th>total/session duration</th></tr></thead>
     <tbody>
       {v1_row}
-      <tr><td class="cond-with">with_skill</td><td>{fmt_pct(with_s.get('accuracy'))}</td><td>{with_s.get('n_correct','—')}</td><td>{with_s.get('n_wrong','—')}</td><td>{with_s.get('n_missing','—')}</td><td>{fmt_money(with_s.get('total_cost_usd'))}</td><td>{fmt_seconds(with_s.get('total_duration_ms') or with_s.get('session_duration_ms') or with_s.get('mean_duration_ms'))}</td></tr>
-      <tr><td class="cond-no">no_skill</td><td>{fmt_pct(no_s.get('accuracy'))}</td><td>{no_s.get('n_correct','—')}</td><td>{no_s.get('n_wrong','—')}</td><td>{no_s.get('n_missing','—')}</td><td>{fmt_money(no_s.get('total_cost_usd'))}</td><td>{fmt_seconds(no_s.get('total_duration_ms') or no_s.get('session_duration_ms') or no_s.get('mean_duration_ms'))}</td></tr>
+      {with_skill_rows}
+      <tr><td class="cond-no">no_skill</td><td>{fmt_pct(no_s.get('accuracy'))}</td><td>{no_s.get('n_correct','—')}</td><td>{no_s.get('n_wrong','—')}</td><td>{no_s.get('n_missing','—')}</td><td>{fmt_money(no_s.get('token_cost_usd'))}</td><td>{fmt_money(no_s.get('credit_cost_usd'))}</td><td><b>{fmt_money(no_s.get('total_cost_usd'))}</b></td><td>{fmt_seconds(no_s.get('total_duration_ms') or no_s.get('session_duration_ms') or no_s.get('mean_duration_ms'))}</td></tr>
     </tbody>
   </table>
+  {cache_note}
+  {cost_note_html}
+  {latency_panel}
 
   {mode_cmp_html}
 

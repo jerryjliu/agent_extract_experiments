@@ -1,0 +1,47 @@
+{
+  "dataset": "ffiec_call_reports",
+  "cache_mode": "cold",
+  "extract_tier": "agentic",
+  "parse_tier": "agentic",
+  "cold_method": "pypdf-reserialize (new content hash)",
+  "label": "pilot",
+  "n_docs": 3,
+  "n_ok": 3,
+  "total_pages": 185,
+  "wall_sum_s": 297.4,
+  "wall_min_s": 82.0,
+  "wall_median_s": 102.3,
+  "wall_max_s": 113.1,
+  "rows": [
+    {
+      "doc_key": "507152_2024-09-30",
+      "pages": 58,
+      "upload_s": 1.38,
+      "extract_s": 100.9,
+      "wall_s": 102.28,
+      "status": "COMPLETED",
+      "job_id": "ext-t2sf1b2xz11beqlz6y8srstmt35m",
+      "error": null
+    },
+    {
+      "doc_key": "207872_2024-09-30",
+      "pages": 58,
+      "upload_s": 1.16,
+      "extract_s": 80.85,
+      "wall_s": 82.01,
+      "status": "COMPLETED",
+      "job_id": "ext-qzsnnium9cdngshz4hrc6bs3wdak",
+      "error": null
+    },
+    {
+      "doc_key": "264772_2024-09-30",
+      "pages": 69,
+      "upload_s": 1.4,
+      "extract_s": 111.66,
+      "wall_s": 113.06,
+      "status": "COMPLETED",
+      "job_id": "ext-7x4fph3sunotgt3663eg8jhkfnaz",
+      "error": null
+    }
+  ]
+}

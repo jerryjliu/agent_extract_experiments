@@ -32,8 +32,62 @@ def _secs(ms: float | None) -> str:
     return f"{ms/1000:.0f}s" if isinstance(ms, (int, float)) and ms else "—"
 
 
+def _ratio_str(cost_with: float | None, cost_no: float | None) -> str:
+    """Direction-aware total-cost comparison. with_skill can be cheaper OR pricier
+    than no_skill once LlamaCloud credits are included."""
+    if not (cost_with and cost_no):
+        return "—"
+    if cost_no >= cost_with:
+        return f"{cost_no/cost_with:.1f}× cheaper"
+    return f"{cost_with/cost_no:.1f}× pricier"
+
+
+def _wall_cold_warm(r: dict) -> tuple[str, str]:
+    """(cold, warm) with_skill wall strings. Uses the cold/warm experiment when present,
+    else falls back to the single canonical wall in the cold slot."""
+    if r.get("lat_cold") or r.get("lat_warm"):
+        cold = _secs((r["lat_cold"] or 0) * 1000) if r.get("lat_cold") else "—"
+        warm = _secs((r["lat_warm"] or 0) * 1000) if r.get("lat_warm") else "—"
+        return cold, warm
+    return _secs(r.get("wall_w")), "—"
+
+
+def _ratio_html(cost_with: float | None, cost_no: float | None) -> str:
+    if not (cost_with and cost_no):
+        return '<span class="dim">—</span>'
+    cheaper = cost_no >= cost_with
+    cls = "pos" if cheaper else "neg"
+    return f'<span class="{cls}">{_ratio_str(cost_with, cost_no)}</span>'
+
+
 def _load(p: Path) -> dict:
     return json.loads(p.read_text()) if p.exists() else {}
+
+
+def _cost_sentence(rows: list[dict]) -> str:
+    """Data-driven replacement for the old hardcoded 'with_skill is 3-8x cheaper'
+    cost narrative — now that total cost includes LlamaCloud credits."""
+    tok = [r["token_ratio"] for r in rows if r.get("token_ratio")]
+    pairs = [(r["tot_w"], r["tot_n"]) for r in rows if r.get("tot_w") and r.get("tot_n")]
+    pricier = [w / n for (w, n) in pairs if w > n]
+    cheaper = [n / w for (w, n) in pairs if n >= w]
+    parts: list[str] = []
+    if tok:
+        parts.append(f"On Claude tokens alone, with_skill is {min(tok):.1f}–{max(tok):.1f}× cheaper "
+                     "(it offloads document reading to LlamaCloud).")
+    parts.append("But LlamaExtract bills per page — ~$0.03125/page at agentic parse+extract "
+                 "($0.00125/credit) — so credit cost scales with corpus pages, not Claude work.")
+    if pricier and not cheaper:
+        parts.append(f"Across all {len(pairs)} corpora those credits more than offset the token saving: "
+                     f"with_skill total cost runs {min(pricier):.1f}–{max(pricier):.1f}× higher than no_skill.")
+    elif pricier and cheaper:
+        parts.append(f"On total cost the result is mixed — with_skill is pricier on {len(pricier)}/{len(pairs)} "
+                     f"corpora and still cheaper on {len(cheaper)}/{len(pairs)}.")
+    elif cheaper:
+        parts.append(f"Even with credits included, with_skill total cost stays "
+                     f"{min(cheaper):.1f}–{max(cheaper):.1f}× cheaper than no_skill.")
+    parts.append("Token, credit, and total are shown as separate line items above.")
+    return " ".join(parts)
 
 
 def _md_bold_to_html(s: str) -> str:
@@ -80,7 +134,7 @@ def _delta_html(d: float | None) -> str:
     return f'<span class="{cls}">{"+" if d>=0 else ""}{d*100:.1f}pp</span>'
 
 
-def render_html(rows: list[dict], date: str | None) -> str:
+def render_html(rows: list[dict], date: str | None, cost_sentence: str) -> str:
     import html as _h
     acc_tr = "\n".join(
         f"<tr><td class='name'>{_h.escape(r['name'])}</td><td>{r['n']}</td>"
@@ -88,13 +142,47 @@ def render_html(rows: list[dict], date: str | None) -> str:
         f"<td>{_delta_html(r['acc_delta'])}</td><td class='why'>{r['why_html']}</td></tr>"
         for r in rows
     )
-    cost_tr = "\n".join(
-        f"<tr><td class='name'>{_h.escape(r['name'])}</td>"
-        f"<td class='with'>{_money(r['cost_w'])}</td><td class='no'>{_money(r['cost_n'])}</td>"
-        f"<td><span class='pos'>{r['cost_ratio']:.1f}× cheaper</span></td>"
-        f"<td class='with'>{_secs(r['wall_w'])}</td><td class='no'>{_secs(r['wall_n'])}</td></tr>"
-        for r in rows if r["cost_ratio"]
-    )
+    def _cost_row(r: dict) -> str:
+        pages = f"{r['pages_w']:,}" if isinstance(r["pages_w"], int) else "—"
+        return (
+            "<tr>"
+            f"<td class='name'>{_h.escape(r['name'])}</td>"
+            f"<td class='with'>{_money(r['tok_w'])}</td>"
+            f"<td class='with'>{_money(r['cred_w'])}</td>"
+            f"<td class='with'><b>{_money(r['tot_w'])}</b></td>"
+            f"<td class='no'>{_money(r['tot_n'])}</td>"
+            f"<td>{_ratio_html(r['tot_w'], r['tot_n'])}</td>"
+            f"<td>{pages}</td>"
+            f"<td class='with'>{_wall_cold_warm(r)[0]}</td>"
+            f"<td class='with'>{_wall_cold_warm(r)[1]}</td>"
+            f"<td class='no'>{_secs(r['wall_n'])}</td></tr>"
+        )
+    cost_tr = "\n".join(_cost_row(r) for r in rows)
+
+    lat_rows = [r for r in rows if r.get("lat_cold") and r.get("lat_warm")]
+    lat_section = ""
+    if lat_rows:
+        lat_tr = "\n".join(
+            f"<tr><td class='name'>{_h.escape(r['name'])}</td>"
+            f"<td class='no'>{_secs((r['lat_cold'] or 0)*1000)}</td>"
+            f"<td class='with'>{_secs((r['lat_warm'] or 0)*1000)}</td>"
+            f"<td><span class='pos'>{r['lat_speedup']:.1f}×</span></td></tr>"
+            for r in lat_rows
+        )
+        lat_section = f"""
+  <div class="section-label">Parse cache · cold vs warm latency</div>
+  <p class="intro" style="margin-bottom:0.6rem">Same corpus and config — only the LlamaCloud
+  <b>parse</b> cache differs (cached by document content hash). A warm cache skips re-parsing.
+  <b>Credit cost is identical per pass</b> (billed per page) — only latency changes. No API toggle
+  disables the cache on the extract path, and any parse-option or tier change busts it. The batch
+  speedup below understates the isolated cache effect (the batch parallelizes parses and carries fixed
+  orchestration overhead, and is noisy run-to-run); a per-file probe shows ~7×.</p>
+  <table>
+    <thead><tr><th>Dataset</th><th class="no">Cold wall</th><th class="with">Warm wall</th><th>Speedup</th></tr></thead>
+    <tbody>
+{lat_tr}
+    </tbody>
+  </table>"""
     links = "\n".join(
         f"<li><b>{_h.escape(r['name'])}</b> <span class='dim'>({_h.escape(r['src_label'])})</span> — "
         f"<a href='{r['src'].relative_to(RESULTS)}/report.html'>report.html</a></li>"
@@ -164,16 +252,19 @@ footer{{text-align:center;padding:2rem 1rem;color:var(--text-dim);font-family:'I
   </table>
 
   <div class="section-label">Cost &amp; latency</div>
+  <p class="intro" style="margin-bottom:0.6rem">Total cost = <span class="with">Claude tokens</span> + LlamaCloud <b>credits</b>
+  (parse + extract, billed per page at $0.00125/credit). <span class="no">no_skill</span> never calls LlamaCloud, so its credit cost is $0 and its total equals its token cost.</p>
   <table>
-    <thead><tr><th>Dataset</th><th class="with">Cost (with)</th><th class="no">Cost (no)</th><th>Cost saving</th><th class="with">Wall (with)</th><th class="no">Wall (no)</th></tr></thead>
+    <thead><tr><th>Dataset</th><th class="with">Token (with)</th><th class="with">Credit (with)</th><th class="with">Total (with)</th><th class="no">Total (no)</th><th>Total vs no</th><th>Pages</th><th class="with">Wall cold (with)</th><th class="with">Wall warm (with)</th><th class="no">Wall (no)</th></tr></thead>
     <tbody>
 {cost_tr}
     </tbody>
   </table>
+{lat_section}
 
   <div class="section-label">What holds across every dataset</div>
   <ul class="findings">
-    <li><b>Cost: with_skill is 3–8× cheaper, consistently.</b> Cost tracks Claude tokens; the skill offloads document reading to LlamaCloud, so the Claude side does little.</li>
+    <li><b>Cost: total = Claude tokens + LlamaCloud credits.</b> {_h.escape(cost_sentence)}</li>
     <li><b>Accuracy is deterministic and reproduces to the field.</b> The with-vs-no gap is set by whether correct extraction needs a <i>convention applied after reading</i> (SEC unit scaling) or <i>robust free-text matching</i> (ClinicalTrials) — things the delegated extractor doesn't do — versus face-value cell reads where it keeps pace (FFIEC, IRS).</li>
     <li><b>Wall time for with_skill is dominated by a variable LlamaCloud tail, not Claude.</b> <code>extract.py</code> uploads each PDF and polls a remote job. In a fast run that tail is ~15s and with_skill finishes in ~63–69s across datasets (4–7× faster than no_skill); under load the same runs took 196–805s. The Claude-side time is small and stable, so the swing is external I/O the cost meter never sees. For batch SLAs, watch that tail — not cost.</li>
   </ul>
@@ -202,24 +293,38 @@ def main() -> None:
         if not sb:
             continue
         inv = (_load(src / "invocation_stats.json").get("batch") or {})
+        latcw = _load(src / "latency_cold_warm.json")
+        latb = (latcw.get("batch") or {}) if latcw else {}
+        lat_cold = (latb.get("cold") or {}).get("wall_s")
+        lat_warm = (latb.get("warm") or {}).get("wall_s")
+        lat_speedup = latb.get("speedup")
         ws, ns = sb.get("with_skill", {}) or {}, sb.get("no_skill", {}) or {}
         acc_w, acc_n = ws.get("accuracy"), ns.get("accuracy")
-        cost_w, cost_n = ws.get("total_cost_usd"), ns.get("total_cost_usd")
+        # Three-way cost split: token (Claude) + credit (LlamaCloud) = total.
+        tok_w, cred_w, tot_w = ws.get("token_cost_usd"), ws.get("credit_cost_usd"), ws.get("total_cost_usd")
+        tok_n, tot_n = ns.get("token_cost_usd"), ns.get("total_cost_usd")  # no_skill credit == 0
+        pages_w = ws.get("n_pages")
         wall_w = ws.get("total_duration_ms") or ws.get("session_duration_ms")
         wall_n = ns.get("total_duration_ms") or ns.get("session_duration_ms")
         acc_delta = (acc_w - acc_n) if (acc_w is not None and acc_n is not None) else None
-        cost_ratio = (cost_n / cost_w) if (cost_w and cost_n) else None
+        # total-cost ratio (no/with): >1 => with_skill cheaper, <1 => pricier
+        cost_ratio = (tot_n / tot_w) if (tot_w and tot_n) else None
+        token_ratio = (tok_n / tok_w) if (tok_w and tok_n) else None
         rows.append({
             "name": ds.display_name, "slug": slug, "src": src, "src_label": src_label,
             "n": ws.get("n_runs") or ns.get("n_runs") or 0,
             "acc_w": acc_w, "acc_n": acc_n, "acc_delta": acc_delta,
-            "cost_w": cost_w, "cost_n": cost_n, "cost_ratio": cost_ratio,
+            "tok_w": tok_w, "cred_w": cred_w, "tot_w": tot_w, "tok_n": tok_n, "tot_n": tot_n,
+            "pages_w": pages_w, "cost_ratio": cost_ratio, "token_ratio": token_ratio,
             "wall_w": wall_w, "wall_n": wall_n,
+            "lat_cold": lat_cold, "lat_warm": lat_warm, "lat_speedup": lat_speedup,
             "skill": (inv.get("with_skill") or {}).get("n_invoked_skill"),
             "cli": (inv.get("with_skill") or {}).get("extract_calls"),
             "why": FINDINGS.get(slug, ""),
             "why_html": _md_bold_to_html(FINDINGS.get(slug, "")),
         })
+
+    cost_sentence = _cost_sentence(rows)
 
     L: list[str] = ["# Cross-Dataset Batch-Mode Comparison", ""]
     if args.date:
@@ -246,20 +351,47 @@ def main() -> None:
         "",
         "## Cost & latency",
         "",
-        "| Dataset | Cost (with) | Cost (no) | Cost saving | Wall (with) | Wall (no) |",
-        "|---|---|---|---|---|---|",
+        "Total cost = Claude tokens + LlamaCloud credits (parse + extract, billed per page at "
+        "$0.00125/credit). `no_skill` never calls LlamaCloud, so its credit cost is $0 and its total "
+        "equals its token cost.",
+        "",
+        "| Dataset | Token (with) | Credit (with) | Total (with) | Total (no) | Total vs no | Pages | Wall cold (with) | Wall warm (with) | Wall (no) |",
+        "|---|---|---|---|---|---|---|---|---|---|",
     ]
     for r in rows:
-        ratio = f"{r['cost_ratio']:.1f}× cheaper" if r["cost_ratio"] else "—"
-        L.append(f"| {r['name']} | {_money(r['cost_w'])} | {_money(r['cost_n'])} | {ratio} | "
-                 f"{_secs(r['wall_w'])} | {_secs(r['wall_n'])} |")
+        pages = f"{r['pages_w']:,}" if isinstance(r["pages_w"], int) else "—"
+        wall_cold, wall_warm = _wall_cold_warm(r)
+        L.append(f"| {r['name']} | {_money(r['tok_w'])} | {_money(r['cred_w'])} | {_money(r['tot_w'])} | "
+                 f"{_money(r['tot_n'])} | {_ratio_str(r['tot_w'], r['tot_n'])} | {pages} | "
+                 f"{wall_cold} | {wall_warm} | {_secs(r['wall_n'])} |")
+
+    lat_rows = [r for r in rows if r.get("lat_cold") and r.get("lat_warm")]
+    if lat_rows:
+        L += [
+            "",
+            "## Parse-cache latency (cold vs warm)",
+            "",
+            "Same corpus and config — only the LlamaCloud parse cache differs. The parse step is "
+            "cached by document content hash; a warm cache skips re-parsing. **Credit cost is identical "
+            "per pass** (billed per page) — only latency changes. There is no API toggle to disable the "
+            "cache on the extract path, and any change to parse options or tier busts it. The batch "
+            "speedup below understates the isolated cache effect (batch parallelizes parses across Claude "
+            "Task subagents and carries fixed orchestration overhead, and is noisy run-to-run); a per-file "
+            "probe shows ~7×. See the dataset report for the breakdown.",
+            "",
+            "| Dataset | Cold wall | Warm wall | Speedup |",
+            "|---|---|---|---|",
+        ]
+        for r in lat_rows:
+            sp = f"{r['lat_speedup']:.1f}×" if r.get("lat_speedup") else "—"
+            L.append(f"| {r['name']} | {_secs((r['lat_cold'] or 0)*1000)} | "
+                     f"{_secs((r['lat_warm'] or 0)*1000)} | {sp} |")
 
     L += [
         "",
         "## What holds across every dataset",
         "",
-        "- **Cost: with_skill is 3–8× cheaper, consistently.** Cost tracks Claude tokens; the skill "
-        "offloads document reading to LlamaCloud, so the Claude side does little.",
+        f"- **Cost: total = Claude tokens + LlamaCloud credits.** {cost_sentence}",
         "- **Accuracy is deterministic and reproduces to the field.** The with-vs-no gap is set by "
         "whether correct extraction needs a *convention applied after reading* (SEC unit scaling) or "
         "*robust free-text matching* (ClinicalTrials) — things the delegated extractor doesn't do — "
@@ -280,7 +412,7 @@ def main() -> None:
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text("\n".join(L))
-    args.html_output.write_text(render_html(rows, args.date))
+    args.html_output.write_text(render_html(rows, args.date, cost_sentence))
     print(f"Wrote {args.output} and {args.html_output} ({len(rows)} datasets)")
 
 

@@ -17,12 +17,22 @@ Run:
   python scripts/run_benchmark.py --mode batch --limit 2           # batch smoke (first 2 PDFs)
   python scripts/run_benchmark.py --mode batch --condition with_skill
   python scripts/run_benchmark.py --mode batch --dry-run
+  # cost-effective extract mode (with_skill only; no_skill ignores tiers):
+  python scripts/run_benchmark.py --mode batch --extract-tier cost_effective
+  # decouple the two stages — cheap extraction over a high-fidelity parse:
+  python scripts/run_benchmark.py --mode batch --extract-tier cost_effective --parse-tier agentic
+
+The llama-extract CLI accepts --tier (extraction) and --parse-tier (parsing)
+independently; this orchestrator exposes both as --extract-tier / --parse-tier and
+passes them to with_skill sessions as a tool-usage directive in the prompt (no_skill
+has no extract CLI, so its prompt is unchanged).
 """
 from __future__ import annotations
 
 import argparse
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -46,8 +56,53 @@ EMPTY_MCP_CONFIG = REPO_ROOT / "scripts" / "empty_mcp_config.json"
 CONDITIONS = ("with_skill", "no_skill")
 MODEL = "claude-opus-4-7"
 
+# Tier configuration for the llama-extract skill. The CLI (scripts/extract.py)
+# accepts --tier (extraction) and --parse-tier (parsing) independently; the
+# benchmark exposes both so we can A/B the cost-effective mode against agentic.
+# The tiers reach the run via the with_skill prompt (a tool-usage directive that
+# names the exact CLI flags) — no_skill has no extract CLI so its prompt is
+# unchanged. verify_tiers_in_trace() then confirms what actually ran.
+EXTRACT_TIER_CHOICES = ("cost_effective", "agentic")
+PARSE_TIER_CHOICES = ("fast", "cost_effective", "agentic", "agentic_plus")
+DEFAULT_EXTRACT_TIER = "agentic"
+DEFAULT_PARSE_TIER = "agentic"
 
-def _common_flags(condition: str, system_prompt: str) -> list[str]:
+
+def verify_tiers_in_trace(trace_path: Path, extract_tier: str, parse_tier: str) -> str:
+    """Best-effort check that extract.py actually ran at the configured tiers.
+
+    Inspects the EXECUTED extract.py Bash commands in the session trace — i.e. the
+    `… extract.py … --tier <X> --parse-tier <Y>` strings — and reports the count of
+    each (tier, parse_tier) pair seen. We key off the command flags, not extract.py's
+    `--verbose` stderr line, because (a) that line's source contains the literal
+    f-string template `{args.tier}` which a file-read drops into the trace, and (b)
+    background-subagent stderr isn't in the main trace anyway. Reading SKILL.md (whose
+    example shows `--tier agentic`) can contribute a stray non-configured count, so we
+    accept as long as the configured pair is present and is the plurality.
+
+    Returns "ok (...)", "mismatch: ...", or "unverified (...)" — never raises.
+    """
+    if not trace_path.exists():
+        return "unverified (no trace)"
+    text = trace_path.read_text(errors="replace")
+    pairs = re.findall(
+        r"extract\.py[^\"]*?--tier\s+([a-z_]+)[^\"]*?--parse-tier\s+([a-z_]+)", text)
+    if not pairs:
+        return "unverified (no extract.py command found in trace)"
+    counts: dict[tuple[str, str], int] = {}
+    for t, p in pairs:
+        counts[(t, p)] = counts.get((t, p), 0) + 1
+    want = (extract_tier, parse_tier)
+    breakdown = ", ".join(f"{t}/{p}×{n}" for (t, p), n in sorted(counts.items(), key=lambda kv: -kv[1]))
+    want_n = counts.get(want, 0)
+    if want_n == 0:
+        return f"mismatch: expected {extract_tier}/{parse_tier}, saw none; commands: {breakdown}"
+    if want_n < max(counts.values()):
+        return f"mismatch: {extract_tier}/{parse_tier} not the plurality; commands: {breakdown}"
+    return f"ok ({want_n} extract.py call(s) at {extract_tier}/{parse_tier}; commands: {breakdown})"
+
+
+def _common_flags(condition: str, system_prompt: str, no_skill_agent: str = "bare") -> list[str]:
     common = [
         "claude",
         "--print",
@@ -64,23 +119,45 @@ def _common_flags(condition: str, system_prompt: str) -> list[str]:
     if condition == "with_skill":
         common += ["--setting-sources", "project,local"]
     elif condition == "no_skill":
-        common += ["--bare"]
+        if no_skill_agent == "full":
+            # Full 27-tool agent, identical flags to with_skill, so the only A/B
+            # variable is the skill itself. The llama-extract skill is NOT staged
+            # into a no_skill run dir, so it never loads (verify_ab stays clean) —
+            # this is "full Claude Code without the llama-extract skill installed".
+            common += ["--setting-sources", "project,local"]
+        else:
+            common += ["--bare"]
     else:
         raise ValueError(f"unknown condition: {condition}")
     return common
 
 
-def resolve_command(dataset: DatasetConfig, condition: str) -> list[str]:
+def _skill_tiers(condition: str, extract_tier: str, parse_tier: str) -> tuple[str | None, str | None]:
+    """Tiers to pass the prompt builder. Only with_skill invokes the extract CLI;
+    no_skill reads PDFs directly, so it gets no tier directive (prompt unchanged)."""
+    if condition == "with_skill":
+        return extract_tier, parse_tier
+    return None, None
+
+
+def resolve_command(dataset: DatasetConfig, condition: str,
+                    extract_tier: str = DEFAULT_EXTRACT_TIER,
+                    parse_tier: str = DEFAULT_PARSE_TIER) -> list[str]:
     """Build the claude -p invocation flags for a given (per-file) condition."""
+    et, pt = _skill_tiers(condition, extract_tier, parse_tier)
     cmd = _common_flags(condition, SYSTEM_PROMPT_APPEND)
-    cmd.append(build_extraction_prompt(dataset))
+    cmd.append(build_extraction_prompt(dataset, extract_tier=et, parse_tier=pt))
     return cmd
 
 
-def resolve_command_batch(dataset: DatasetConfig, condition: str, doc_keys: list[str]) -> list[str]:
+def resolve_command_batch(dataset: DatasetConfig, condition: str, doc_keys: list[str],
+                          extract_tier: str = DEFAULT_EXTRACT_TIER,
+                          parse_tier: str = DEFAULT_PARSE_TIER,
+                          no_skill_agent: str = "bare") -> list[str]:
     """Build the claude -p invocation flags for a batch-mode condition."""
-    cmd = _common_flags(condition, SYSTEM_PROMPT_APPEND_BATCH)
-    cmd.append(build_batch_prompt(dataset, doc_keys))
+    et, pt = _skill_tiers(condition, extract_tier, parse_tier)
+    cmd = _common_flags(condition, SYSTEM_PROMPT_APPEND_BATCH, no_skill_agent=no_skill_agent)
+    cmd.append(build_batch_prompt(dataset, doc_keys, extract_tier=et, parse_tier=pt))
     return cmd
 
 
@@ -96,17 +173,21 @@ def stage_run_dir(run_dir: Path, pdf_path: Path, condition: str) -> None:
         shutil.copytree(LLAMA_EXTRACT_SKILL, target)
 
 
-def stage_batch_dir(dataset: DatasetConfig, condition: str, records: list[dict[str, Any]]) -> Path:
+def stage_batch_dir(dataset: DatasetConfig, condition: str, records: list[dict[str, Any]],
+                    tag: str = "") -> Path:
     """Build the per-condition batch working directory.
 
     Layout:
-      runs_batch/<slug>/<condition>/
+      runs_batch/<slug>/<condition>[__<tag>]/
         inputs/<doc_key>.pdf    # symlink to data/<slug>/pdfs/<doc_key>.pdf
         outputs/                # empty; Claude writes here
         schema.json             # pre-staged JSON Schema dump
         .claude/skills/...      # with-skill only
+
+    `tag` namespaces the run (e.g. "fullagent") so experiments never clobber the
+    canonical <condition> dirs.
     """
-    run_dir = (REPO_ROOT / dataset.batch_session_dir(condition)).resolve()
+    run_dir = (REPO_ROOT / dataset.batch_session_dir(condition, tag)).resolve()
     if run_dir.exists():
         shutil.rmtree(run_dir)
     run_dir.mkdir(parents=True)
@@ -166,7 +247,9 @@ def verify_ab(init_event: dict[str, Any] | None, condition: str) -> str | None:
 
 
 def run_one(dataset: DatasetConfig, record: dict[str, Any], condition: str,
-            dry_run: bool = False) -> dict[str, Any]:
+            dry_run: bool = False,
+            extract_tier: str = DEFAULT_EXTRACT_TIER,
+            parse_tier: str = DEFAULT_PARSE_TIER) -> dict[str, Any]:
     """Execute one (record, condition) run; return a summary dict."""
     doc_key = dataset.doc_key_fn(record)
     pdf_path = dataset.pdf_path(record)
@@ -174,13 +257,17 @@ def run_one(dataset: DatasetConfig, record: dict[str, Any], condition: str,
         return {"doc_key": doc_key, "condition": condition, "error": f"PDF not found: {pdf_path}"}
 
     run_dir = dataset.run_dir(record, condition)
-    cmd = resolve_command(dataset, condition)
+    cmd = resolve_command(dataset, condition, extract_tier, parse_tier)
+    # Tiers only apply to the skill (with_skill); no_skill reads PDFs directly.
+    tiers = {"extract_tier": extract_tier, "parse_tier": parse_tier} if condition == "with_skill" else {}
 
     if dry_run:
         # Do NOT call stage_run_dir in dry-run — staging is destructive (rmtree).
         print(f"[DRY] {doc_key} {condition} cwd={run_dir}")
+        if tiers:
+            print(f"      tiers: extract={extract_tier} parse={parse_tier}")
         print(f"      cmd={' '.join(cmd[:8])} ... (prompt length {len(cmd[-1])} chars)")
-        return {"doc_key": doc_key, "condition": condition, "dry_run": True}
+        return {"doc_key": doc_key, "condition": condition, "dry_run": True, **tiers}
 
     stage_run_dir(run_dir, pdf_path, condition)
 
@@ -204,7 +291,10 @@ def run_one(dataset: DatasetConfig, record: dict[str, Any], condition: str,
         "ab_error": ab_error,
         "output_present": (run_dir / "output.json").exists(),
         "skills_loaded": init_event.get("skills") if init_event else None,
+        **tiers,
     }
+    if condition == "with_skill":
+        summary["tier_verification"] = verify_tiers_in_trace(trace_path, extract_tier, parse_tier)
     if result_event is not None:
         summary.update({
             "total_cost_usd": result_event.get("total_cost_usd"),
@@ -218,8 +308,8 @@ def run_one(dataset: DatasetConfig, record: dict[str, Any], condition: str,
 
 
 def fanout_outputs(dataset: DatasetConfig, condition: str, records: list[dict[str, Any]],
-                   session_dir: Path) -> dict[str, bool]:
-    """Re-stage runs_batch/<slug>/<cond>/outputs/<key>.json into per-doc dirs the scorer reads.
+                   session_dir: Path, tag: str = "") -> dict[str, bool]:
+    """Re-stage runs_batch/<slug>/<cond>[__<tag>]/outputs/<key>.json into per-doc dirs the scorer reads.
 
     Returns: {doc_key: output_present}
     """
@@ -229,13 +319,16 @@ def fanout_outputs(dataset: DatasetConfig, condition: str, records: list[dict[st
     for record in records:
         doc_key = dataset.doc_key_fn(record)
         src = outputs_dir / f"{doc_key}.json"
-        per_doc_dir = REPO_ROOT / dataset.batch_fanout_dir(record, condition)
+        per_doc_dir = REPO_ROOT / dataset.batch_fanout_dir(record, condition, tag)
         if per_doc_dir.exists():
             shutil.rmtree(per_doc_dir)
         per_doc_dir.mkdir(parents=True)
         if src.exists():
             shutil.copy(src, per_doc_dir / "output.json")
             presence[doc_key] = True
+            usage_src = outputs_dir / f"{doc_key}.usage.json"
+            if usage_src.exists():
+                shutil.copy(usage_src, per_doc_dir / "output.usage.json")
         else:
             presence[doc_key] = False
         if session_trace.exists():
@@ -244,19 +337,38 @@ def fanout_outputs(dataset: DatasetConfig, condition: str, records: list[dict[st
 
 
 def run_batch(dataset: DatasetConfig, records: list[dict[str, Any]], condition: str,
-              dry_run: bool = False) -> dict[str, Any]:
-    """Execute one batch session for `condition` over all `records`; return summary."""
+              dry_run: bool = False,
+              extract_tier: str = DEFAULT_EXTRACT_TIER,
+              parse_tier: str = DEFAULT_PARSE_TIER,
+              no_skill_agent: str = "bare",
+              run_tag: str = "") -> dict[str, Any]:
+    """Execute one batch session for `condition` over all `records`; return summary.
+
+    no_skill_agent: "bare" (default, 3-tool agent) or "full" (27-tool agent, skill
+        unstaged) — only affects the no_skill condition.
+    run_tag: namespaces output dirs (<condition>__<tag>) so experiments never clobber
+        the canonical runs.
+    """
     if not records:
         return {"condition": condition, "error": "no records"}
 
     doc_keys = [dataset.doc_key_fn(r) for r in records]
-    cmd = resolve_command_batch(dataset, condition, doc_keys)
+    cmd = resolve_command_batch(dataset, condition, doc_keys, extract_tier, parse_tier,
+                                no_skill_agent=no_skill_agent)
+    # Tiers only apply to the skill (with_skill); no_skill reads PDFs directly.
+    tiers = {"extract_tier": extract_tier, "parse_tier": parse_tier} if condition == "with_skill" else {}
+    # Record the no_skill agent mode for traceability (only meaningful for no_skill).
+    agent_meta = {"no_skill_agent": no_skill_agent} if condition == "no_skill" else {}
 
     if dry_run:
         # Do NOT call stage_batch_dir in dry-run — staging is destructive (rmtree).
-        intended_dir = (REPO_ROOT / dataset.batch_session_dir(condition)).resolve()
+        intended_dir = (REPO_ROOT / dataset.batch_session_dir(condition, run_tag)).resolve()
         rel = intended_dir.relative_to(REPO_ROOT)
         print(f"[DRY] batch {condition} cwd={rel} (not staged)")
+        if agent_meta:
+            print(f"      no_skill_agent={no_skill_agent}")
+        if tiers:
+            print(f"      tiers: extract={extract_tier} parse={parse_tier}")
         print(f"      cmd={' '.join(cmd[:8])} ... (prompt length {len(cmd[-1])} chars)")
         print(f"      n_inputs={len(doc_keys)}  schema={rel}/schema.json")
         for record in records:
@@ -268,9 +380,9 @@ def run_batch(dataset: DatasetConfig, records: list[dict[str, Any]], condition: 
             print(f"        inputs/{dataset.doc_key_fn(record)}.pdf -> {src_rel}")
         if condition == "with_skill":
             print(f"      skill_staged={rel}/.claude/skills/llama-extract")
-        return {"condition": condition, "n_records": len(doc_keys), "dry_run": True}
+        return {"condition": condition, "n_records": len(doc_keys), "dry_run": True, **tiers, **agent_meta}
 
-    session_dir = stage_batch_dir(dataset, condition, records)
+    session_dir = stage_batch_dir(dataset, condition, records, tag=run_tag)
 
     trace_path = session_dir / "trace.jsonl"
     stderr_path = session_dir / "stderr.log"
@@ -289,9 +401,13 @@ def run_batch(dataset: DatasetConfig, records: list[dict[str, Any]], condition: 
         # phase when Claude uses the Task tool to launch background subagents.
         enriched = dict(result_event)
         enriched["wall_seconds_session"] = round(wall_seconds, 2)
+        if tiers:
+            enriched.update(tiers)
+        if agent_meta:
+            enriched.update(agent_meta)
         (session_dir / "session_result.json").write_text(json.dumps(enriched, indent=2))
 
-    presence = fanout_outputs(dataset, condition, records, session_dir)
+    presence = fanout_outputs(dataset, condition, records, session_dir, tag=run_tag)
 
     summary: dict[str, Any] = {
         "mode": "batch",
@@ -303,7 +419,11 @@ def run_batch(dataset: DatasetConfig, records: list[dict[str, Any]], condition: 
         "skills_loaded": init_event.get("skills") if init_event else None,
         "n_outputs_present": sum(1 for v in presence.values() if v),
         "missing_outputs": [k for k, v in presence.items() if not v],
+        **tiers,
+        **agent_meta,
     }
+    if condition == "with_skill":
+        summary["tier_verification"] = verify_tiers_in_trace(trace_path, extract_tier, parse_tier)
     if result_event is not None:
         summary.update({
             "total_cost_usd": result_event.get("total_cost_usd"),
@@ -331,6 +451,26 @@ def main() -> None:
     parser.add_argument("--mode", choices=["per_file", "batch"], default="per_file",
                         help="per_file = one claude -p per (record, condition); "
                              "batch = one claude -p per condition over the corpus.")
+    parser.add_argument("--extract-tier", dest="extract_tier",
+                        choices=list(EXTRACT_TIER_CHOICES), default=DEFAULT_EXTRACT_TIER,
+                        help="llama-extract EXTRACTION tier for with_skill runs (default: "
+                             f"{DEFAULT_EXTRACT_TIER}). 'cost_effective' = the cheaper, "
+                             "faster extraction mode. Ignored by no_skill.")
+    parser.add_argument("--parse-tier", dest="parse_tier",
+                        choices=list(PARSE_TIER_CHOICES), default=DEFAULT_PARSE_TIER,
+                        help="llama-extract PARSE tier for with_skill runs (default: "
+                             f"{DEFAULT_PARSE_TIER}), decoupled from --extract-tier so the "
+                             "parsing stage can be tuned independently. Ignored by no_skill.")
+    parser.add_argument("--no-skill-agent", dest="no_skill_agent",
+                        choices=["bare", "full"], default="bare",
+                        help="Agent harness for no_skill (batch mode). 'bare' (default) = "
+                             "3-tool agent (--bare); 'full' = the same 27-tool agent as "
+                             "with_skill but with the llama-extract skill not staged, i.e. "
+                             "'full Claude Code without the skill'. Use with --run-tag to "
+                             "avoid clobbering canonical no_skill artifacts.")
+    parser.add_argument("--run-tag", dest="run_tag", default="",
+                        help="Namespace suffix for batch output dirs (<condition>__<tag>) so "
+                             "experiments never overwrite the canonical runs. Empty = canonical.")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
@@ -360,11 +500,17 @@ def main() -> None:
     summaries: list[dict[str, Any]] = []
     results_dir = dataset.results_dir()
 
+    if "with_skill" in conditions:
+        print(f"with_skill tiers: extract={args.extract_tier} parse={args.parse_tier}"
+              + ("  [default]" if (args.extract_tier == DEFAULT_EXTRACT_TIER
+                                   and args.parse_tier == DEFAULT_PARSE_TIER) else ""))
+
     if args.mode == "per_file":
         for record in records:
             for cond in conditions:
                 print(f"=== {record.get('name', dataset.doc_key_fn(record))} | {cond} ===")
-                s = run_one(dataset, record, cond, dry_run=args.dry_run)
+                s = run_one(dataset, record, cond, dry_run=args.dry_run,
+                            extract_tier=args.extract_tier, parse_tier=args.parse_tier)
                 summaries.append(s)
                 if "error" in s:
                     print(f"  ERROR: {s['error']}")
@@ -378,6 +524,8 @@ def main() -> None:
                     cost_str = f"${cost:.4f}" if cost is not None else "n/a"
                     print(f"  exit={s['exit_code']}, wall={dur}s, cost={cost_str}, "
                           f"output={out}, ab={ab}")
+                    if s.get("tier_verification"):
+                        print(f"  tiers: {s['tier_verification']}")
 
         if not args.dry_run:
             results_dir.mkdir(parents=True, exist_ok=True)
@@ -386,8 +534,12 @@ def main() -> None:
 
     else:  # batch
         for cond in conditions:
-            print(f"=== BATCH ({len(records)} records) | {cond} ===")
-            s = run_batch(dataset, records, cond, dry_run=args.dry_run)
+            tag_note = f" [tag={args.run_tag}]" if args.run_tag else ""
+            agent_note = f" [no_skill_agent={args.no_skill_agent}]" if cond == "no_skill" and args.no_skill_agent != "bare" else ""
+            print(f"=== BATCH ({len(records)} records) | {cond}{agent_note}{tag_note} ===")
+            s = run_batch(dataset, records, cond, dry_run=args.dry_run,
+                          extract_tier=args.extract_tier, parse_tier=args.parse_tier,
+                          no_skill_agent=args.no_skill_agent, run_tag=args.run_tag)
             summaries.append(s)
             if "error" in s:
                 print(f"  ERROR: {s['error']}")
@@ -402,6 +554,8 @@ def main() -> None:
                 cost_str = f"${cost:.4f}" if cost is not None else "n/a"
                 print(f"  exit={s['exit_code']}, wall={dur}s, cost={cost_str}, "
                       f"outputs={n_out}/{len(records)}, ab={ab}")
+                if s.get("tier_verification"):
+                    print(f"  tiers: {s['tier_verification']}")
                 if missing:
                     print(f"  missing outputs: {missing}")
 

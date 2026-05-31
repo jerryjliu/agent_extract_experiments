@@ -1,0 +1,41 @@
+{
+  "dataset": "irs_form_990",
+  "n_docs": 11,
+  "total_pages": 1195,
+  "credit_cost_usd_per_pass": 37.34,
+  "batch": {
+    "cold": {
+      "label": "cold",
+      "exit_code": 0,
+      "wall_s": 753.94,
+      "token_cost_usd": 0.8188504999999999,
+      "num_turns": 25,
+      "extract_tier": "agentic",
+      "parse_tier": "agentic",
+      "accuracy": 0.935064935064935,
+      "n_correct": 144,
+      "n_wrong": 10,
+      "n_missing": 0,
+      "credit_cost_usd": 37.3438,
+      "total_cost_usd": 38.1627
+    },
+    "warm": {
+      "label": "warm",
+      "exit_code": 0,
+      "wall_s": 137.33,
+      "token_cost_usd": 0.6276339999999999,
+      "num_turns": 24,
+      "extract_tier": "agentic",
+      "parse_tier": "agentic",
+      "accuracy": 0.935064935064935,
+      "n_correct": 144,
+      "n_wrong": 10,
+      "n_missing": 0,
+      "credit_cost_usd": 37.3438,
+      "total_cost_usd": 37.9714
+    },
+    "speedup": 5.49
+  },
+  "per_file_pilot": {},
+  "note": "Same re-serialized files both passes; cold = first parse (new content hash), warm = parse-cache hit. Credit cost is identical per pass (billed per page); only latency differs."
+}

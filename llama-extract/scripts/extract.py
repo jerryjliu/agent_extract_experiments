@@ -79,6 +79,32 @@ def log(msg: str, verbose: bool) -> None:
         print(msg, file=sys.stderr)
 
 
+def _get(obj, key):
+    """Attr- or dict-style access; returns None if absent."""
+    if obj is None:
+        return None
+    if isinstance(obj, dict):
+        return obj.get(key)
+    return getattr(obj, key, None)
+
+
+def _collect_usage(job, requested_extract_tier, requested_parse_tier):
+    """Pull billable usage off the extract job. Tolerates SDK shape variance:
+    ExtractV2Job.metadata.usage (v2 client) or a flat usage/extraction_metadata."""
+    meta = _get(job, "metadata")
+    usage = _get(meta, "usage") or _get(job, "usage") or _get(job, "extraction_metadata")
+    extract_meta = _get(job, "extract_metadata")
+    actual_parse_tier = _get(extract_meta, "parse_tier") or _get(meta, "parse_tier")
+    return {
+        "num_pages_extracted": _get(usage, "num_pages_extracted"),
+        "num_document_tokens": _get(usage, "num_document_tokens"),
+        "num_output_tokens": _get(usage, "num_output_tokens"),
+        "requested_extract_tier": requested_extract_tier,
+        "requested_parse_tier": requested_parse_tier,
+        "actual_parse_tier": actual_parse_tier,
+    }
+
+
 def main() -> int:
     args = parse_args()
 
@@ -170,6 +196,17 @@ def main() -> int:
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(data, indent=2))
     log(f"[llama-extract] wrote {args.output} ({args.output.stat().st_size} bytes)", args.verbose)
+
+    usage = _collect_usage(job, args.tier, args.parse_tier)
+    usage_path = args.output.parent / (args.output.stem + ".usage.json")
+    usage_path.write_text(json.dumps(usage, indent=2))
+    if usage["num_pages_extracted"] is None:
+        print("WARN: extract job returned no num_pages_extracted; "
+              f"usage sidecar written with nulls at {usage_path}", file=sys.stderr)
+    else:
+        log(f"[llama-extract] usage: {usage['num_pages_extracted']} pages "
+            f"(extract={args.tier}, parse={usage['actual_parse_tier'] or args.parse_tier}) "
+            f"-> {usage_path}", args.verbose)
 
     if args.verbose:
         print(str(args.output))

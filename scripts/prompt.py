@@ -14,6 +14,22 @@ import json
 from scripts.datasets.base import DatasetConfig
 
 
+def _tier_directive(extract_tier: str | None, parse_tier: str | None) -> str:
+    """A with_skill-only tool-usage instruction naming the exact tiers to pass the
+    llama-extract CLI. Returns "" when no tiers are given (the no_skill case), so
+    the no_skill prompt is unaffected. This configures *how the tool is invoked*,
+    not *what to extract* — the extraction task is identical across conditions."""
+    if not extract_tier or not parse_tier:
+        return ""
+    return f"""
+# Extraction tool configuration
+
+When you invoke the bundled llama-extract CLI (`scripts/extract.py`), pass exactly \
+`--tier {extract_tier} --parse-tier {parse_tier}`. Use these tiers for every \
+document; do not substitute other tiers.
+"""
+
+
 SYSTEM_PROMPT_APPEND = (
     "You are running a one-shot structured-extraction task. "
     "Write only the final JSON output to the file ./output.json. "
@@ -31,8 +47,10 @@ SYSTEM_PROMPT_APPEND_BATCH = (
 )
 
 
-def build_extraction_prompt(dataset: DatasetConfig) -> str:
-    """Return the per-file user prompt given to both conditions."""
+def build_extraction_prompt(dataset: DatasetConfig, extract_tier: str | None = None,
+                            parse_tier: str | None = None) -> str:
+    """Return the per-file user prompt. extract_tier/parse_tier add a with_skill-only
+    tool-usage directive; leave them None (no_skill) for the unchanged prompt."""
     schema_json = json.dumps(dataset.schema_cls.model_json_schema(), indent=2)
     return f"""\
 # Task
@@ -40,7 +58,7 @@ def build_extraction_prompt(dataset: DatasetConfig) -> str:
 Extract structured data from a {dataset.display_name} PDF and write the result as a single JSON object to `./output.json` in the current working directory.
 
 The PDF is at `./input.pdf` in your current working directory.
-
+{_tier_directive(extract_tier, parse_tier)}
 {dataset.domain_intro}
 
 # Output schema
@@ -65,15 +83,17 @@ Begin now.
 """
 
 
-def build_batch_prompt(dataset: DatasetConfig, doc_keys: list[str]) -> str:
-    """Return the batch-mode user prompt (N PDFs in one Claude session)."""
+def build_batch_prompt(dataset: DatasetConfig, doc_keys: list[str],
+                       extract_tier: str | None = None, parse_tier: str | None = None) -> str:
+    """Return the batch-mode user prompt (N PDFs in one Claude session). extract_tier/
+    parse_tier add a with_skill-only tool-usage directive; None (no_skill) = unchanged."""
     schema_json = json.dumps(dataset.schema_cls.model_json_schema(), indent=2)
     file_list = "\n".join(f"- ./inputs/{k}.pdf  →  ./outputs/{k}.json" for k in doc_keys)
     return f"""\
 # Task
 
 Extract structured data from {len(doc_keys)} {dataset.display_name} PDFs in the `./inputs/` directory. Write one JSON object per document to `./outputs/<doc_key>.json` in the current working directory. A pre-written copy of the schema as JSON Schema is already at `./schema.json` in the working directory.
-
+{_tier_directive(extract_tier, parse_tier)}
 # Input → output mapping
 
 {file_list}

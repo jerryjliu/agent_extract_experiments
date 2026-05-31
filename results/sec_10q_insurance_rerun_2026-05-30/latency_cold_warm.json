@@ -1,0 +1,41 @@
+{
+  "dataset": "sec_10q_insurance",
+  "n_docs": 12,
+  "total_pages": 1566,
+  "credit_cost_usd_per_pass": 48.94,
+  "batch": {
+    "cold": {
+      "label": "cold",
+      "exit_code": 0,
+      "wall_s": 279.08,
+      "token_cost_usd": 0.8122300000000001,
+      "num_turns": 2,
+      "extract_tier": "agentic",
+      "parse_tier": "agentic",
+      "accuracy": 0.875,
+      "n_correct": 154,
+      "n_wrong": 22,
+      "n_missing": 0,
+      "credit_cost_usd": 48.9375,
+      "total_cost_usd": 49.7497
+    },
+    "warm": {
+      "label": "warm",
+      "exit_code": 0,
+      "wall_s": 63.03,
+      "token_cost_usd": 0.6251592499999999,
+      "num_turns": 2,
+      "extract_tier": "agentic",
+      "parse_tier": "agentic",
+      "accuracy": 0.875,
+      "n_correct": 154,
+      "n_wrong": 22,
+      "n_missing": 0,
+      "credit_cost_usd": 48.9375,
+      "total_cost_usd": 49.5627
+    },
+    "speedup": 4.43
+  },
+  "per_file_pilot": {},
+  "note": "Same re-serialized files both passes; cold = first parse (new content hash), warm = parse-cache hit. Credit cost is identical per pass (billed per page); only latency differs."
+}

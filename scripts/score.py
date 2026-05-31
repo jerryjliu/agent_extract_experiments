@@ -19,7 +19,32 @@ import json
 from pathlib import Path
 from typing import Any
 
+import pypdf
+
+from scripts import pricing
 from scripts.datasets import DEFAULT_SLUG, all_slugs, get_dataset
+
+
+def local_page_count(pdf_path: Path) -> int | None:
+    """Authoritative billable page count from the source PDF (full-doc extraction =>
+    pages parsed == PDF page count). Returns None if the PDF can't be read."""
+    try:
+        return len(pypdf.PdfReader(str(pdf_path)).pages)
+    except Exception:
+        return None
+
+
+def load_usage(run_dir: Path) -> dict[str, Any] | None:
+    """API usage sidecar (num_pages_extracted etc.), if extract.py captured one.
+    The current llama_cloud SDK leaves these null; kept for forward-compatible
+    cross-checking against the local page count."""
+    path = run_dir / "output.usage.json"
+    if not path.exists():
+        return None
+    try:
+        return json.loads(path.read_text())
+    except json.JSONDecodeError:
+        return None
 
 
 REL_TOLERANCE = 0.005  # 0.5% relative tolerance for numeric matches
@@ -91,7 +116,10 @@ def main() -> None:
                              "batch = read one session_result.json per condition.")
     parser.add_argument("--session-result-template", type=str, default=None,
                         help="Where to read session-level cost/duration in batch mode. "
-                             "Defaults to runs_batch/<slug>/{condition}/session_result.json.")
+                             "Defaults to runs_batch/<slug>/{condition}[__<run-tag>]/session_result.json.")
+    parser.add_argument("--run-tag", dest="run_tag", default="",
+                        help="Score a namespaced batch run (<condition>__<tag>) instead of the "
+                             "canonical dirs. Matches run_benchmark.py --run-tag. Empty = canonical.")
     args = parser.parse_args()
 
     dataset = get_dataset(args.dataset)
@@ -105,7 +133,9 @@ def main() -> None:
     csv_out = args.csv_out or (results_dir / ("scored_batch.csv" if args.mode == "batch" else "scored.csv"))
     summary_out = args.summary_out or (results_dir / ("summary_batch.json" if args.mode == "batch" else "summary.json"))
     session_result_template = args.session_result_template or str(
-        dataset.runs_batch_dir() / "{condition}" / "session_result.json")
+        dataset.runs_batch_dir()
+        / (f"{{condition}}__{args.run_tag}" if args.run_tag else "{condition}")
+        / "session_result.json")
 
     records = json.loads(manifest_path.read_text())
     schema_fields = list(dataset.schema_cls.model_fields.keys())
@@ -114,7 +144,9 @@ def main() -> None:
     cond_agg: dict[str, dict[str, Any]] = {
         c: {
             "n_correct": 0, "n_wrong": 0, "n_missing": 0, "n_na": 0, "n_format_error": 0,
-            "total_cost_usd": 0.0, "total_duration_ms": 0.0,
+            "token_cost_usd": 0.0, "total_duration_ms": 0.0,
+            "n_pages": 0, "n_pages_api": 0, "page_count_mismatches": [],
+            "extract_tier": None, "parse_tier": None,
             "n_runs": 0, "n_runs_with_output": 0, "n_runs_with_result": 0,
         }
         for c in ("with_skill", "no_skill")
@@ -131,7 +163,7 @@ def main() -> None:
 
         for condition in ("with_skill", "no_skill"):
             if args.mode == "batch":
-                run_dir = dataset.batch_fanout_dir(record, condition)
+                run_dir = dataset.batch_fanout_dir(record, condition, args.run_tag)
             else:
                 run_dir = runs_dir / f"{doc_key}_{condition}"
             extracted = load_extracted(run_dir, dataset.schema_cls)
@@ -140,11 +172,27 @@ def main() -> None:
             agg["n_runs"] += 1
             if extracted is not None:
                 agg["n_runs_with_output"] += 1
+            # Billable LlamaExtract pages apply only to the with_skill path. The local
+            # PDF page count is authoritative for credit cost (full-doc extraction =>
+            # pages parsed == PDF pages); the API usage sidecar, when populated, is
+            # cross-checked and any divergence is flagged.
+            if condition == "with_skill":
+                local_pages = local_page_count(dataset.pdf_path(record))
+                if local_pages is not None:
+                    agg["n_pages"] += local_pages
+                usage = load_usage(run_dir)
+                api_pages = usage.get("num_pages_extracted") if usage else None
+                if api_pages is not None:
+                    agg["n_pages_api"] += int(api_pages)
+                    if local_pages is not None and int(api_pages) != local_pages:
+                        agg["page_count_mismatches"].append(
+                            {"doc_key": doc_key, "api_pages": int(api_pages),
+                             "local_pages": local_pages})
             # Per-doc cost/duration accumulation only meaningful in per_file mode;
             # batch mode pulls one session_result.json per condition after the loop.
             if args.mode == "per_file" and result:
                 agg["n_runs_with_result"] += 1
-                agg["total_cost_usd"] += float(result.get("total_cost_usd") or 0.0)
+                agg["token_cost_usd"] += float(result.get("total_cost_usd") or 0.0)
                 agg["total_duration_ms"] += float(result.get("duration_ms") or 0.0)
 
             for field in schema_fields:
@@ -187,7 +235,9 @@ def main() -> None:
                     cond_agg[c]["total_duration_ms"] = float(wall_s) * 1000.0
                 else:
                     cond_agg[c]["total_duration_ms"] = float(sr.get("duration_ms") or 0.0)
-                cond_agg[c]["total_cost_usd"] = float(sr.get("total_cost_usd") or 0.0)
+                cond_agg[c]["token_cost_usd"] = float(sr.get("total_cost_usd") or 0.0)
+                cond_agg[c]["extract_tier"] = sr.get("extract_tier")
+                cond_agg[c]["parse_tier"] = sr.get("parse_tier")
                 cond_agg[c]["n_runs_with_result"] = 1
                 session_extras[c]["session_num_turns"] = sr.get("num_turns")
                 session_extras[c]["session_duration_api_ms"] = sr.get("duration_api_ms")
@@ -200,6 +250,17 @@ def main() -> None:
     for c, agg in cond_agg.items():
         denom = agg["n_correct"] + agg["n_wrong"] + agg["n_missing"] + agg["n_format_error"]
         accuracy = (agg["n_correct"] / denom) if denom > 0 else None
+        # Credit cost = billable pages x per-page credits (extract tier + parse tier)
+        # x $/credit. Pages accrue only on the with_skill (LlamaExtract) path, so
+        # no_skill is structurally zero.
+        et = agg["extract_tier"] or pricing.DEFAULT_EXTRACT_TIER
+        pt = agg["parse_tier"] or pricing.DEFAULT_PARSE_TIER
+        credit = (pricing.credit_cost_usd(agg["n_pages"], et, pt) or 0.0) if agg["n_pages"] else 0.0
+        token = round(agg["token_cost_usd"], 4)
+        credit = round(credit, 4)
+        if agg["page_count_mismatches"] and c == "with_skill":
+            print(f"WARN: {len(agg['page_count_mismatches'])} page-count mismatch(es) "
+                  f"between API and local PDF for with_skill: {agg['page_count_mismatches']}")
         entry: dict[str, Any] = {
             "accuracy": accuracy,
             "n_correct": agg["n_correct"],
@@ -209,7 +270,14 @@ def main() -> None:
             "n_format_error": agg["n_format_error"],
             "n_runs": agg["n_runs"],
             "n_runs_with_output": agg["n_runs_with_output"],
-            "total_cost_usd": round(agg["total_cost_usd"], 4),
+            "token_cost_usd": token,
+            "credit_cost_usd": credit,
+            "total_cost_usd": round(token + credit, 4),
+            "n_pages": agg["n_pages"] or None,
+            "n_pages_api": agg["n_pages_api"] or None,
+            "page_count_mismatches": agg["page_count_mismatches"],
+            "extract_tier": agg["extract_tier"],
+            "parse_tier": agg["parse_tier"],
             "total_duration_ms": int(agg["total_duration_ms"]),
         }
         if args.mode == "per_file":

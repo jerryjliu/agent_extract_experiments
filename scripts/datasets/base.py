@@ -6,6 +6,7 @@ slug so that data/, runs/, runs_batch/, results/ are partitioned per dataset.
 """
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable
@@ -52,6 +53,12 @@ class DatasetConfig:
         return Path("data") / self.slug
 
     def pdf_dir(self) -> Path:
+        # BENCH_PDF_DIR lets experiments (e.g. cold-cache latency runs) point the
+        # benchmark at an alternate set of <doc_key>.pdf files without touching the
+        # source data. Set it only for the experiment subprocess.
+        override = os.environ.get("BENCH_PDF_DIR")
+        if override:
+            return Path(override)
         return self.data_dir() / "pdfs"
 
     def gt_dir(self) -> Path:
@@ -78,8 +85,10 @@ class DatasetConfig:
     def run_dir(self, record: dict[str, Any], condition: str) -> Path:
         return self.runs_dir() / f"{self.doc_key_fn(record)}_{condition}"
 
-    def batch_session_dir(self, condition: str) -> Path:
-        return self.runs_batch_dir() / condition
+    def batch_session_dir(self, condition: str, tag: str = "") -> Path:
+        name = f"{condition}__{tag}" if tag else condition
+        return self.runs_batch_dir() / name
 
-    def batch_fanout_dir(self, record: dict[str, Any], condition: str) -> Path:
-        return self.runs_batch_dir() / f"{self.doc_key_fn(record)}_{condition}"
+    def batch_fanout_dir(self, record: dict[str, Any], condition: str, tag: str = "") -> Path:
+        name = f"{condition}__{tag}" if tag else condition
+        return self.runs_batch_dir() / f"{self.doc_key_fn(record)}_{name}"

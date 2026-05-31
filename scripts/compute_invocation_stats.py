@@ -15,7 +15,27 @@ import statistics
 from pathlib import Path
 from typing import Any
 
+import pypdf
+
+from scripts import pricing
 from scripts.datasets import DEFAULT_SLUG, all_slugs, get_dataset
+
+
+def corpus_local_pages(ds) -> int:
+    """Sum the source-PDF page counts over the dataset manifest. Authoritative
+    billable page count for LlamaExtract credit (full-doc extraction)."""
+    total = 0
+    try:
+        records = json.loads(ds.manifest_path().read_text())
+    except Exception:
+        return 0
+    for r in records:
+        p = ds.pdf_path(r)
+        try:
+            total += len(pypdf.PdfReader(str(p)).pages)
+        except Exception:
+            pass
+    return total
 
 
 def analyze_trace(trace_path: Path) -> dict[str, Any]:
@@ -103,8 +123,13 @@ def analyze_run(run_dir: Path) -> dict[str, Any]:
     }
 
 
-def analyze_batch_session(session_dir: Path) -> dict[str, Any]:
-    """Stats for a single batch session (runs_batch/<condition>/)."""
+def analyze_batch_session(session_dir: Path, n_pages: int = 0) -> dict[str, Any]:
+    """Stats for a single batch session (runs_batch/<condition>/).
+
+    `n_pages` is the billable LlamaExtract page count for this condition (0 for
+    no_skill, which never calls LlamaExtract); used with the session's tiers to
+    compute credit cost.
+    """
     trace_path = session_dir / "trace.jsonl"
     sr_path = session_dir / "session_result.json"
     if not trace_path.exists():
@@ -117,6 +142,10 @@ def analyze_batch_session(session_dir: Path) -> dict[str, Any]:
         except json.JSONDecodeError:
             sr = {}
     opus = (sr.get("modelUsage") or {}).get("claude-opus-4-7", {})
+    et = sr.get("extract_tier") or pricing.DEFAULT_EXTRACT_TIER
+    pt = sr.get("parse_tier") or pricing.DEFAULT_PARSE_TIER
+    token = round(float(sr.get("total_cost_usd") or 0.0), 4)
+    credit = round(pricing.credit_cost_usd(n_pages, et, pt) or 0.0, 4) if n_pages else 0.0
     return {
         "n_runs": 1,  # one session per condition
         "n_invoked_skill": 1 if tool_stats["invoked_skill"] else 0,
@@ -131,7 +160,12 @@ def analyze_batch_session(session_dir: Path) -> dict[str, Any]:
         "parallel_turns": tool_stats["parallel_turns"],
         "max_parallel_in_turn": tool_stats["max_parallel_in_turn"],
         "task_starts": tool_stats["task_starts"],
-        "session_cost_usd": round(float(sr.get("total_cost_usd") or 0.0), 4),
+        "session_token_cost_usd": token,
+        "session_credit_cost_usd": credit,
+        "session_total_cost_usd": round(token + credit, 4),
+        "session_n_pages": n_pages or None,
+        "session_extract_tier": sr.get("extract_tier"),
+        "session_parse_tier": sr.get("parse_tier"),
         # wall_seconds_session is the true end-to-end wall measured by the orchestrator;
         # falls back to result.duration_ms for older session_result.json files (which is
         # only the final phase when Claude used background Tasks).
@@ -184,12 +218,14 @@ def aggregate(runs_dir: Path, condition: str) -> dict[str, Any]:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset", choices=all_slugs(), default=DEFAULT_SLUG)
+    parser.add_argument("--out-dir", type=Path, default=None,
+                        help="Override results dir for invocation_stats.json output.")
     args = parser.parse_args()
 
     ds = get_dataset(args.dataset)
     runs_dir = ds.runs_dir()
     runs_batch_dir = ds.runs_batch_dir()
-    results_dir = ds.results_dir()
+    results_dir = args.out_dir or ds.results_dir()
     # The v1 baseline snapshot only exists for the FFIEC corpus.
     baseline_dir = runs_dir / "baseline-v1"
 
@@ -218,9 +254,10 @@ def main() -> None:
     batch_ws = runs_batch_dir / "with_skill"
     batch_ns = runs_batch_dir / "no_skill"
     if batch_ws.exists() or batch_ns.exists():
+        n_pages = corpus_local_pages(ds)
         out["batch"] = {
-            "with_skill": analyze_batch_session(batch_ws),
-            "no_skill": analyze_batch_session(batch_ns),
+            "with_skill": analyze_batch_session(batch_ws, n_pages=n_pages),
+            "no_skill": analyze_batch_session(batch_ns, n_pages=0),
         }
     results_dir.mkdir(parents=True, exist_ok=True)
     out_path = results_dir / "invocation_stats.json"
@@ -243,11 +280,13 @@ def main() -> None:
         print(f"\n=== batch ===")
         print(f"  with_skill: skill={ws.get('n_invoked_skill', 0)}/1  cli_calls={ws.get('extract_calls', 0)}"
               f"  py_writes={ws.get('py_writes', 0)}  parallel_turns={ws.get('parallel_turns', 0)}"
-              f"  max_parallel={ws.get('max_parallel_in_turn', 0)}"
-              f"  cost=${ws.get('session_cost_usd', 0):.4f}  wall={ws.get('session_wall_s', 0)}s")
+              f"  max_parallel={ws.get('max_parallel_in_turn', 0)}  pages={ws.get('session_n_pages') or 0}"
+              f"  token=${ws.get('session_token_cost_usd', 0):.4f}  credit=${ws.get('session_credit_cost_usd', 0):.4f}"
+              f"  total=${ws.get('session_total_cost_usd', 0):.4f}  wall={ws.get('session_wall_s', 0)}s")
         print(f"  no_skill:   parallel_turns={ns.get('parallel_turns', 0)}"
               f"  max_parallel={ns.get('max_parallel_in_turn', 0)}"
-              f"  cost=${ns.get('session_cost_usd', 0):.4f}  wall={ns.get('session_wall_s', 0)}s")
+              f"  token=${ns.get('session_token_cost_usd', 0):.4f}  credit=${ns.get('session_credit_cost_usd', 0):.4f}"
+              f"  total=${ns.get('session_total_cost_usd', 0):.4f}  wall={ns.get('session_wall_s', 0)}s")
 
 
 if __name__ == "__main__":

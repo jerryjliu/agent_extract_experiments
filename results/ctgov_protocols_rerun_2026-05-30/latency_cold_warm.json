@@ -1,0 +1,41 @@
+{
+  "dataset": "ctgov_protocols",
+  "n_docs": 12,
+  "total_pages": 1283,
+  "credit_cost_usd_per_pass": 40.09,
+  "batch": {
+    "cold": {
+      "label": "cold",
+      "exit_code": 0,
+      "wall_s": 193.24,
+      "token_cost_usd": 0.6971485,
+      "num_turns": 2,
+      "extract_tier": "agentic",
+      "parse_tier": "agentic",
+      "accuracy": 0.593103448275862,
+      "n_correct": 86,
+      "n_wrong": 43,
+      "n_missing": 16,
+      "credit_cost_usd": 40.0938,
+      "total_cost_usd": 40.7909
+    },
+    "warm": {
+      "label": "warm",
+      "exit_code": 0,
+      "wall_s": 60.12,
+      "token_cost_usd": 0.5932017500000001,
+      "num_turns": 2,
+      "extract_tier": "agentic",
+      "parse_tier": "agentic",
+      "accuracy": 0.593103448275862,
+      "n_correct": 86,
+      "n_wrong": 43,
+      "n_missing": 16,
+      "credit_cost_usd": 40.0938,
+      "total_cost_usd": 40.687
+    },
+    "speedup": 3.21
+  },
+  "per_file_pilot": {},
+  "note": "Same re-serialized files both passes; cold = first parse (new content hash), warm = parse-cache hit. Credit cost is identical per pass (billed per page); only latency differs."
+}
